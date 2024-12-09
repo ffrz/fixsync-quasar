@@ -1,0 +1,119 @@
+<template>
+  <q-layout view="lHh LpR lFf">
+    <q-header>
+      <q-toolbar>
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <q-toolbar-title>{{ $config.APP_NAME }}</q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer :breakpoint="768" v-model="leftDrawerOpen" show-if-above style="border-right: 1px solid #ddd">
+
+      <!-- <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+        <div class="absolute-bottom bg-transparent">
+          <q-avatar size="56px" class="q-mb-sm">
+            <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+          </q-avatar>
+          <div class="text-weight-bold">{{ page.props.auth.user.name }}</div>
+          <div><my-link class="text-white" href="/profile" :label="page.props.auth.user.email" /></div>
+        </div>
+      </q-img> -->
+      <q-toolbar class="absolute-top" style="height: 50px;background:#202020;color:#fff;">
+        <q-toolbar-title style="font-size:15px;"><q-icon name="handyman" /> {{ $config.APP_NAME }}</q-toolbar-title>
+      </q-toolbar>
+      <q-scroll-area style="height: calc(100% - 50px); margin-top: 50px;">
+        <q-list id="main-nav" style="margin-bottom: 50px;">
+          <q-item clickable v-ripple :active="$page.url == '/dashboard'" @click="router.get(route('admin.dashboard'))">
+            <q-item-section avatar>
+              <q-icon name="dashboard" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Dashboard</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-item clickable v-ripple :active="$page.url.startsWith('/customers')" @click="router.get(route('admin.customer.index'))">
+            <q-item-section avatar>
+              <q-icon name="people" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Pelanggan</q-item-label>
+            </q-item-section>
+          </q-item>
+          <!-- <q-expansion-item expand-separator icon="people" label="Customers">
+            <q-expansion-item class="subnav" expand-separator icon="receipt" label="Receipts">
+              <q-expansion-item class="subnav" expand-separator label="Today">
+                <q-item class="subnav" clickable v-ripple>Example Link 1</q-item>
+              </q-expansion-item>
+              <q-expansion-item class="subnav" expand-separator label="Yesterday">
+                <q-list>
+                  <q-item class="subnav" clickable v-ripple>Example Link 1</q-item>
+                  <q-item class="subnav" clickable v-ripple>Example Link 2</q-item>
+                </q-list>
+              </q-expansion-item>
+            </q-expansion-item>
+            <q-expansion-item expand-separator icon="schedule" label="Postponed">
+              <q-card>
+                <q-card-section>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos corrupti
+                  commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto suscipit iste
+                  eveniet doloribus ullam aliquid.
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+          </q-expansion-item> -->
+          <q-expansion-item expand-separator icon="settings" label="Pengaturan" :default-opened="$page.url.startsWith('/admin/settings')">
+            <q-item class="subnav" clickable v-ripple :active="$page.url.startsWith('/admin/settings/users')" @click="router.get('/admin/settings/users')">
+              <q-item-section avatar>
+                <q-icon name="people" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Pengguna</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-expansion-item>
+          <q-item clickable v-ripple @click="router.post(route('logout'))">
+            <q-item-section avatar>
+              <q-icon name="logout" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Logout</q-item-label>
+            </q-item-section>
+          </q-item>
+          <div class="absolute-bottom text-grey-6 q-pa-md">&copy; 2024 - {{ $config.APP_NAME + ' v' + $config.APP_VERSION_STR }}</div>
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
+    <q-page-container style="background:#f8f8f8;">
+      <slot></slot>
+    </q-page-container>
+  </q-layout>
+</template>
+
+<script setup>
+import { defineComponent, ref, watch } from "vue";
+import { router, usePage } from "@inertiajs/vue3";
+
+// const tab = ref();
+const page = usePage();
+// let user = page.props.auth.user;
+
+defineComponent({
+  name: "AuthenticatedLayout",
+});
+
+const leftDrawerOpen = ref(false);
+
+function toggleLeftDrawer() {
+  leftDrawerOpen.value = !leftDrawerOpen.value;
+}
+
+// watch(
+//   () => page.props.auth.user,
+//   (newValue, oldValue) => {
+//     if (newValue) {
+//       user = newValue;
+//     }
+//   }
+// );
+
+</script>
