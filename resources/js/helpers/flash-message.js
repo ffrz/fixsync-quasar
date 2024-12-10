@@ -9,14 +9,12 @@ export default function processFlashMessage() {
     options = {
       message: flash.info,
       icon: 'info',
-      color: 'blue',
     };
   }
   else if (flash.success) {
     options = {
       message: flash.success,
       icon: 'check',
-      color: 'green',
     };
   }
   else if (flash.warning) {

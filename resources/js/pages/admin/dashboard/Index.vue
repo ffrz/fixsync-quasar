@@ -9,7 +9,6 @@ import NumberInput from "@/components/NumberInput.vue";
       <i-head title="Dashboard" />
       <q-card class="col q-pa-md q-ma-md" square flat bordered>
         <q-card-section>
-          <NumberInput />
           <div class="q-mb-md text-h4">Dashboard</div>
           <btn-link label="Logout" :url="route('logout')" method="post" color="accent" class="q-my-md full-width" />
           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem soluta, accusamus placeat eius eligendi

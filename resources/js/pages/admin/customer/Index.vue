@@ -1,11 +1,9 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import axios from "axios";
-import { exportFile, useQuasar } from "quasar";
+import { useQuasar } from "quasar";
 import { router, usePage } from "@inertiajs/vue3";
 
-const page = usePage();
-const currentUser = page.props.auth.user;
 const $q = useQuasar();
 const tableRef = ref(null);
 const rows = ref([]);
@@ -20,7 +18,7 @@ const pagination = ref({
 });
 
 const columns = [
-  { name: "name", label: "Name", field: "name", align: "left", sortable: true },
+  { name: "name", label: "Nama", field: "name", align: "left", sortable: true },
   {
     name: "phone",
     label: "No HP",
@@ -35,7 +33,7 @@ const columns = [
     align: "left",
     sortable: true,
   },
-  { name: "action", label: "Action", align: "center" },
+  { name: "action", label: "Aksi", align: "center" },
 ];
 
 onMounted(() => {
@@ -120,6 +118,7 @@ const fetchItems = (props = null) => {
 
 <template>
   <authenticated-layout>
+    <i-head title="Pelanggan" />
     <q-page>
       <div class="q-pa-md">
         <q-table ref="tableRef" flat bordered square :dense="true || $q.screen.lt.md" color="primary" row-key="id"
@@ -131,10 +130,9 @@ const fetchItems = (props = null) => {
 
           <template v-slot:top-left>
             <div class="q-gutter-sm">
-              <q-btn color="primary" dense icon="add" @click="router.get(route('admin.customer.add'))" label="Tambah&nbsp;&nbsp;">
+              <q-btn color="primary" icon="add" @click="router.get(route('admin.customer.add'))" label="Tambah">
                 <q-tooltip>Tambah Pelanggan</q-tooltip>
               </q-btn>
-              <!--<q-btn no-caps color="grey-8" icon="archive" @click="exportToCsv" />-->
             </div>
           </template>
 
@@ -155,6 +153,7 @@ const fetchItems = (props = null) => {
               <q-icon size="2em" :name="filter ? 'filter_b_and_w' : icon" />
             </div>
           </template>
+
           <template v-slot:body="props">
             <q-tr :props="props">
               <q-td key="name" :props="props">

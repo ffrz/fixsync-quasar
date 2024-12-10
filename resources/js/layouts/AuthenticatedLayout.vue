@@ -23,7 +23,7 @@
       </q-toolbar>
       <q-scroll-area style="height: calc(100% - 50px); margin-top: 50px;">
         <q-list id="main-nav" style="margin-bottom: 50px;">
-          <q-item clickable v-ripple :active="$page.url == '/dashboard'" @click="router.get(route('admin.dashboard'))">
+          <q-item clickable v-ripple :active="$page.url == '/admin/dashboard'" @click="router.get(route('admin.dashboard'))">
             <q-item-section avatar>
               <q-icon name="dashboard" />
             </q-item-section>
@@ -31,9 +31,9 @@
               <q-item-label>Dashboard</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable v-ripple :active="$page.url.startsWith('/customers')" @click="router.get(route('admin.customer.index'))">
+          <q-item clickable v-ripple :active="$page.url.startsWith('/admin/customers')" @click="router.get(route('admin.customer.index'))">
             <q-item-section avatar>
-              <q-icon name="people" />
+              <q-icon name="groups" />
             </q-item-section>
             <q-item-section>
               <q-item-label>Pelanggan</q-item-label>
@@ -62,12 +62,20 @@
             </q-expansion-item>
           </q-expansion-item> -->
           <q-expansion-item expand-separator icon="settings" label="Pengaturan" :default-opened="$page.url.startsWith('/admin/settings')">
-            <q-item class="subnav" clickable v-ripple :active="$page.url.startsWith('/admin/settings/users')" @click="router.get('/admin/settings/users')">
+            <q-item class="subnav" clickable v-ripple :active="$page.url.startsWith('/admin/settings/users')" @click="router.get(route('admin.user.index'))">
               <q-item-section avatar>
-                <q-icon name="people" />
+                <q-icon name="group" />
               </q-item-section>
               <q-item-section>
                 <q-item-label>Pengguna</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item class="subnav" clickable v-ripple :active="$page.url.startsWith('/admin/settings/profile')" @click="router.get('/admin/settings/profile')">
+              <q-item-section avatar>
+                <q-icon name="manage_accounts" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Profil</q-item-label>
               </q-item-section>
             </q-item>
           </q-expansion-item>

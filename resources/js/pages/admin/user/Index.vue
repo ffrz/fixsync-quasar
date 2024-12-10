@@ -20,7 +20,7 @@ const pagination = ref({
 });
 
 const columns = [
-  { name: "name", label: "Name", field: "name", align: "left", sortable: true },
+  { name: "name", label: "Nama", field: "name", align: "left", sortable: true },
   {
     name: "email",
     label: "Email",
@@ -30,17 +30,17 @@ const columns = [
   },
   {
     name: "admin",
-    label: "Is Admin",
+    label: "Admin",
     field: "admin",
     align: "center",
     sortable: true,
   },
-  { name: "action", label: "Action", align: "center" },
+  { name: "action", label: "Aksi", align: "center" },
 ];
 
 onMounted(() => {
   filter.value = localStorage.getItem("fixsync.user-list-page.filter");
-  fetchUsers();
+  fetchItems();
 });
 
 watch(filter, (newValue) => {
@@ -48,8 +48,7 @@ watch(filter, (newValue) => {
   localStorage.setItem("fixsync.user-list-page.filter", newValue);
 });
 
-const deleteUser = (row) => {
-
+const deleteItem = (row) => {
   $q.dialog({
     title: "Confirm",
     icon: "question",
@@ -63,7 +62,7 @@ const deleteUser = (row) => {
       .post(route("admin.user.delete", row.id))
       .then((response) => {
         $q.notify(response.data.message);
-        fetchUsers();
+        fetchItems();
       })
       .finally(() => {
         loading.value = false;
@@ -81,7 +80,7 @@ const deleteUser = (row) => {
   });
 };
 
-const fetchUsers = (props = null) => {
+const fetchItems = (props = null) => {
   let params = {
     page: pagination.value.page,
     per_page: pagination.value.rowsPerPage,
@@ -123,10 +122,11 @@ const fetchUsers = (props = null) => {
 <template>
   <authenticated-layout>
     <q-page>
+      <i-head title="Pengguna" />
       <div class="q-pa-md">
         <q-table ref="tableRef" flat bordered square :dense="true || $q.screen.lt.md" color="primary" row-key="id"
-          virtual-scroll title="Users" v-model:pagination="pagination" :filter="filter" :loading="loading"
-          :columns="columns" :rows="rows" :rows-per-page-options="[10, 25, 50]" @request="fetchUsers" binary-state-sort>
+          virtual-scroll title="Pengguna" v-model:pagination="pagination" :filter="filter" :loading="loading"
+          :columns="columns" :rows="rows" :rows-per-page-options="[10, 25, 50]" @request="fetchItems" binary-state-sort>
           <template v-slot:loading>
             <q-inner-loading showing color="red" />
           </template>
@@ -170,11 +170,11 @@ const fetchUsers = (props = null) => {
               </q-td>
               <q-td key="action" class="q-gutter-x-sm" :props="props" align="center">
                 <q-btn :disable="props.row.id == currentUser.id || props.row.email == 'admin@example.com'" rounded dense
-                  color="grey" icon="edit" @click="router.get(route('admin.user.edit', props.row.id))">
+                  flat icon="edit" @click="router.get(route('admin.user.edit', props.row.id))">
                   <q-tooltip>Edit Pengguna</q-tooltip>
                 </q-btn>
                 <q-btn :disable="props.row.id == currentUser.id || props.row.email == 'admin@example.com'" rounded dense
-                  color="red" icon="delete" @click="deleteUser(props.row)">
+                  flat icon="delete" @click="deleteItem(props.row)">
                   <q-tooltip>Hapus Pengguna</q-tooltip>
                 </q-btn>
               </q-td>
