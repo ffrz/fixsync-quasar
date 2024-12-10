@@ -1,45 +1,28 @@
 <script setup>
-import { validateEmail } from "@/helpers/validations";
+import { default_submit_handler } from "@/helpers/client-req-handler";
+import { validateUsername, validateEmail } from "@/helpers/validations";
 import { router, useForm, usePage } from "@inertiajs/vue3";
-import { useQuasar } from "quasar";
-import { onMounted } from "vue";
 
 const page = usePage();
-const $q = useQuasar();
+
+const roles = Object.entries(window.CONSTANTS.USER_ROLES)
+  .map(([key, value]) => ({ 'value': key, 'label': value }));
 
 const form = useForm({
   id: page.props.data.id,
   name: page.props.data.name,
+  username: page.props.data.username,
   email: page.props.data.email,
   password: "",
-  admin: !!page.props.data.admin,
+  role: !!page.props.data.role ? page.props.data.role : roles[0].value,
   active: !!page.props.data.active,
 });
 
 const title = !!form.id ? 'Edit Pengguna' : 'Tambah Pengguna';
 
-onMounted(() => {
-  console.log(page.props.data);
-});
-
 const submit = () => {
-  form.clearErrors();
-  form.post(route("admin.user.save"),
-    {
-      preserveScroll: true,
-      onError: (response) => {
-        $q.notify({
-          message: response.message,
-          icon: "info",
-          color: "negative",
-          actions: [
-            { icon: "close", color: "white", round: true, dense: true },
-          ],
-        });
-      },
-    }
-  );
-};
+  default_submit_handler(form, route('admin.user.save'));
+}
 
 </script>
 
@@ -61,19 +44,26 @@ const submit = () => {
                 :disable="form.processing" :error-message="form.errors.name" :rules="[
                   (val) => (val && val.length > 0) || 'Nama harus diisi.',
                 ]" />
-              <q-input v-model.trim="form.email" type="email" label="Email" lazy-rules
-                :disable="form.processing" :error="!!form.errors.email" :error-message="form.errors.email"
-                :rules="[(val) => validateEmail(val) || 'Email harus diisi.']" />
+              <q-input v-model.trim="form.username" type="text" label="ID Pengguna" lazy-rules
+                :disable="form.processing" :error="!!form.errors.username" :error-message="form.errors.username" :rules="[
+                  (val) => (val && val.length > 0) || 'ID Pengguna harus diisi.',
+                  (val) => validateUsername(val) || 'ID Pengguna tidak valid.'
+                ]" />
+              <q-input v-model.trim="form.email" type="email" label="Email" lazy-rules :disable="form.processing"
+                :error="!!form.errors.email" :error-message="form.errors.email"
+                :rules="[(val) => validateEmail(val) || 'Email harus valid.']" />
               <q-input v-model="form.password" type="password" label="Kata Sandi" lazy-rules :disable="form.processing"
                 :error="!!form.errors.password" :error-message="form.errors.password" />
-              <q-checkbox class="full-width q-pl-none" v-model="form.admin" :disable="form.processing"
-                label="Administrator" />
-              <q-checkbox class="full-width q-pl-none" v-model="form.active" :disable="form.processing"
-                label="Aktif" />
+              <q-select v-model="form.role" label="Hak Akses" :options="roles" map-options emit-value lazy-rules
+                :disable="form.processing" transition-show="jump-up" transition-hide="jump-up"
+                :error="!!form.errors.role" :error-message="form.errors.role">
+              </q-select>
+              <q-checkbox class="full-width q-pl-none" v-model="form.active" :disable="form.processing" label="Aktif" />
             </q-card-section>
             <q-card-actions>
               <q-btn type="submit" label="Simpan" color="primary" icon="check" :disable="form.processing" />
-              <q-btn label="Batal" v-close-popup color="grey-7" icon="close" :disable="form.processing" @click="router.get(route('admin.user.index'))"/>
+              <q-btn label="Batal" v-close-popup color="grey-7" icon="close" :disable="form.processing"
+                @click="router.get(route('admin.user.index'))" />
             </q-card-actions>
           </q-card>
         </q-form>

@@ -1,5 +1,6 @@
 a, a:visited {
   color: #07d;
+  text-decoration: none;
 }
 
 a:hover {
@@ -21,7 +22,6 @@ a:hover {
 
 #main-nav .q-item {
   min-height: 40px;
-
 }
 
 #main-nav .subnav {

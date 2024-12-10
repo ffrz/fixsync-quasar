@@ -1,10 +1,8 @@
 <script setup>
 import { router, useForm, usePage } from "@inertiajs/vue3";
-import { useQuasar } from "quasar";
-import { onMounted } from "vue";
+import { default_submit_handler } from "@/helpers/client-req-handler";
 
 const page = usePage();
-const $q = useQuasar();
 
 const form = useForm({
   id: page.props.data.id,
@@ -13,27 +11,8 @@ const form = useForm({
   address: page.props.data.address,
 });
 
-onMounted(() => {
-  console.log(page.props.data);
-});
-
 const submit = () => {
-  form.clearErrors();
-  form.post(route('admin.customer.save'),
-    {
-      preserveScroll: true,
-      onError: (response) => {
-        $q.notify({
-          message: response.message,
-          icon: "info",
-          color: "negative",
-          actions: [
-            { icon: "close", color: "white", round: true, dense: true },
-          ],
-        });
-      },
-    }
-  );
+  default_submit_handler(form, route('admin.customer.save'));
 };
 
 </script>

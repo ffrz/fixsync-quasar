@@ -17,6 +17,12 @@
     window.CONFIG.APP_NAME = "{{ config('app.name', 'Laravel') }}";
     window.CONFIG.APP_VERSION = {{ config('app.version', 0x010000) }};
     window.CONFIG.APP_VERSION_STR = "{{ config('app.version_str', '1.0.0') }}";
+    window.CONSTANTS = {
+      "USER_ROLES": {
+        "technician": "Teknisi",
+        "admin": "Administrator",
+      }
+    };
   </script>
   @routes
   @vite(['resources/js/app.js', 'resources/css/app.css'])

@@ -3,6 +3,7 @@ import { onMounted, ref, watch } from "vue";
 import axios from "axios";
 import { useQuasar } from "quasar";
 import { router, usePage } from "@inertiajs/vue3";
+import { default_fetch_handler, default_delete_handler } from "@/helpers/client-req-handler";
 
 const page = usePage();
 const currentUser = page.props.auth.user;
@@ -15,11 +16,12 @@ const pagination = ref({
   page: 1,
   rowsPerPage: 10,
   rowsNumber: 10,
-  sortBy: "name",
+  sortBy: "username",
   descending: false,
 });
 
 const columns = [
+  { name: "username", label: "ID Pengguna", field: "username", align: "left", sortable: true },
   { name: "name", label: "Nama", field: "name", align: "left", sortable: true },
   {
     name: "email",
@@ -29,9 +31,9 @@ const columns = [
     sortable: true,
   },
   {
-    name: "admin",
-    label: "Admin",
-    field: "admin",
+    name: "role",
+    label: "Hak Akses",
+    field: "role",
     align: "center",
     sortable: true,
   },
@@ -49,72 +51,11 @@ watch(filter, (newValue) => {
 });
 
 const deleteItem = (row) => {
-  $q.dialog({
-    title: "Confirm",
-    icon: "question",
-    message: `Anda yakin akan menghapus pengguna ${row.email}?`,
-    focus: "cancel",
-    cancel: true,
-    persistent: true,
-  }).onOk(() => {
-    loading.value = true;
-    axios
-      .post(route("admin.user.delete", row.id))
-      .then((response) => {
-        $q.notify(response.data.message);
-        fetchItems();
-      })
-      .finally(() => {
-        loading.value = false;
-      })
-      .catch((error) => {
-        let message = "";
-        if (error.response.data && error.response.data.message) {
-          message = error.response.data.message;
-        } else if (error.message) {
-          message = error.message;
-        }
-        $q.notify({ message: message, color: "red" });
-        console.log(error);
-      });
-  });
+  default_delete_handler(`Hapus pelanggan ${row.name}?`, route('admin.user.delete', row.id), fetchItems, loading);
 };
 
 const fetchItems = (props = null) => {
-  let params = {
-    page: pagination.value.page,
-    per_page: pagination.value.rowsPerPage,
-    order_by: pagination.value.sortBy,
-    order_type: pagination.value.descending ? "desc" : "asc",
-    filter: filter.value,
-  };
-
-  if (props != null) {
-    params.page = props.pagination.page;
-    params.per_page = props.pagination.rowsPerPage;
-    params.order_by = props.pagination.sortBy;
-    params.order_type = props.pagination.descending ? "desc" : "asc";
-    params.filter = props.filter;
-    filter.value = props.filter;
-  }
-
-  loading.value = true;
-
-  axios
-    .get(route("admin.user.data"), { params: params })
-    .then((response) => {
-      rows.value = response.data.data;
-      pagination.value.page = response.data.current_page;
-      pagination.value.rowsPerPage = response.data.per_page;
-      pagination.value.rowsNumber = response.data.total;
-      if (props) {
-        pagination.value.sortBy = props.pagination.sortBy;
-        pagination.value.descending = props.pagination.descending;
-      }
-    })
-    .finally(() => {
-      loading.value = false;
-    });
+  default_fetch_handler(pagination, filter, props, rows, route('admin.user.data'), loading);
 };
 
 </script>
@@ -159,14 +100,17 @@ const fetchItems = (props = null) => {
 
           <template v-slot:body="props">
             <q-tr :props="props" :class="(!props.row.active) ? 'bg-red-1' : ''">
+              <q-td key="username" :props="props">
+                {{ props.row.username }}
+              </q-td>
               <q-td key="name" :props="props">
                 {{ props.row.name }}
               </q-td>
               <q-td key="email" :props="props">
                 {{ props.row.email }}
               </q-td>
-              <q-td key="admin" :props="props" align="center">
-                <span>{{ props.row.admin ? 'Admin' : 'Non Admin' }}</span>
+              <q-td key="role" :props="props" align="center">
+                <span>{{ $CONSTANTS.USER_ROLES[props.row.role] }}</span>
               </q-td>
               <q-td key="action" class="q-gutter-x-sm" :props="props" align="center">
                 <q-btn :disable="props.row.id == currentUser.id || props.row.email == 'admin@example.com'" rounded dense

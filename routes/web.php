@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -7,14 +8,22 @@ use App\Http\Controllers\Admin\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return inertia('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-})->name('home');
+Route::middleware('guest')->group(function () {
+    Route::get('/', function () {
+        return inertia('Welcome', [
+            'canLogin' => Route::has('login'),
+            'canRegister' => Route::has('register'),
+            'laravelVersion' => Application::VERSION,
+            'phpVersion' => PHP_VERSION,
+        ]);
+    })->name('home');
+
+    Route::prefix('/admin/auth')->group(function() {
+        Route::match(['get', 'post'], 'login', [AuthController::class, 'login'])->name('admin.auth.login');
+        Route::match(['get', 'post'], 'logout', [AuthController::class, 'logout'])->name('admin.auth.logout');
+        Route::match(['get', 'post'], 'register', [AuthController::class, 'register'])->name('admin.auth.register');
+    });
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->group(function () {
@@ -32,9 +41,9 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::prefix('settings')->group(function () {
-            Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-            Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-            Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+            Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('admin.profile.edit');
+            Route::post('/profile/update', [ProfileController::class, 'update'])->name('admin.profile.update');
+            Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('admin.profile.update-password');
 
             Route::prefix('users')->group(function () {
                 Route::get('', [UserController::class, 'index'])->name('admin.user.index');

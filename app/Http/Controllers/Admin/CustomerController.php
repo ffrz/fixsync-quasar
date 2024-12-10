@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -57,6 +58,7 @@ class CustomerController extends Controller
 
         if (!$request->id) {
             $item = new Customer();
+            $item->company_id = Auth::user()->company_id;
             $message = 'Pelanggan baru telah ditambahkan.';
         } else {
             $item = Customer::findOrFail($request->post('id', 0));

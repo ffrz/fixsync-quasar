@@ -1,7 +1,20 @@
 <script setup>
 import BtnLink from "@/components/BtnLink.vue";
 import NumberInput from "@/components/NumberInput.vue";
+
+import { ref } from 'vue';
+
+// Define options with proper value and label
+const options = [
+  { value: '1', label: 'Option 1' },
+  { value: '2', label: 'Option 2' },
+  { value: '3', label: 'Option 3' },
+];
+
+// Default selected value
+const selectedValue = ref('2'); // Matches value of 'Option 2'
 </script>
+
 
 <template>
   <authenticated-layout>
@@ -9,6 +22,9 @@ import NumberInput from "@/components/NumberInput.vue";
       <i-head title="Dashboard" />
       <q-card class="col q-pa-md q-ma-md" square flat bordered>
         <q-card-section>
+
+          <q-select v-model="selectedValue" map-options :options="options" label="Choose an option" outlined />
+
           <div class="q-mb-md text-h4">Dashboard</div>
           <btn-link label="Logout" :url="route('logout')" method="post" color="accent" class="q-my-md full-width" />
           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem soluta, accusamus placeat eius eligendi

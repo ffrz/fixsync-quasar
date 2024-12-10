@@ -16,15 +16,22 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         UserFactory::$defaultPassword = Hash::make('12345');
-
-        User::factory(100)->create();
-
         User::factory()->create([
+            'company_id' => 1,
+            'username' => 'admin',
             'name' => 'Administrator',
-            'email' => 'admin@example.com',
-            'email_verified_at' => now(),
-            'admin' => true,
-            'active' => true,
+            'email' => 'admin@shiftech.my.id',
+            'role' => 'admin',
+            'active' => 1,
         ]);
+        User::factory()->create([
+            'company_id' => 1,
+            'username' => 'fahmi',
+            'name' => 'Fahmi',
+            'email' => 'fahmi@shiftech.my.id',
+            'role' => 'technician',
+            'active' => 1,
+        ]);
+        User::factory(100)->create();
     }
 }

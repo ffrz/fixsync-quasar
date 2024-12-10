@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import axios from "axios";
+import { router } from "@inertiajs/vue3";
 import { useQuasar } from "quasar";
-import { router, usePage } from "@inertiajs/vue3";
+import { default_delete_handler, default_fetch_handler } from "@/helpers/client-req-handler";
 
 const $q = useQuasar();
 const tableRef = ref(null);
@@ -47,72 +47,11 @@ watch(filter, (newValue) => {
 });
 
 const deleteItem = (row) => {
-  $q.dialog({
-    title: "Confirm",
-    icon: "question",
-    message: `Hapus pelanggan ${row.name}?`,
-    focus: "cancel",
-    cancel: true,
-    persistent: true,
-  }).onOk(() => {
-    loading.value = true;
-    axios
-      .post(route('admin.customer.delete', row.id))
-      .then((response) => {
-        $q.notify(response.data.message);
-        fetchItems();
-      })
-      .finally(() => {
-        loading.value = false;
-      })
-      .catch((error) => {
-        let message = "";
-        if (error.response.data && error.response.data.message) {
-          message = error.response.data.message;
-        } else if (error.message) {
-          message = error.message;
-        }
-        $q.notify({ message: message, color: "red" });
-        console.log(error);
-      });
-  });
+  default_delete_handler(`Hapus pelanggan ${row.name}?`, route('admin.customer.delete', row.id), fetchItems, loading);
 };
 
 const fetchItems = (props = null) => {
-  let params = {
-    page: pagination.value.page,
-    per_page: pagination.value.rowsPerPage,
-    order_by: pagination.value.sortBy,
-    order_type: pagination.value.descending ? "desc" : "asc",
-    filter: filter.value,
-  };
-
-  if (props != null) {
-    params.page = props.pagination.page;
-    params.per_page = props.pagination.rowsPerPage;
-    params.order_by = props.pagination.sortBy;
-    params.order_type = props.pagination.descending ? "desc" : "asc";
-    params.filter = props.filter;
-    filter.value = props.filter;
-  }
-
-  loading.value = true;
-
-  axios
-    .get(route('admin.customer.data'), { params: params })
-    .then((response) => {
-      rows.value = response.data.data;
-      pagination.value.page = response.data.current_page;
-      pagination.value.rowsPerPage = response.data.per_page;
-      pagination.value.rowsNumber = response.data.total;
-      if (props) {
-        pagination.value.sortBy = props.pagination.sortBy;
-        pagination.value.descending = props.pagination.descending;
-      }
-    })
-    .finally(() => {
-      loading.value = false;
-    });
+  default_fetch_handler(pagination, filter, props, rows, route('admin.customer.data'), loading);
 };
 </script>
 
@@ -166,11 +105,11 @@ const fetchItems = (props = null) => {
                 {{ props.row.address }}
               </q-td>
               <q-td key="action" class="q-gutter-x-sm" :props="props" align="center">
-                <q-btn rounded dense color="grey" icon="edit"
+                <q-btn flat dense icon="edit"
                   @click="router.get(route('admin.customer.edit', props.row.id))">
                   <q-tooltip>Edit Pelanggan</q-tooltip>
                 </q-btn>
-                <q-btn rounded dense color="red" icon="delete" @click="deleteItem(props.row)">
+                <q-btn flat dense icon="delete" @click="deleteItem(props.row)">
                   <q-tooltip>Hapus Pelanggan</q-tooltip>
                 </q-btn>
               </q-td>
