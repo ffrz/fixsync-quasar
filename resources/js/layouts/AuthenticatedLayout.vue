@@ -33,7 +33,7 @@ function toggleLeftDrawer() {
 
       <q-img class="absolute-top" style="height: 80px;border-bottom: 1px solid #ddd;background-color: #eee;">
         <div class="absolute-middle bg-transparent">
-          <div class="text-black text-weight-bold">{{ page.props.auth.user.company_name }}</div>
+          <div><my-link class="text-black text-weight-bold" :href="route('admin.company-profile.edit')" :label="page.props.auth.user.company_name" /></div>
           <div><my-link class="text-black" :href="route('admin.profile.edit')" :label="page.props.auth.user.name" /></div>
         </div>
       </q-img>
@@ -94,7 +94,15 @@ function toggleLeftDrawer() {
                 <q-icon name="manage_accounts" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>Profil</q-item-label>
+                <q-item-label>Profil Saya</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item class="subnav" clickable v-ripple :active="$page.url.startsWith('/admin/settings/company-profile')" @click="router.get(route('admin.company-profile.edit'))">
+              <q-item-section avatar>
+                <q-icon name="home_work" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Profil Perusahaan</q-item-label>
               </q-item-section>
             </q-item>
           </q-expansion-item>

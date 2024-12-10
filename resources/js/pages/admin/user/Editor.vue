@@ -28,7 +28,7 @@ const submit = () => {
 
 <template>
   <authenticated-layout>
-    <q-page class="row">
+    <q-page class="row justify-center">
       <i-head :title="title" />
       <div class="col col-lg-6 q-pa-md">
         <q-form class="row" @submit.prevent="submit">

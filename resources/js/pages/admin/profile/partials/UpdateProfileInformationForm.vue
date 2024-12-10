@@ -30,16 +30,16 @@ const submit = () => {
     <q-card square flat bordered class="col q-pa-sm">
       <q-card-section>
         <h2 class="text-h6 q-my-xs">Informasi Profil</h2>
-        <p>Perbarui informasi akun profil anda.</p>
-        <q-input readonly square v-model="form.username" label="ID Pengguna" :disable="form.processing" />
-        <q-input readonly square v-model="form.role" label="Hak Akses" :disable="form.processing" />
-        <q-input square v-model.trim="form.email" label="Email" :disable="form.processing" />
-        <q-input ref="nameInputRef" square v-model.trim="form.name" label="Nama" :disable="form.processing" lazy-rules
+        <p>Perbarui profil anda.</p>
+        <q-input readonly v-model="form.username" label="ID Pengguna" :disable="form.processing" />
+        <q-input ref="nameInputRef" v-model.trim="form.name" label="Nama" :disable="form.processing" lazy-rules
           :error="!!form.errors.name" :error-message="form.errors.name"
           :rules="[(val) => (val && val.length > 0) || 'Name harus diisi.']" />
+        <q-input v-model.trim="form.email" label="Email" :disable="form.processing" />
+        <q-input readonly v-model="form.role" label="Hak Akses" :disable="form.processing" />
       </q-card-section>
       <q-card-section>
-        <q-btn type="submit" color="grey-8" label="Save" :disable="form.processing" />
+        <q-btn type="submit" color="primary" label="Perbarui Profil Saya" :disable="form.processing" icon="check" />
       </q-card-section>
     </q-card>
   </q-form>

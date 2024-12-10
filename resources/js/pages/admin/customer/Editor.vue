@@ -19,7 +19,7 @@ const submit = () => {
 
 <template>
   <authenticated-layout>
-    <q-page class="row">
+    <q-page class="row justify-center">
       <i-head title="Tambah Pelanggan" />
       <div class="col col-lg-6 q-pa-md">
         <q-form class="row" @submit.prevent="submit">
@@ -40,7 +40,7 @@ const submit = () => {
                 :error="!!form.errors.phone" :error-message="form.errors.phone" :rules="[
                   (val) => (val && val.length > 0) || 'No HP harus diisi.',
                 ]" />
-              <q-input v-model.trim="form.address" type="text" label="Alamat" lazy-rules :disable="form.processing"
+              <q-input v-model.trim="form.address" type="textarea" autogrow counter maxlength="1000" label="Alamat" lazy-rules :disable="form.processing"
                 :error="!!form.errors.address" :error-message="form.errors.address" :rules="[
                   (val) => (val && val.length > 0) || 'Alamat harus diisi.',
                 ]" />

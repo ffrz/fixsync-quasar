@@ -1,0 +1,54 @@
+<script setup>
+
+import { useForm, usePage } from '@inertiajs/vue3';
+import { ref } from 'vue';
+
+const nameInputRef = ref();
+const page = usePage();
+
+const form = useForm({
+  code: page.props.data.code,
+  name: page.props.data.name,
+  email: page.props.data.email,
+  phone: page.props.data.phone,
+  address: page.props.data.address,
+});
+
+const submit = () => {
+  form.clearErrors();
+  form.post(route('admin.company-profile.update'), {
+    preserveScroll: true,
+    onError: () => {
+      nameInputRef.value.focus();
+    }
+  });
+};
+
+</script>
+
+<template>
+  <q-form class="row" @submit.prevent="submit">
+    <q-card square flat bordered class="col q-pa-sm">
+      <q-card-section>
+        <h2 class="text-h6 q-my-xs">Informasi Profil Perusahaan</h2>
+        <p>Perbarui profil perusahaan anda.</p>
+        <q-input readonly v-model="form.code" label="Kode Perusahaan" :disable="form.processing" />
+        <q-input ref="nameInputRef" v-model.trim="form.name" label="Nama Perusahaan" :disable="form.processing"
+          lazy-rules :error="!!form.errors.name" :error-message="form.errors.name"
+          :rules="[(val) => (val && val.length > 0) || 'Nama Perusahaan harus diisi.']" />
+        <q-input v-model.trim="form.email" label="Email Perusahaan" :disable="form.processing" lazy-rules
+          :error="!!form.errors.email" :error-message="form.errors.email"
+          :rules="[(val) => (val && val.length > 0) || 'Email harus diisi.']" />
+        <q-input v-model.trim="form.phone" label="No Telepon" :disable="form.processing" lazy-rules
+          :error="!!form.errors.phone" :error-message="form.errors.phone"
+          :rules="[(val) => (val && val.length > 0) || 'Nomor telepon harus diisi.']" />
+        <q-input type="textarea" counter autogrow maxlength="1000" v-model.trim="form.address" label="Alamat Perusahaan"
+          :disable="form.processing" lazy-rules :error="!!form.errors.address" :error-message="form.errors.address"
+          :rules="[(val) => (val && val.length > 0) || 'Alamat harus diisi.']" />
+      </q-card-section>
+      <q-card-section>
+        <q-btn type="submit" color="primary" label="Simpan" :disable="form.processing" icon="check" />
+      </q-card-section>
+    </q-card>
+  </q-form>
+</template>

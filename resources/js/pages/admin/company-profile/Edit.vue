@@ -1,6 +1,5 @@
 <script setup>
-import UpdatePasswordForm from './partials/UpdatePasswordForm.vue';
-import UpdateProfileInformationForm from './partials/UpdateProfileInformationForm.vue';
+import CompanyInfoForm from './partials/CompanyInfoForm.vue';
 </script>
 
 <template>
@@ -8,8 +7,7 @@ import UpdateProfileInformationForm from './partials/UpdateProfileInformationFor
     <q-page class="row justify-center">
       <i-head title="Profile" />
       <div class="col col-lg-6 q-pa-md q-gutter-md">
-        <UpdateProfileInformationForm />
-        <UpdatePasswordForm />
+        <CompanyInfoForm />
       </div>
     </q-page>
   </authenticated-layout>

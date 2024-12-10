@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\CompanyProfileController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -41,9 +42,12 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::prefix('settings')->group(function () {
-            Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('admin.profile.edit');
-            Route::post('/profile/update', [ProfileController::class, 'update'])->name('admin.profile.update');
-            Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('admin.profile.update-password');
+            Route::get('profile/edit', [ProfileController::class, 'edit'])->name('admin.profile.edit');
+            Route::post('profile/update', [ProfileController::class, 'update'])->name('admin.profile.update');
+            Route::post('profile/update-password', [ProfileController::class, 'updatePassword'])->name('admin.profile.update-password');
+
+            Route::get('company-profile/edit', [CompanyProfileController::class, 'edit'])->name('admin.company-profile.edit');
+            Route::post('company-profile/update', [CompanyProfileController::class, 'update'])->name('admin.company-profile.update');
 
             Route::prefix('users')->group(function () {
                 Route::get('', [UserController::class, 'index'])->name('admin.user.index');
