@@ -12,6 +12,6 @@ class ServiceOrderSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\ServiceOrder::factory(20)->create();
+        \App\Models\ServiceOrder::factory(1000)->create();
     }
 }

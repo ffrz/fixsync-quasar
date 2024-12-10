@@ -4,31 +4,32 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\ServiceOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CustomerController extends Controller
+class ServiceOrderController extends Controller
 {
     //
     public function index()
     {
-        return inertia('admin/customer/Index');
+        return inertia('admin/service-order/Index');
     }
 
     public function data(Request $request)
     {
-        $orderBy = $request->get('order_by', 'name');
-        $orderType = $request->get('order_type', 'asc');
+        $orderBy = $request->get('order_by', 'id');
+        $orderType = $request->get('order_type', 'desc');
         $search = $request->get('filter', '');
 
-        $q = Customer::query();
+        $q = ServiceOrder::query();
         $q->orderBy($orderBy, $orderType);
-
         $q->where('company_id', Auth::user()->company_id);
         if (!empty($search)) {
-            $q->where('name', 'like', '%' . $search . '%');
-            $q->orWhere('phone', 'like', '%' . $search . '%');
-            $q->orWhere('address', 'like', '%' . $search . '%');
+            $q->where('customer_name', 'like', '%' . $search . '%');
+            $q->orWhere('customer_phone', 'like', '%' . $search . '%');
+            $q->orWhere('customer_address', 'like', '%' . $search . '%');
+            $q->orWhere('device', 'like', '%' . $search . '%');
         }
 
         $items = $q->paginate($request->get('per_page', 10))->withQueryString();
@@ -38,9 +39,9 @@ class CustomerController extends Controller
 
     public function editor($id = 0)
     {
-        $item = $id ? Customer::findOrFail($id) : new Customer();
+        $item = $id ? ServiceOrder::findOrFail($id) : new ServiceOrder();
 
-        return inertia('admin/customer/Editor', [
+        return inertia('admin/service-order/Editor', [
             'data' => $item,
         ]);
     }
@@ -59,23 +60,23 @@ class CustomerController extends Controller
         $request->validate($rules);
 
         if (!$request->id) {
-            $item = new Customer();
+            $item = new ServiceOrder();
             $item->company_id = Auth::user()->company_id;
             $message = 'Pelanggan baru telah ditambahkan.';
         } else {
-            $item = Customer::findOrFail($request->post('id', 0));
+            $item = ServiceOrder::findOrFail($request->post('id', 0));
             $message = 'Pelanggan telah diperbarui.';
         }
 
         $item->fill($request->only($fields));
         $item->save();
 
-        return redirect(route('admin.customer.index'))->with('success', $message);
+        return redirect(route('admin.service-order.index'))->with('success', $message);
     }
 
     public function delete($id)
     {
-        $item = Customer::findOrFail($id);
+        $item = ServiceOrder::findOrFail($id);
         if ($item->company_id != Auth::user()->company_id) {
             return response()->json([
                 'message' => 'Akses ditolak, tidak bisa menghapus item berbeda perusahaan.'
@@ -84,7 +85,7 @@ class CustomerController extends Controller
         $item->delete();
 
         return response()->json([
-            'message' => "Pelanggan $item->name telah dihapus"
+            'message' => "Pesanan $item->id telah dihapus"
         ]);
     }
 }

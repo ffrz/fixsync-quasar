@@ -42,11 +42,11 @@ return new class extends Migration
             // service info
             $table->string('problems', 200);
             $table->string('actions', 200);
-            $table->date('date_received')->nullable()->default(null);
-            $table->date('date_checked')->nullable()->default(null);
-            $table->date('date_worked')->nullable()->default(null);
-            $table->date('date_completed')->nullable()->default(null);
-            $table->date('date_picked')->nullable()->default(null);
+            $table->dateTime('received_datetime')->nullable()->default(null);
+            $table->dateTime('checked_datetime')->nullable()->default(null);
+            $table->dateTime('worked_datetime')->nullable()->default(null);
+            $table->dateTime('completed_datetime')->nullable()->default(null);
+            $table->dateTime('picked_datetime')->nullable()->default(null);
 
             // garansi - butuh data yang akurat untuk garansi, apakah perlu tanggal atau jumlah hari, kapan expirenya
 

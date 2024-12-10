@@ -13,23 +13,44 @@ const pagination = ref({
   page: 1,
   rowsPerPage: 10,
   rowsNumber: 10,
-  sortBy: "name",
-  descending: false,
+  sortBy: "id",
+  descending: true,
 });
 
 const columns = [
-  { name: "name", label: "Nama", field: "name", align: "left", sortable: true },
+  { name: "id", label: "ID", field: "id", align: "left", sortable: true },
   {
-    name: "phone",
-    label: "No HP",
-    field: "phone",
+    name: "received_datetime",
+    label: "Tgl Masuk",
+    field: "received_datetime",
     align: "left",
     sortable: true,
   },
   {
-    name: "address",
+    name: "device",
+    label: "Perangkat",
+    field: "device",
+    align: "left",
+    sortable: true,
+  },
+  {
+    name: "customer_name",
+    label: "Atas Nama",
+    field: "customer_name",
+    align: "left",
+    sortable: true,
+  },
+  {
+    name: "customer_phone",
+    label: "No HP",
+    field: "customer_phone",
+    align: "left",
+    sortable: true,
+  },
+  {
+    name: "customer_address",
     label: "Alamat",
-    field: "address",
+    field: "customer_address",
     align: "left",
     sortable: true,
   },
@@ -37,31 +58,31 @@ const columns = [
 ];
 
 onMounted(() => {
-  filter.value = localStorage.getItem("fixsync.customer-list-page.filter");
+  filter.value = localStorage.getItem("fixsync.service-order-list-page.filter");
   fetchItems();
 });
 
 watch(filter, (newValue) => {
   if (!newValue && newValue != "") newValue = "";
-  localStorage.setItem("fixsync.customer-list-page.filter", newValue);
+  localStorage.setItem("fixsync.service-order-list-page.filter", newValue);
 });
 
 const deleteItem = (row) => {
-  default_delete_handler(`Hapus pelanggan ${row.name}?`, route('admin.customer.delete', row.id), fetchItems, loading);
+  default_delete_handler(`Hapus order ${row.id}?`, route('admin.service-order.delete', row.id), fetchItems, loading);
 };
 
 const fetchItems = (props = null) => {
-  default_fetch_handler(pagination, filter, props, rows, route('admin.customer.data'), loading);
+  default_fetch_handler(pagination, filter, props, rows, route('admin.service-order.data'), loading);
 };
 </script>
 
 <template>
   <authenticated-layout>
-    <i-head title="Pelanggan" />
+    <i-head title="Order Servis" />
     <q-page>
       <div class="q-pa-md">
         <q-table ref="tableRef" flat bordered square :dense="true || $q.screen.lt.md" color="primary" row-key="id"
-          virtual-scroll title="Pelanggan" v-model:pagination="pagination" :filter="filter" :loading="loading"
+          virtual-scroll title="Order Servis" v-model:pagination="pagination" :filter="filter" :loading="loading"
           :columns="columns" :rows="rows" :rows-per-page-options="[10, 25, 50]" @request="fetchItems" binary-state-sort>
           <template v-slot:loading>
             <q-inner-loading showing color="red" />
@@ -69,8 +90,8 @@ const fetchItems = (props = null) => {
 
           <template v-slot:top-left>
             <div class="q-gutter-sm">
-              <q-btn color="primary" icon="add" @click="router.get(route('admin.customer.add'))" label="Tambah">
-                <q-tooltip>Tambah Pelanggan</q-tooltip>
+              <q-btn color="primary" icon="add" @click="router.get(route('admin.service-order.add'))" label="Tambah">
+                <q-tooltip>Terima Servis</q-tooltip>
               </q-btn>
             </div>
           </template>
@@ -95,22 +116,30 @@ const fetchItems = (props = null) => {
 
           <template v-slot:body="props">
             <q-tr :props="props">
-              <q-td key="name" :props="props">
-                {{ props.row.name }}
+              <q-td key="id" :props="props">
+                {{ props.row.id }}
               </q-td>
-              <q-td key="phone" :props="props">
-                {{ props.row.phone }}
+              <q-td key="received_datetime" :props="props">
+                {{ props.row.received_datetime }}
               </q-td>
-              <q-td key="address" :props="props">
-                {{ props.row.address }}
+              <q-td key="device" :props="props">
+                {{ props.row.device }}
+              </q-td>
+              <q-td key="customer_name" :props="props">
+                {{ props.row.customer_name }}
+              </q-td>
+              <q-td key="customer_phone" :props="props">
+                {{ props.row.customer_phone }}
+              </q-td>
+              <q-td key="customer_address" :props="props">
+                {{ props.row.customer_address }}
               </q-td>
               <q-td key="action" class="q-gutter-x-sm" :props="props" align="center">
-                <q-btn flat dense rounded icon="edit"
-                  @click="router.get(route('admin.customer.edit', props.row.id))">
-                  <q-tooltip>Edit Pelanggan</q-tooltip>
+                <q-btn flat dense rounded icon="edit" @click="router.get(route('admin.service-order.edit', props.row.id))">
+                  <q-tooltip>Edit Pesanan</q-tooltip>
                 </q-btn>
                 <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)">
-                  <q-tooltip>Hapus Pelanggan</q-tooltip>
+                  <q-tooltip>Hapus Pesanan</q-tooltip>
                 </q-btn>
               </q-td>
             </q-tr>

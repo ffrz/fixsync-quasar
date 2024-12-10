@@ -5,7 +5,9 @@ use App\Http\Controllers\Admin\CompanyProfileController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ServiceOrderController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Middleware\Auth;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +28,7 @@ Route::middleware('guest')->group(function () {
     });
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware([Auth::class])->group(function () {
     Route::prefix('admin')->group(function () {
         Route::redirect('', '/admin/dashboard', 301);
 
@@ -39,6 +41,15 @@ Route::middleware(['auth'])->group(function () {
             Route::get('edit/{id}', [CustomerController::class, 'editor'])->name('admin.customer.edit');
             Route::post('save', [CustomerController::class, 'save'])->name('admin.customer.save');
             Route::post('delete/{id}', [CustomerController::class, 'delete'])->name('admin.customer.delete');
+        });
+
+        Route::prefix('service-orders')->group(function () {
+            Route::get('', [ServiceOrderController::class, 'index'])->name('admin.service-order.index');
+            Route::get('data', [ServiceOrderController::class, 'data'])->name('admin.service-order.data');
+            Route::get('add', [ServiceOrderController::class, 'editor'])->name('admin.service-order.add');
+            Route::get('edit/{id}', [ServiceOrderController::class, 'editor'])->name('admin.service-order.edit');
+            Route::post('save', [ServiceOrderController::class, 'save'])->name('admin.service-order.save');
+            Route::post('delete/{id}', [ServiceOrderController::class, 'delete'])->name('admin.service-order.delete');
         });
 
         Route::prefix('settings')->group(function () {

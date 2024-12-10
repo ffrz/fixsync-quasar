@@ -9,6 +9,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ServiceOrderFactory extends Factory
 {
+    public static $devices = [
+        'Asus X441S', 'Asus X441M', 'Asus X453', 'Asus A407J',
+        'Lenovo T440S', 'Lenovo T450S', 'Lenovo T460S', 'Lenovo T470S',
+        'Epson L120', 'Epson L121', 'Epson L3110', 'Epson L3210',
+        'Canon IP2770', 'Canon MP287', 'Canon G2020', 'Canon G1010',
+        'HP LaserJet 1020', 'HP LaserJet 1022'
+    ];
     /**
      * Define the model's default state.
      *
@@ -17,34 +24,34 @@ class ServiceOrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_id' => \App\Models\Company::factory(),
+            'company_id' => 1,
             'customer_id' => \App\Models\Customer::factory(),
             'order_status' => $this->faker->randomElement([0, 1, 2]),
             'service_status' => $this->faker->randomElement([0, 1, 2]),
             'payment_status' => $this->faker->randomElement([0, 1, 2]),
             'created_datetime' => $this->faker->dateTimeThisMonth,
-            'created_by_uid' => \App\Models\User::factory(),
+            'created_by_uid' => 1,
             'closed_datetime' => $this->faker->dateTimeThisMonth,
-            'closed_by_uid' => \App\Models\User::factory(),
+            'closed_by_uid' => 1,
             'updated_datetime' => $this->faker->dateTimeThisMonth,
-            'updated_by_uid' => \App\Models\User::factory(),
+            'updated_by_uid' => 1,
             'customer_name' => $this->faker->name,
             'customer_phone' => $this->faker->phoneNumber,
             'customer_address' => $this->faker->address,
-            'device' => $this->faker->word,
+            'device' => $this->faker->randomElement(static::$devices),
             'equipments' => $this->faker->sentence,
             'device_sn' => $this->faker->word,
             'problems' => $this->faker->sentence,
             'actions' => $this->faker->sentence,
-            'date_received' => $this->faker->dateTimeThisMonth,
-            'date_checked' => $this->faker->dateTimeThisMonth,
-            'date_worked' => $this->faker->dateTimeThisMonth,
-            'date_completed' => $this->faker->dateTimeThisMonth,
-            'date_picked' => $this->faker->dateTimeThisMonth,
-            'down_payment' => $this->faker->randomFloat(2, 0, 1000),
-            'estimated_cost' => $this->faker->randomFloat(2, 0, 1000),
-            'total_cost' => $this->faker->randomFloat(2, 0, 1000),
-            'technician_id' => \App\Models\User::factory(),
+            'received_datetime' => $this->faker->dateTimeThisMonth,
+            'checked_datetime' => $this->faker->dateTimeThisMonth,
+            'worked_datetime' => $this->faker->dateTimeThisMonth,
+            'completed_datetime' => $this->faker->dateTimeThisMonth,
+            'picked_datetime' => $this->faker->dateTimeThisMonth,
+            'down_payment' => $this->faker->randomFloat(2, 1, 50) * 25000,
+            'estimated_cost' => $this->faker->randomFloat(2, 1, 50) * 25000,
+            'total_cost' => $this->faker->randomFloat(2, 1, 50) * 25000,
+            'technician_id' => 2,
             'notes' => $this->faker->paragraph,
         ];
     }
