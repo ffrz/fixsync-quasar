@@ -17,12 +17,12 @@
     window.CONFIG.APP_NAME = "{{ config('app.name', 'Laravel') }}";
     window.CONFIG.APP_VERSION = {{ config('app.version', 0x010000) }};
     window.CONFIG.APP_VERSION_STR = "{{ config('app.version_str', '1.0.0') }}";
-    window.CONSTANTS = {
-      "USER_ROLES": {
-        "technician": "Teknisi",
-        "admin": "Administrator",
-      }
-    };
+    window.CONSTANTS = <?= json_encode([
+        "USER_ROLES" => USER_ROLES,
+        "SERVICEORDER_ORDER_STATUSES" => SERVICEORDER_ORDER_STATUSES,
+        "SERVICEORDER_SERVICE_STATUSES" => SERVICEORDER_SERVICE_STATUSES,
+        "SERVICEORDER_PAYMENT_STATUSES" => SERVICEORDER_PAYMENT_STATUSES,
+    ]); ?>;
   </script>
   @routes
   @vite(['resources/js/app.js', 'resources/css/app.css'])

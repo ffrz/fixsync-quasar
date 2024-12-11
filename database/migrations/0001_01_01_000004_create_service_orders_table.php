@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+require_once __DIR__ . '/../../app/constants.php';
+
 return new class extends Migration
 {
     /**
@@ -16,9 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('company_id');
 
             // statuses
-            $table->unsignedTinyInteger('order_status')->default(0);
-            $table->unsignedTinyInteger('service_status')->default(0);
-            $table->unsignedTinyInteger('payment_status')->default(0);
+            $table->enum('order_status', array_keys(SERVICEORDER_ORDER_STATUSES))->default('open');
+            $table->enum('service_status', array_keys(SERVICEORDER_SERVICE_STATUSES))->default('received');
+            $table->enum('payment_status', array_keys(SERVICEORDER_PAYMENT_STATUSES))->default('unpaid');
 
             // order
             $table->datetime('created_datetime')->nullable()->default(null);

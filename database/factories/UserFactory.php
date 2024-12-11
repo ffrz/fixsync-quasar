@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$defaultPassword,
             'remember_token' => Str::random(10),
-            'role' => fake()->randomElement(['admin', 'technician']),
+            'role' => fake()->randomElement(array_keys(USER_ROLES)),
             'active' => fake()->randomElement([true, false]),
         ];
     }

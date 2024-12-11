@@ -1,6 +1,5 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
-import axios from "axios";
 import { useQuasar } from "quasar";
 import { router, usePage } from "@inertiajs/vue3";
 import { default_fetch_handler, default_delete_handler } from "@/helpers/client-req-handler";

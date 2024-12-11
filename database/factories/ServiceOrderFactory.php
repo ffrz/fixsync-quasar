@@ -26,9 +26,9 @@ class ServiceOrderFactory extends Factory
         return [
             'company_id' => 1,
             'customer_id' => \App\Models\Customer::factory(),
-            'order_status' => $this->faker->randomElement([0, 1, 2]),
-            'service_status' => $this->faker->randomElement([0, 1, 2]),
-            'payment_status' => $this->faker->randomElement([0, 1, 2]),
+            'order_status' => $this->faker->randomElement(array_keys(SERVICEORDER_ORDER_STATUSES)),
+            'service_status' => $this->faker->randomElement(array_keys(SERVICEORDER_SERVICE_STATUSES)),
+            'payment_status' => $this->faker->randomElement(array_keys(SERVICEORDER_PAYMENT_STATUSES)),
             'created_datetime' => $this->faker->dateTimeThisMonth,
             'created_by_uid' => 1,
             'closed_datetime' => $this->faker->dateTimeThisMonth,

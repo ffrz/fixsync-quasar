@@ -1,13 +1,11 @@
 <script setup>
 import { default_submit_handler } from "@/helpers/client-req-handler";
+import { create_options } from "@/helpers/utils";
 import { validateUsername, validateEmail } from "@/helpers/validations";
 import { router, useForm, usePage } from "@inertiajs/vue3";
 
+const roles = create_options(window.CONSTANTS.USER_ROLES);
 const page = usePage();
-
-const roles = Object.entries(window.CONSTANTS.USER_ROLES)
-  .map(([key, value]) => ({ 'value': key, 'label': value }));
-
 const form = useForm({
   id: page.props.data.id,
   name: page.props.data.name,
