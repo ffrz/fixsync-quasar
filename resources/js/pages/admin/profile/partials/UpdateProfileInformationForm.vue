@@ -1,5 +1,7 @@
 <script setup>
 
+import { default_submit_handler } from '@/helpers/client-req-handler';
+import { scrollToFirstErrorField } from '@/helpers/utils';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -14,19 +16,13 @@ const form = useForm({
 });
 
 const submit = () => {
-  form.clearErrors();
-  form.post(route('admin.profile.update'), {
-    preserveScroll: true,
-    onError: () => {
-      nameInputRef.value.focus();
-    }
-  });
+  default_submit_handler(form, route('admin.profile.update'));
 };
 
 </script>
 
 <template>
-  <q-form class="row" @submit.prevent="submit">
+  <q-form class="row" @submit.prevent="submit" @validation-error="scrollToFirstErrorField">
     <q-card square flat bordered class="col q-pa-sm">
       <q-card-section>
         <h2 class="text-h6 q-my-xs">Informasi Profil</h2>

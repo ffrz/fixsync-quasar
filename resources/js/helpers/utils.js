@@ -14,3 +14,11 @@ export function create_options_from_customers(items) {
     return { 'value': customer.id, 'label': `#${customer.id}: ${customer.name}` };
   });
 }
+
+export async function scrollToFirstErrorField(ref) {
+  const element = ref.getNativeElement();
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    element.focus();
+  }
+}

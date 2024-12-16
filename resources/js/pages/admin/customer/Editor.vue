@@ -1,6 +1,7 @@
 <script setup>
 import { router, useForm, usePage } from "@inertiajs/vue3";
 import { default_submit_handler } from "@/helpers/client-req-handler";
+import { scrollToFirstErrorField } from "@/helpers/utils";
 
 const page = usePage();
 
@@ -23,7 +24,7 @@ const submit = () => {
     <q-page class="row justify-center">
       <i-head title="Tambah Pelanggan" />
       <div class="col col-lg-6 q-pa-md">
-        <q-form class="row" @submit.prevent="submit">
+        <q-form class="row" @submit.prevent="submit" @validation-error="scrollToFirstErrorField">
           <q-card square flat bordered class="col q-pa-sm">
             <q-card-section>
               <div class="text-h6">

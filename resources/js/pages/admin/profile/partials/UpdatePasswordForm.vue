@@ -1,5 +1,6 @@
 <script setup>
 
+import { scrollToFirstErrorField } from '@/helpers/utils';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -32,7 +33,7 @@ const updatePassword = () => {
 </script>
 
 <template>
-  <q-form class="row" @submit.prevent="updatePassword">
+  <q-form class="row" @submit.prevent="updatePassword" @validation-error="scrollToFirstErrorField">
     <q-card square flat bordered class="col q-pa-sm">
       <q-card-section>
         <h2 class="text-h6 q-my-xs">Perbarui Kata Sandi</h2>

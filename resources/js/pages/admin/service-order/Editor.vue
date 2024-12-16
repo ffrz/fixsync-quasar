@@ -1,7 +1,7 @@
 <script setup>
 import { router, useForm, usePage } from "@inertiajs/vue3";
 import { default_submit_handler } from "@/helpers/client-req-handler";
-import { create_options, create_options_from_technicians, create_options_from_customers } from "@/helpers/utils";
+import { create_options, create_options_from_technicians, create_options_from_customers, scrollToFirstErrorField } from "@/helpers/utils";
 import LocaleNumberInput from "@/components/LocaleNumberInput.vue";
 import DateTimePicker from "@/components/DateTimePicker.vue";
 
@@ -77,15 +77,6 @@ const onCustomerChange = (val) => {
     form.customer_phone = '';
     form.customer_address = '';
   }
-
-}
-
-async function onValidationError(ref) {
-  const element = ref.getNativeElement();
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    element.focus();
-  }
 }
 
 </script>
@@ -95,7 +86,7 @@ async function onValidationError(ref) {
     <q-page class="row justify-center">
       <i-head :title="title" />
       <div class="col col-lg-6 q-pa-md">
-        <q-form @submit.prevent="submit" class="q-gutter-md" @validation-error="onValidationError">
+        <q-form @submit.prevent="submit" class="q-gutter-md" @validation-error="scrollToFirstErrorField">
           <!-- Mungkin lebih baik kita buat breadcrumb disini -->
           <div class="row">
             <div class="col">
