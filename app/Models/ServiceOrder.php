@@ -58,4 +58,19 @@ class ServiceOrder extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by_uid', 'id');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by_uid', 'id');
+    }
+
+    public function closedBy()
+    {
+        return $this->belongsTo(User::class, 'closed_by_uid', 'id');
+    }
 }

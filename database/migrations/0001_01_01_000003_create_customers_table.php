@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('phone', 100);
             $table->string('address', 200);
             $table->string('email', 100)->nullable();
+            $table->boolean('active')->default(true);
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');

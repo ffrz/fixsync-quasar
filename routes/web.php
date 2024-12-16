@@ -8,19 +8,20 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceOrderController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Middleware\Auth;
+use App\Http\Middleware\NonAuthenticated;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return inertia('Welcome', [
-            'canLogin' => Route::has('login'),
-            'canRegister' => Route::has('register'),
-            'laravelVersion' => Application::VERSION,
-            'phpVersion' => PHP_VERSION,
-        ]);
-    })->name('home');
+Route::get('/', function () {
+    return inertia('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+})->name('home');
 
+Route::middleware(NonAuthenticated::class)->group(function () {
     Route::prefix('/admin/auth')->group(function() {
         Route::match(['get', 'post'], 'login', [AuthController::class, 'login'])->name('admin.auth.login');
         Route::match(['get', 'post'], 'logout', [AuthController::class, 'logout'])->name('admin.auth.logout');
@@ -33,6 +34,7 @@ Route::middleware([Auth::class])->group(function () {
         Route::redirect('', '/admin/dashboard', 301);
 
         Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::get('test', [DashboardController::class, 'test'])->name('admin.test');
 
         Route::prefix('customers')->group(function () {
             Route::get('', [CustomerController::class, 'index'])->name('admin.customer.index');

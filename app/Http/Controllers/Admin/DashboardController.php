@@ -11,4 +11,12 @@ class DashboardController extends Controller
     {
         return inertia('admin/dashboard/Index');
     }
+
+    /**
+     * This method exists here for testing purpose only.
+     */
+    public function test()
+    {
+        return inertia('admin/dashboard/Test');
+    }
 }

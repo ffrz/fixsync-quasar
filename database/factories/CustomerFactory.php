@@ -23,6 +23,7 @@ class CustomerFactory extends Factory
             'phone' => $this->faker->phoneNumber,
             'address' => $this->faker->address,
             'email' => $this->faker->unique()->safeEmail,
+            'active' => $this->faker->randomElement([true, false]),
         ];
     }
 }

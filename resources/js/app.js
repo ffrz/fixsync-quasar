@@ -13,6 +13,11 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import { router } from "@inertiajs/vue3";
 import processFlashMessage from "@/helpers/flash-message";
 import MyLink from "@/components/MyLink.vue";
+import dayjs from 'dayjs';
+import 'dayjs/locale/id'; // Import the Indonesian locale
+
+// Set Indonesian as the global locale
+dayjs.locale('id');
 
 createInertiaApp({
   title: (title) => window.CONFIG.APP_NAME + (title ? " - " + title : ""),
@@ -34,6 +39,7 @@ createInertiaApp({
       .component('guest-layout', GuestLayout)
       .component('authenticated-layout', AuthenticatedLayout);
 
+      VueApp.config.globalProperties.$dayjs = dayjs;
       VueApp.config.globalProperties.$config = window.CONFIG;
       VueApp.config.globalProperties.$CONSTANTS = window.CONSTANTS;
       VueApp.mount(el);

@@ -9,6 +9,7 @@ const form = useForm({
   name: page.props.data.name,
   phone: page.props.data.phone,
   address: page.props.data.address,
+  active: !!page.props.data.active,
 });
 
 const submit = () => {
@@ -44,6 +45,7 @@ const submit = () => {
                 :error="!!form.errors.address" :error-message="form.errors.address" :rules="[
                   (val) => (val && val.length > 0) || 'Alamat harus diisi.',
                 ]" />
+                <q-checkbox class="full-width q-pl-none" v-model="form.active" :disable="form.processing" label="Aktif" />
             </q-card-section>
             <q-card-actions>
               <q-btn type="submit" label="Simpan" color="primary" icon="check" :disable="form.processing" />

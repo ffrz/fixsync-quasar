@@ -94,7 +94,7 @@ const fetchItems = (props = null) => {
           </template>
 
           <template v-slot:body="props">
-            <q-tr :props="props">
+            <q-tr :props="props" :class="!props.row.active ? 'bg-red-1' : ''">
               <q-td key="name" :props="props">
                 {{ props.row.name }}
               </q-td>

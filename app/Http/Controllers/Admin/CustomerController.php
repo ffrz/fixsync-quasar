@@ -54,7 +54,7 @@ class CustomerController extends Controller
         ];
         $item = null;
         $message = '';
-        $fields = ['name', 'phone', 'address'];
+        $fields = ['name', 'phone', 'address', 'active'];
 
         $request->validate($rules);
 
