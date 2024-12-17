@@ -50,7 +50,9 @@ return new class extends Migration
             $table->dateTime('completed_datetime')->nullable()->default(null);
             $table->dateTime('picked_datetime')->nullable()->default(null);
 
-            // garansi - butuh data yang akurat untuk garansi, apakah perlu tanggal atau jumlah hari, kapan expirenya
+            // garansi boleh dimulai sejak tanggal selesai, tapi perlu ada field tersendiri
+            $table->date('warranty_start_date')->nullable()->default(null);
+            $table->unsignedSmallInteger('warranty_day_count')->default(0); // jumlah hari garansi
 
             // cost and payment
             $table->decimal('down_payment', 8, 0)->default(0.);
@@ -63,7 +65,7 @@ return new class extends Migration
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null');
-            $table->foreign('technician_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('technician_id')->references('id')->on('users')->onDelete('set null');
             $table->foreign('created_by_uid')->references('id')->on('users')->onDelete('set null');
             $table->foreign('closed_by_uid')->references('id')->on('users')->onDelete('set null');
             $table->foreign('updated_by_uid')->references('id')->on('users')->onDelete('set null');

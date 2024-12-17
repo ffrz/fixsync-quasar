@@ -4,6 +4,7 @@ import { default_submit_handler } from "@/helpers/client-req-handler";
 import { create_options, create_options_from_technicians, create_options_from_customers, scrollToFirstErrorField } from "@/helpers/utils";
 import LocaleNumberInput from "@/components/LocaleNumberInput.vue";
 import DateTimePicker from "@/components/DateTimePicker.vue";
+import DatePicker from "@/components/DatePicker.vue";
 
 import { ref } from "vue";
 
@@ -42,6 +43,9 @@ const form = useForm({
   down_payment: parseFloat(page.props.data.down_payment) ?? 0,
   estimated_cost: parseFloat(page.props.data.estimated_cost) ?? 0,
   total_cost: parseFloat(page.props.data.total_cost) ?? 0,
+
+  warranty_start_date: page.props.data.warranty_start_date ?? '',
+  warranty_day_count: page.props.data.warranty_day_count ?? '',
 
   notes: page.props.data.notes,
 });
@@ -241,6 +245,19 @@ const onCustomerChange = (val) => {
                 <LocaleNumberInput v-model:modelValue="form.total_cost" label="Total Biaya" lazyRules
                   :disable="form.processing" :error="!!form.errors.down_payment"
                   :errorMessage="form.errors.down_payment" :rules="[]" />
+              </q-card-section>
+            </q-card>
+          </div>
+          <div class="row">
+            <q-card square flat bordered class="col q-pa-sm">
+              <q-card-section>
+                <div class="text-h6">Info Garansi</div>
+              </q-card-section>
+              <q-card-section class="q-pt-none">
+                <date-picker v-model="form.warranty_start_date" label="Tanggal Mulai Garansi"
+                  :error="!!form.errors.warranty_start_date" :disable="form.processing" />
+                <q-input v-model.trim="form.warranty_day_count" label="Lama hari" type="number" step="1" lazy-rules
+                  :disable="form.processing" />
               </q-card-section>
             </q-card>
           </div>

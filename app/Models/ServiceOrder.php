@@ -38,6 +38,8 @@ class ServiceOrder extends Model
         'estimated_cost',
         'total_cost',
         'technician_id',
+        'warranty_start_date',
+        'warranty_day_count',
         'notes'
     ];
 

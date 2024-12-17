@@ -52,6 +52,8 @@ class ServiceOrderFactory extends Factory
             'estimated_cost' => $this->faker->randomFloat(2, 1, 50) * 25000,
             'total_cost' => $this->faker->randomFloat(2, 1, 50) * 25000,
             'technician_id' => 2,
+            'warranty_start_date' => null,
+            'warranty_day_count' => 0,
             'notes' => $this->faker->paragraph,
         ];
     }
