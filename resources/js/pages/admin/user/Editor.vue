@@ -57,8 +57,8 @@ const submit = () => {
               </div>
             </q-card-section>
             <q-card-actions>
-              <q-btn type="submit" label="Simpan" color="primary" :disable="form.processing" @click="submit" />
-              <q-btn label="Batal" class="text-black" :disable="form.processing"
+              <q-btn icon="save" type="submit" label="Simpan" color="primary" :disable="form.processing" @click="submit" />
+              <q-btn icon="cancel" label="Batal" class="text-black" :disable="form.processing"
                 @click="router.get(route('admin.user.index'))" />
             </q-card-actions>
           </q-card>

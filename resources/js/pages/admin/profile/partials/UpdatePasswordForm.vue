@@ -51,7 +51,7 @@ const updatePassword = () => {
           :rules="[(val) => (val && val.length > 0) || 'Kata sandi harus diisi.']" />
       </q-card-section>
       <q-card-section>
-        <q-btn type="submit" color="primary" label="Perbarui Kata Sandi" :disable="form.processing" icon="check" />
+        <q-btn type="submit" color="primary" label="Perbarui Kata Sandi" :disable="form.processing" icon="save" />
       </q-card-section>
     </q-card>
   </q-form>

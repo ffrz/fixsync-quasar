@@ -223,8 +223,8 @@ const onCustomerChange = (val) => {
               </q-card-section>
               <q-card-section>
                 <q-card-actions>
-                  <q-btn type="submit" label="Simpan" color="primary" :disable="form.processing" />
-                  <q-btn label="Batal" :disable="form.processing"
+                  <q-btn icon="save" type="submit" label="Simpan" color="primary" :disable="form.processing" />
+                  <q-btn icon="cancel" label="Batal" :disable="form.processing"
                     @click="router.get(route('admin.service-order.index'))" />
                 </q-card-actions>
               </q-card-section>

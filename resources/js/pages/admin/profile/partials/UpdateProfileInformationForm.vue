@@ -35,7 +35,7 @@ const submit = () => {
         <q-input readonly v-model="form.role" label="Hak Akses" :disable="form.processing" />
       </q-card-section>
       <q-card-section>
-        <q-btn type="submit" color="primary" label="Perbarui Profil Saya" :disable="form.processing" icon="check" />
+        <q-btn type="submit" color="primary" label="Perbarui Profil Saya" :disable="form.processing" icon="save" />
       </q-card-section>
     </q-card>
   </q-form>

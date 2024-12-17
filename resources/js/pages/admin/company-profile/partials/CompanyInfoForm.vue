@@ -43,7 +43,7 @@ const submit = () => {
           :rules="[(val) => (val && val.length > 0) || 'Alamat harus diisi.']" />
       </q-card-section>
       <q-card-section>
-        <q-btn type="submit" color="primary" label="Simpan" :disable="form.processing" />
+        <q-btn icon="save" type="submit" color="primary" label="Simpan" :disable="form.processing" />
       </q-card-section>
     </q-card>
   </q-form>
