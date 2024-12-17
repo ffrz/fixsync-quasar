@@ -35,6 +35,7 @@ Route::middleware([Auth::class])->group(function () {
 
         Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('test', [DashboardController::class, 'test'])->name('admin.test');
+        Route::get('about', function() { return inertia('admin/About'); })->name('admin.about');
 
         Route::prefix('customers')->group(function () {
             Route::get('', [CustomerController::class, 'index'])->name('admin.customer.index');

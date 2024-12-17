@@ -6,6 +6,8 @@ import { router, useForm, usePage } from "@inertiajs/vue3";
 
 const roles = create_options(window.CONSTANTS.USER_ROLES);
 const page = usePage();
+const title = !!page.props.data.id ? 'Edit Pengguna' : 'Tambah Pengguna';
+
 const form = useForm({
   id: page.props.data.id,
   name: page.props.data.name,
@@ -16,8 +18,6 @@ const form = useForm({
   active: !!page.props.data.active,
 });
 
-const title = !!form.id ? 'Edit Pengguna' : 'Tambah Pengguna';
-
 const submit = () => {
   default_submit_handler(form, route('admin.user.save'));
 }
@@ -25,17 +25,13 @@ const submit = () => {
 </script>
 
 <template>
+  <i-head :title="title" />
   <authenticated-layout>
-    <q-page class="row justify-center">
-      <i-head :title="title" />
+    <template #title>{{ title }}</template>
+    <div class="row justify-center">
       <div class="col col-lg-6 q-pa-md">
         <q-form class="row" @submit.prevent="submit">
           <q-card square flat bordered class="col q-pa-sm">
-            <q-card-section>
-              <div class="text-h6">
-                {{ title }}
-              </div>
-            </q-card-section>
             <q-card-section class="q-pt-none">
               <input type="hidden" name="id" v-model="form.id" />
               <q-input autofocus v-model.trim="form.name" label="Nama" lazy-rules :error="!!form.errors.name"
@@ -56,16 +52,18 @@ const submit = () => {
                 :disable="form.processing" transition-show="jump-up" transition-hide="jump-up"
                 :error="!!form.errors.role" :error-message="form.errors.role">
               </q-select>
-              <q-checkbox class="full-width q-pl-none" v-model="form.active" :disable="form.processing" label="Aktif" />
+              <div style="margin-left:-10px;">
+                <q-checkbox class="full-width" v-model="form.active" :disable="form.processing" label="Aktif" />
+              </div>
             </q-card-section>
             <q-card-actions>
-              <q-btn type="submit" label="Simpan" color="primary" icon="check" :disable="form.processing" />
-              <q-btn label="Batal" v-close-popup color="grey-7" icon="close" :disable="form.processing"
+              <q-btn type="submit" label="Simpan" color="primary" :disable="form.processing" @click="submit" />
+              <q-btn label="Batal" class="text-black" :disable="form.processing"
                 @click="router.get(route('admin.user.index'))" />
             </q-card-actions>
           </q-card>
         </q-form>
       </div>
-    </q-page>
+    </div>
   </authenticated-layout>
 </template>

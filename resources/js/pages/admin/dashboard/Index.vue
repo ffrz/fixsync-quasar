@@ -5,7 +5,7 @@ import BtnLink from '@/components/BtnLink.vue';
 
 <template>
   <authenticated-layout>
-    <q-page class="row">
+    <div class="row">
       <i-head title="Dashboard" />
       <q-card class="col q-pa-md q-ma-md" square flat bordered>
         <q-card-section>
@@ -39,6 +39,6 @@ import BtnLink from '@/components/BtnLink.vue';
             minus, est enim similique quaerat vel asperiores ipsam harum et, totam fugit.</p>
         </q-card-section>
       </q-card>
-    </q-page>
+    </div>
   </authenticated-layout>
 </template>

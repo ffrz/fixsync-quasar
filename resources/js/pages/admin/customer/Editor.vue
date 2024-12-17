@@ -4,7 +4,7 @@ import { default_submit_handler } from "@/helpers/client-req-handler";
 import { scrollToFirstErrorField } from "@/helpers/utils";
 
 const page = usePage();
-
+const title = (!!page.props.data.id ? "Edit" : "Tambah") + " Pelanggan";
 const form = useForm({
   id: page.props.data.id,
   name: page.props.data.name,
@@ -20,17 +20,15 @@ const submit = () => {
 </script>
 
 <template>
+  <i-head :title="title" />
   <authenticated-layout>
+    <template #title>{{ title }}</template>
     <q-page class="row justify-center">
-      <i-head title="Tambah Pelanggan" />
       <div class="col col-lg-6 q-pa-md">
         <q-form class="row" @submit.prevent="submit" @validation-error="scrollToFirstErrorField">
           <q-card square flat bordered class="col q-pa-sm">
             <q-card-section>
-              <div class="text-h6">
-                <template v-if="!!form.id">Edit Pelanggan </template>
-                <template v-else> Tambah Pelanggan </template>
-              </div>
+              <div class="text-h6">Info Pelanggan</div>
             </q-card-section>
             <q-card-section class="q-pt-none">
               <input type="hidden" name="id" v-model="form.id" />
@@ -42,20 +40,24 @@ const submit = () => {
                 :error="!!form.errors.phone" :error-message="form.errors.phone" :rules="[
                   (val) => (val && val.length > 0) || 'No HP harus diisi.',
                 ]" />
-              <q-input v-model.trim="form.address" type="textarea" autogrow counter maxlength="1000" label="Alamat" lazy-rules :disable="form.processing"
-                :error="!!form.errors.address" :error-message="form.errors.address" :rules="[
+              <q-input v-model.trim="form.address" type="textarea" autogrow counter maxlength="1000" label="Alamat"
+                lazy-rules :disable="form.processing" :error="!!form.errors.address"
+                :error-message="form.errors.address" :rules="[
                   (val) => (val && val.length > 0) || 'Alamat harus diisi.',
                 ]" />
-                <q-checkbox class="full-width q-pl-none" v-model="form.active" :disable="form.processing" label="Aktif" />
+              <div style="margin-left: -10px;">
+                <q-checkbox class="full-width q-pl-none" v-model="form.active" :disable="form.processing"
+                  label="Aktif" />
+              </div>
             </q-card-section>
             <q-card-actions>
-              <q-btn type="submit" label="Simpan" color="primary" icon="check" :disable="form.processing" />
-              <q-btn label="Batal" v-close-popup color="grey-7" icon="close" :disable="form.processing"
-                @click="router.get(route('admin.customer.index'))" />
+              <q-btn type="submit" label="Simpan" color="primary" :disable="form.processing" />
+              <q-btn label="Batal" :disable="form.processing" @click="router.get(route('admin.customer.index'))" />
             </q-card-actions>
           </q-card>
         </q-form>
       </div>
     </q-page>
+
   </authenticated-layout>
 </template>

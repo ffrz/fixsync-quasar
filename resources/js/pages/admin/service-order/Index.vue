@@ -9,6 +9,7 @@ const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
 const filter = ref("");
+const title = 'Order Servis';
 const pagination = ref({
   page: 1,
   rowsPerPage: 10,
@@ -17,45 +18,47 @@ const pagination = ref({
   descending: true,
 });
 
-const columns = [
-  { name: "id", label: "ID", field: "id", align: "left", sortable: true },
-  {
-    name: "received_datetime",
-    label: "Tgl Masuk",
-    field: "received_datetime",
-    align: "left",
-    sortable: true,
-  },
-  {
-    name: "device",
-    label: "Perangkat",
-    field: "device",
-    align: "left",
-    sortable: true,
-  },
-  {
-    name: "customer_name",
-    label: "Atas Nama",
-    field: "customer_name",
-    align: "left",
-    sortable: true,
-  },
-  {
-    name: "customer_phone",
-    label: "No HP",
-    field: "customer_phone",
-    align: "left",
-    sortable: true,
-  },
-  {
-    name: "customer_address",
-    label: "Alamat",
-    field: "customer_address",
-    align: "left",
-    sortable: true,
-  },
-  { name: "action", label: "Aksi", align: "center" },
-];
+const columns = [{
+  name: "id",
+  label: "ID",
+  field: "id",
+  align: "left",
+  sortable: true
+}, {
+  name: "received_datetime",
+  label: "Tgl Masuk",
+  field: "received_datetime",
+  align: "left",
+  sortable: true,
+}, {
+  name: "device",
+  label: "Perangkat",
+  field: "device",
+  align: "left",
+  sortable: true,
+}, {
+  name: "customer_name",
+  label: "Atas Nama",
+  field: "customer_name",
+  align: "left",
+  sortable: true,
+}, {
+  name: "customer_phone",
+  label: "No HP",
+  field: "customer_phone",
+  align: "left",
+  sortable: true,
+}, {
+  name: "customer_address",
+  label: "Alamat",
+  field: "customer_address",
+  align: "left",
+  sortable: true,
+}, {
+  name: "action",
+  label: "Aksi",
+  align: "center"
+}];
 
 onMounted(() => {
   filter.value = localStorage.getItem("fixsync.service-order-list-page.filter");
@@ -77,9 +80,10 @@ const fetchItems = (props = null) => {
 </script>
 
 <template>
+  <i-head :title="title" />
   <authenticated-layout>
-    <i-head title="Order Servis" />
-    <q-page>
+    <template #title>{{ title }}</template>
+    <div>
       <div class="q-pa-md">
         <q-table ref="tableRef" flat bordered square :dense="true || $q.screen.lt.md" color="primary" row-key="id"
           virtual-scroll title="Order Servis" v-model:pagination="pagination" :filter="filter" :loading="loading"
@@ -108,7 +112,7 @@ const fetchItems = (props = null) => {
             <div class="full-width row flex-center text-grey-8 q-gutter-sm">
               <q-icon size="2em" name="sentiment_dissatisfied" />
               <span>
-                Well this is sad... {{ message }}
+                {{ message }}
                 {{ filter ? " with term " + filter : "" }}</span>
               <q-icon size="2em" :name="filter ? 'filter_b_and_w' : icon" />
             </div>
@@ -135,7 +139,8 @@ const fetchItems = (props = null) => {
                 {{ props.row.customer_address }}
               </q-td>
               <q-td key="action" class="q-gutter-x-sm" :props="props" align="center">
-                <q-btn flat dense rounded icon="edit" @click="router.get(route('admin.service-order.edit', props.row.id))">
+                <q-btn flat dense rounded icon="edit"
+                  @click="router.get(route('admin.service-order.edit', props.row.id))">
                   <q-tooltip>Edit Pesanan</q-tooltip>
                 </q-btn>
                 <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)">
@@ -146,6 +151,6 @@ const fetchItems = (props = null) => {
           </template>
         </q-table>
       </div>
-    </q-page>
+    </div>
   </authenticated-layout>
 </template>

@@ -86,23 +86,16 @@ const onCustomerChange = (val) => {
 </script>
 
 <template>
+  <i-head :title="title" />
   <authenticated-layout>
-    <q-page class="row justify-center">
-      <i-head :title="title" />
+    <template #title>{{ title }}</template>
+    <div class="row justify-center">
       <div class="col col-lg-6 q-pa-md">
         <q-form @submit.prevent="submit" class="q-gutter-md" @validation-error="scrollToFirstErrorField">
-          <!-- Mungkin lebih baik kita buat breadcrumb disini -->
-          <div class="row">
-            <div class="col">
-              <div class="text-h6">{{ title }}</div>
-            </div>
-          </div>
           <div class="row">
             <q-card square flat bordered class="col q-pa-sm">
               <q-card-section>
                 <div class="text-h6">Info Order</div>
-              </q-card-section>
-              <q-card-section class="q-pt-none">
                 <input type="hidden" name="id" v-model="form.id" />
                 <q-input :model-value="form.id ? form.id : 'Otomatis'" label="#No Order" readonly />
                 <q-select v-model="form.order_status" label="Status Order" :options="order_statuses" map-options
@@ -133,14 +126,8 @@ const onCustomerChange = (val) => {
                   </tbody>
                 </table>
               </q-card-section>
-            </q-card>
-          </div>
-          <div class="row">
-            <q-card square flat bordered class="col q-pa-sm">
-              <q-card-section>
-                <div class="text-h6">Info Pelanggan</div>
-              </q-card-section>
               <q-card-section class="q-pt-none">
+                <div class="text-h6">Info Pelanggan</div>
                 <q-select v-model="form.customer_id" label="Pelanggan" use-input input-debounce="300" clearable
                   :options="filteredCustomers" map-options emit-value @filter="filterCustomers"
                   @update:model-value="onCustomerChange" :error="!!form.errors.customer_id" :disable="form.processing">
@@ -165,14 +152,8 @@ const onCustomerChange = (val) => {
                     (val) => (val && val.length > 0) || 'Alamat harus diisi.',
                   ]" />
               </q-card-section>
-            </q-card>
-          </div>
-          <div class="row">
-            <q-card square flat bordered class="col q-pa-sm">
-              <q-card-section>
-                <div class="text-h6">Info Perangkat</div>
-              </q-card-section>
               <q-card-section class="q-pt-none">
+                <div class="text-h6">Info Perangkat</div>
                 <q-input v-model.trim="form.device" label="Perangkat" lazy-rules :error="!!form.errors.device"
                   :disable="form.processing" :error-message="form.errors.device" :rules="[
                     (val) => (val && val.length > 0) || 'Perangkat harus diisi.',
@@ -185,14 +166,8 @@ const onCustomerChange = (val) => {
                 <q-input v-model.trim="form.device_sn" type="text" label="SN / PN / ID" lazy-rules
                   :disable="form.processing" :error="!!form.errors.device_sn" :error-message="form.errors.device_sn" />
               </q-card-section>
-            </q-card>
-          </div>
-          <div class="row">
-            <q-card square flat bordered class="col q-pa-sm">
-              <q-card-section>
-                <div class="text-h6">Kendala dan Tindakan</div>
-              </q-card-section>
               <q-card-section class="q-pt-none">
+                <div class="text-h6">Kendala dan Tindakan</div>
                 <q-input v-model.trim="form.problems" label="Masalah / Keluhan" lazy-rules
                   :error="!!form.errors.problems" :disable="form.processing" :error-message="form.errors.problems"
                   :rules="[
@@ -203,14 +178,8 @@ const onCustomerChange = (val) => {
                     (val) => (val && val.length > 0) || 'Tindakan harus diisi.',
                   ]" />
               </q-card-section>
-            </q-card>
-          </div>
-          <div class="row">
-            <q-card square flat bordered class="col q-pa-sm">
-              <q-card-section>
-                <div class="text-h6">Info Servis</div>
-              </q-card-section>
               <q-card-section class="q-pt-none">
+                <div class="text-h6">Info Servis</div>
                 <q-select v-model="form.service_status" label="Status Servis" :options="service_statuses" map-options
                   emit-value :error="!!form.errors.service_status" :disable="form.processing" />
                 <q-select v-model="form.technician_id" label="Teknisi" :options="technicians" map-options emit-value
@@ -226,14 +195,8 @@ const onCustomerChange = (val) => {
                 <date-time-picker v-model="form.picked_datetime" label="Tanggal Diambil"
                   :error="!!form.errors.picked_datetime" :disable="form.processing" />
               </q-card-section>
-            </q-card>
-          </div>
-          <div class="row">
-            <q-card square flat bordered class="col q-pa-sm">
-              <q-card-section>
-                <div class="text-h6">Info Biaya</div>
-              </q-card-section>
               <q-card-section class="q-pt-none">
+                <div class="text-h6">Biaya</div>
                 <q-select v-model="form.payment_status" label="Status Pembayaran" :options="payment_statuses"
                   map-options emit-value :error="!!form.errors.payment_status" :disable="form.processing" />
                 <LocaleNumberInput v-model:modelValue="form.estimated_cost" label="Biaya Perkiraan" lazyRules
@@ -246,41 +209,29 @@ const onCustomerChange = (val) => {
                   :disable="form.processing" :error="!!form.errors.down_payment"
                   :errorMessage="form.errors.down_payment" :rules="[]" />
               </q-card-section>
-            </q-card>
-          </div>
-          <div class="row">
-            <q-card square flat bordered class="col q-pa-sm">
-              <q-card-section>
-                <div class="text-h6">Info Garansi</div>
-              </q-card-section>
               <q-card-section class="q-pt-none">
+                <div class="text-h6">Garansi</div>
                 <date-picker v-model="form.warranty_start_date" label="Tanggal Mulai Garansi"
                   :error="!!form.errors.warranty_start_date" :disable="form.processing" />
                 <q-input v-model.trim="form.warranty_day_count" label="Lama hari" type="number" step="1" lazy-rules
                   :disable="form.processing" />
               </q-card-section>
-            </q-card>
-          </div>
-          <div class="row">
-            <q-card square flat bordered class="col q-pa-sm">
               <q-card-section>
                 <div class="text-h6">Catatan</div>
-              </q-card-section>
-              <q-card-section class="q-pt-none">
                 <q-input v-model.trim="form.notes" type="textarea" label="" autogrow counter maxlength="1000" lazy-rules
                   :disable="form.processing" :error="!!form.errors.notes" :error-message="form.errors.notes" />
               </q-card-section>
+              <q-card-section>
+                <q-card-actions>
+                  <q-btn type="submit" label="Simpan" color="primary" :disable="form.processing" />
+                  <q-btn label="Batal" :disable="form.processing"
+                    @click="router.get(route('admin.service-order.index'))" />
+                </q-card-actions>
+              </q-card-section>
             </q-card>
-          </div>
-          <div class="row">
-            <div class="col q-gutter-md">
-              <q-btn type="submit" label="Simpan" color="primary" icon="check" :disable="form.processing" />
-              <q-btn label="Batal" v-close-popup color="grey-7" icon="close" :disable="form.processing"
-                @click="router.get(route('admin.service-order.index'))" />
-            </div>
           </div>
         </q-form>
       </div>
-    </q-page>
+    </div>
   </authenticated-layout>
 </template>

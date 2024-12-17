@@ -9,6 +9,7 @@ const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
 const filter = ref("");
+const title = "Pelanggan";
 const pagination = ref({
   page: 1,
   rowsPerPage: 10,
@@ -17,24 +18,29 @@ const pagination = ref({
   descending: false,
 });
 
-const columns = [
-  { name: "name", label: "Nama", field: "name", align: "left", sortable: true },
-  {
-    name: "phone",
-    label: "No HP",
-    field: "phone",
-    align: "left",
-    sortable: true,
-  },
-  {
-    name: "address",
-    label: "Alamat",
-    field: "address",
-    align: "left",
-    sortable: true,
-  },
-  { name: "action", label: "Aksi", align: "center" },
-];
+const columns = [{
+  name: "name",
+  label: "Nama",
+  field: "name",
+  align: "left",
+  sortable: true
+}, {
+  name: "phone",
+  label: "No HP",
+  field: "phone",
+  align: "left",
+  sortable: true,
+}, {
+  name: "address",
+  label: "Alamat",
+  field: "address",
+  align: "left",
+  sortable: true,
+}, {
+  name: "action",
+  label: "Aksi",
+  align: "center"
+}];
 
 onMounted(() => {
   filter.value = localStorage.getItem("fixsync.customer-list-page.filter");
@@ -56,19 +62,20 @@ const fetchItems = (props = null) => {
 </script>
 
 <template>
+  <i-head :title="title" />
   <authenticated-layout>
-    <i-head title="Pelanggan" />
+    <template #title>{{ title }}</template>
     <q-page>
       <div class="q-pa-md">
         <q-table ref="tableRef" flat bordered square :dense="true || $q.screen.lt.md" color="primary" row-key="id"
-          virtual-scroll title="Pelanggan" v-model:pagination="pagination" :filter="filter" :loading="loading"
-          :columns="columns" :rows="rows" :rows-per-page-options="[10, 25, 50]" @request="fetchItems" binary-state-sort>
+          virtual-scroll v-model:pagination="pagination" :filter="filter" :loading="loading" :columns="columns"
+          :rows="rows" :rows-per-page-options="[10, 25, 50]" @request="fetchItems" binary-state-sort>
           <template v-slot:loading>
             <q-inner-loading showing color="red" />
           </template>
 
-          <template v-slot:top-left>
-            <div class="q-gutter-sm">
+          <template v-slot:top-left="props">
+            <div class="text-h5">
               <q-btn color="primary" icon="add" @click="router.get(route('admin.customer.add'))" label="Tambah">
                 <q-tooltip>Tambah Pelanggan</q-tooltip>
               </q-btn>
@@ -87,7 +94,7 @@ const fetchItems = (props = null) => {
             <div class="full-width row flex-center text-grey-8 q-gutter-sm">
               <q-icon size="2em" name="sentiment_dissatisfied" />
               <span>
-                Well this is sad... {{ message }}
+                {{ message }}
                 {{ filter ? " with term " + filter : "" }}</span>
               <q-icon size="2em" :name="filter ? 'filter_b_and_w' : icon" />
             </div>
@@ -105,8 +112,7 @@ const fetchItems = (props = null) => {
                 {{ props.row.address }}
               </q-td>
               <q-td key="action" class="q-gutter-x-sm" :props="props" align="center">
-                <q-btn flat dense rounded icon="edit"
-                  @click="router.get(route('admin.customer.edit', props.row.id))">
+                <q-btn flat dense rounded icon="edit" @click="router.get(route('admin.customer.edit', props.row.id))">
                   <q-tooltip>Edit Pelanggan</q-tooltip>
                 </q-btn>
                 <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)">

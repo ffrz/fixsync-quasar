@@ -24,12 +24,11 @@ const handleSubmit = () => {
 
 <template>
   <authenticated-layout>
-    <q-page class="row">
+    <div class="row">
       <div class="q-pa-md">
         <date-time-picker />
         <q-btn label="Submit" color="primary" @click="handleSubmit" />
       </div>
-
-    </q-page>
+    </div>
   </authenticated-layout>
 </template>
