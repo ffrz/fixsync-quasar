@@ -1,16 +1,16 @@
 <script setup>
 import BtnLink from '@/components/BtnLink.vue';
-
+const title = 'Dashboard';
 </script>
 
 <template>
+  <i-head :title="title" />
   <authenticated-layout>
+    <template #title>{{ title }}</template>
     <div class="row">
-      <i-head title="Dashboard" />
-      <q-card class="col q-pa-md q-ma-md" square flat bordered>
+      <q-card class="col q-ma-md" square flat bordered>
         <q-card-section>
-          <div class="q-mb-md text-h4">Dashboard</div>
-          <btn-link label="Logout" :url="route('logout')" method="post" color="accent" class="q-my-md full-width" />
+          <div class="q-mb-md text-h6">Dashboard</div>
           <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem soluta, accusamus placeat eius eligendi
             perferendis quisquam veritatis iste debitis laboriosam facere et aliquam quos beatae illo distinctio rerum
             eos!
@@ -37,6 +37,9 @@ import BtnLink from '@/components/BtnLink.vue';
             asperiores cupiditate, labore libero! Ad facere magni cumque perspiciatis, adipisci possimus pariatur quo
             nobis
             minus, est enim similique quaerat vel asperiores ipsam harum et, totam fugit.</p>
+          <div>
+            <btn-link label="Logout" :url="route('logout')" method="post" color="accent" icon="logout"/>
+          </div>
         </q-card-section>
       </q-card>
     </div>
