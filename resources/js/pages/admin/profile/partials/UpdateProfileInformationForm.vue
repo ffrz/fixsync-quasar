@@ -1,6 +1,5 @@
 <script setup>
-
-import { default_submit_handler } from '@/helpers/client-req-handler';
+import { handleSubmit } from '@/helpers/client-req-handler';
 import { scrollToFirstErrorField } from '@/helpers/utils';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -15,10 +14,8 @@ const form = useForm({
   email: user.email,
 });
 
-const submit = () => {
-  default_submit_handler(form, route('admin.profile.update'));
-};
-
+const submit = () =>
+  handleSubmit({ form, url: route('admin.profile.update') });
 </script>
 
 <template>

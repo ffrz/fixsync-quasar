@@ -6,7 +6,6 @@ import { ref } from 'vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
-
 const form = useForm({
   current_password: '',
   password: '',

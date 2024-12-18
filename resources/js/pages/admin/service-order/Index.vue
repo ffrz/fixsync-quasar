@@ -1,15 +1,26 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { router } from "@inertiajs/vue3";
 import { useQuasar } from "quasar";
-import { default_delete_handler, default_fetch_handler } from "@/helpers/client-req-handler";
+import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
+import { create_options } from "@/helpers/utils";
 
 const $q = useQuasar();
 const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
-const filter = ref("");
+const filter = reactive({
+  search: '',
+  order_status: 'all',
+  service_status: 'all',
+  payment_status: 'all',
+});
 const title = 'Order Servis';
+
+const order_statuses = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.SERVICEORDER_ORDER_STATUSES)];
+const service_statuses = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.SERVICEORDER_SERVICE_STATUSES)];
+const payment_statuses = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.SERVICEORDER_PAYMENT_STATUSES)];
+
 const pagination = ref({
   page: 1,
   rowsPerPage: 10,
@@ -61,22 +72,30 @@ const columns = [{
 }];
 
 onMounted(() => {
-  filter.value = localStorage.getItem("fixsync.service-order-list-page.filter");
+  const savedFilter = localStorage.getItem('fixsync.service-orders.filter');
+  if (savedFilter) {
+    Object.assign(filter, JSON.parse(savedFilter));
+  }
   fetchItems();
 });
 
 watch(filter, (newValue) => {
-  if (!newValue && newValue != "") newValue = "";
-  localStorage.setItem("fixsync.service-order-list-page.filter", newValue);
-});
+  localStorage.setItem('fixsync.service-orders.filter', JSON.stringify(newValue));
+}, { deep: true });
 
-const deleteItem = (row) => {
-  default_delete_handler(`Hapus order ${row.id}?`, route('admin.service-order.delete', row.id), fetchItems, loading);
-};
+const deleteItem = (row) =>
+  handleDelete({
+    message: `Hapus order ${row.id}?`,
+    url: route('admin.service-order.delete', row.id),
+    fetchItemsCallback: fetchItems,
+    loading
+  });
 
-const fetchItems = (props = null) => {
-  default_fetch_handler(pagination, filter, props, rows, route('admin.service-order.data'), loading);
-};
+const fetchItems = (props = null) =>
+  handleFetchItems({ pagination, filter, props, rows, url: route('admin.service-order.data'), loading });
+
+const onFilterChange = () => fetchItems();
+
 </script>
 
 <template>
@@ -86,26 +105,35 @@ const fetchItems = (props = null) => {
     <div>
       <div class="q-pa-md">
         <q-table ref="tableRef" flat bordered square :dense="true || $q.screen.lt.md" color="primary" row-key="id"
-          virtual-scroll title="Order Servis" v-model:pagination="pagination" :filter="filter" :loading="loading"
+          virtual-scroll title="Order Servis" v-model:pagination="pagination" :filter="filter.search" :loading="loading"
           :columns="columns" :rows="rows" :rows-per-page-options="[10, 25, 50]" @request="fetchItems" binary-state-sort>
           <template v-slot:loading>
             <q-inner-loading showing color="red" />
           </template>
 
-          <template v-slot:top-left>
-            <div class="q-gutter-sm">
-              <q-btn color="primary" icon="add" @click="router.get(route('admin.service-order.add'))" label="Tambah">
-                <q-tooltip>Terima Servis</q-tooltip>
-              </q-btn>
+          <template #top>
+            <div class="col">
+              <div class="row q-my-sm items-center">
+                <q-btn color="primary" icon="add" @click="router.get(route('admin.service-order.add'))" label="Tambah">
+                  <q-tooltip>Tambah Order Servis</q-tooltip>
+                </q-btn>
+                <q-space />
+                <q-input dense debounce="300" v-model="filter.search" placeholder="Cari" clearable>
+                  <template v-slot:append>
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
+              </div>
+              <div class="row q-my-sm q-gutter-sm items-center">
+                <span>Filter:</span>
+                <q-select v-model="filter.order_status" :options="order_statuses" label="Status Order" dense map-options
+                  style="min-width:150px;" emit-value outlined @update:model-value="onFilterChange" />
+                <q-select v-model="filter.service_status" :options="service_statuses" label="Status Servis" dense
+                  map-options style="min-width:150px;" emit-value outlined @update:model-value="onFilterChange" />
+                <q-select v-model="filter.payment_status" :options="payment_statuses" label="Status Pembayaran" dense
+                  map-options style="min-width:150px;" emit-value outlined @update:model-value="onFilterChange" />
+              </div>
             </div>
-          </template>
-
-          <template v-slot:top-right>
-            <q-input dense debounce="300" v-model="filter" placeholder="Cari" clearable>
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
           </template>
 
           <template v-slot:no-data="{ icon, message, filter }">

@@ -1,6 +1,6 @@
 <script setup>
 import { router, useForm, usePage } from "@inertiajs/vue3";
-import { default_submit_handler } from "@/helpers/client-req-handler";
+import { handleSubmit } from "@/helpers/client-req-handler";
 import { scrollToFirstErrorField } from "@/helpers/utils";
 
 const page = usePage();
@@ -13,9 +13,8 @@ const form = useForm({
   active: !!page.props.data.active,
 });
 
-const submit = () => {
-  default_submit_handler(form, route('admin.customer.save'));
-};
+const submit = () =>
+  handleSubmit({form, url: route('admin.customer.save')});
 
 </script>
 

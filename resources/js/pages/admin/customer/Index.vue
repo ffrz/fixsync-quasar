@@ -1,14 +1,17 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { router } from "@inertiajs/vue3";
 import { useQuasar } from "quasar";
-import { default_delete_handler, default_fetch_handler } from "@/helpers/client-req-handler";
+import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
 
 const $q = useQuasar();
 const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
-const filter = ref("");
+const filter = reactive({
+  search: "",
+  status: "all",
+});
 const title = "Pelanggan";
 const pagination = ref({
   page: 1,
@@ -42,23 +45,36 @@ const columns = [{
   align: "center"
 }];
 
+const statuses = [
+  { value: 'all', label: 'Semua' },
+  { value: 'active', label: 'Aktif' },
+  { value: 'inactive', label: 'Tidak Aktif' },
+];
+
 onMounted(() => {
-  filter.value = localStorage.getItem("fixsync.customer-list-page.filter");
+  const savedFilter = localStorage.getItem('fixsync.customers.filter');
+  if (savedFilter) {
+    Object.assign(filter, JSON.parse(savedFilter));
+  }
   fetchItems();
 });
 
 watch(filter, (newValue) => {
-  if (!newValue && newValue != "") newValue = "";
-  localStorage.setItem("fixsync.customer-list-page.filter", newValue);
-});
+  localStorage.setItem('fixsync.customers.filter', JSON.stringify(newValue));
+}, { deep: true });
 
-const deleteItem = (row) => {
-  default_delete_handler(`Hapus pelanggan ${row.name}?`, route('admin.customer.delete', row.id), fetchItems, loading);
-};
+const deleteItem = (row) =>
+  handleDelete({
+    message: `Hapus pelanggan ${row.name}?`,
+    url: route('admin.customer.delete', row.id),
+    fetchItemsCallback: fetchItems,
+    loading
+  });
 
-const fetchItems = (props = null) => {
-  default_fetch_handler(pagination, filter, props, rows, route('admin.customer.data'), loading);
-};
+const fetchItems = (props = null) =>
+  handleFetchItems({ pagination, filter, props, rows, url: route('admin.customer.data'), loading });
+
+const onFilterChange = () => fetchItems();
 </script>
 
 <template>
@@ -68,26 +84,31 @@ const fetchItems = (props = null) => {
     <q-page>
       <div class="q-pa-md">
         <q-table ref="tableRef" flat bordered square :dense="true || $q.screen.lt.md" color="primary" row-key="id"
-          virtual-scroll v-model:pagination="pagination" :filter="filter" :loading="loading" :columns="columns"
+          virtual-scroll v-model:pagination="pagination" :filter="filter.search" :loading="loading" :columns="columns"
           :rows="rows" :rows-per-page-options="[10, 25, 50]" @request="fetchItems" binary-state-sort>
           <template v-slot:loading>
             <q-inner-loading showing color="red" />
           </template>
 
-          <template v-slot:top-left="props">
-            <div class="text-h5">
-              <q-btn color="primary" icon="add" @click="router.get(route('admin.customer.add'))" label="Tambah">
-                <q-tooltip>Tambah Pelanggan</q-tooltip>
-              </q-btn>
+          <template #top>
+            <div class="col">
+              <div class="row q-my-sm items-center">
+                <q-btn color="primary" icon="add" @click="router.get(route('admin.customer.add'))" label="Tambah">
+                  <q-tooltip>Tambah Pelanggan</q-tooltip>
+                </q-btn>
+                <q-space />
+                <q-input dense debounce="300" v-model="filter.search" placeholder="Cari" clearable>
+                  <template v-slot:append>
+                    <q-icon name="search" />
+                  </template>
+                </q-input>
+              </div>
+              <div class="row q-my-sm q-gutter-sm items-center">
+                <span>Filter:</span>
+                <q-select v-model="filter.status" :options="statuses" label="Status" dense map-options emit-value
+                  outlined @update:model-value="onFilterChange" />
+              </div>
             </div>
-          </template>
-
-          <template v-slot:top-right>
-            <q-input dense debounce="300" v-model="filter" placeholder="Cari" clearable>
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
           </template>
 
           <template v-slot:no-data="{ icon, message, filter }">

@@ -1,6 +1,6 @@
 <script setup>
 import { router, useForm, usePage } from "@inertiajs/vue3";
-import { default_submit_handler } from "@/helpers/client-req-handler";
+import { handleSubmit } from "@/helpers/client-req-handler";
 import { create_options, create_options_from_technicians, create_options_from_customers, scrollToFirstErrorField } from "@/helpers/utils";
 import LocaleNumberInput from "@/components/LocaleNumberInput.vue";
 import DateTimePicker from "@/components/DateTimePicker.vue";
@@ -14,7 +14,6 @@ const payment_statuses = create_options(window.CONSTANTS.SERVICEORDER_PAYMENT_ST
 const service_statuses = create_options(window.CONSTANTS.SERVICEORDER_SERVICE_STATUSES);
 const customers = ref([{ value: 0, label: '<< Pelanggan Baru >>' }, ...create_options_from_customers(page.props.customers)]);
 const technicians = create_options_from_technicians(page.props.technicians);
-
 const form = useForm({
   id: page.props.data.id,
   order_status: page.props.data.order_status,
@@ -52,9 +51,8 @@ const form = useForm({
 
 const title = !!page.props.data.id ? `Edit Order Servis #${form.id}` : 'Tambah Order Servis';
 
-const submit = () => {
-  default_submit_handler(form, route('admin.service-order.save'));
-};
+const submit = () =>
+  handleSubmit({form, url: route('admin.service-order.save')});
 
 const filteredCustomers = ref([...customers.value]); // Filtered list of customers
 

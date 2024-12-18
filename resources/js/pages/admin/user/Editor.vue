@@ -1,5 +1,5 @@
 <script setup>
-import { default_submit_handler } from "@/helpers/client-req-handler";
+import { handleSubmit } from "@/helpers/client-req-handler";
 import { create_options } from "@/helpers/utils";
 import { validateUsername, validateEmail } from "@/helpers/validations";
 import { router, useForm, usePage } from "@inertiajs/vue3";
@@ -7,7 +7,6 @@ import { router, useForm, usePage } from "@inertiajs/vue3";
 const roles = create_options(window.CONSTANTS.USER_ROLES);
 const page = usePage();
 const title = !!page.props.data.id ? 'Edit Pengguna' : 'Tambah Pengguna';
-
 const form = useForm({
   id: page.props.data.id,
   name: page.props.data.name,
@@ -18,9 +17,8 @@ const form = useForm({
   active: !!page.props.data.active,
 });
 
-const submit = () => {
-  default_submit_handler(form, route('admin.user.save'));
-}
+const submit = () =>
+  handleSubmit({form, url: route('admin.user.save')});
 
 </script>
 
@@ -57,7 +55,8 @@ const submit = () => {
               </div>
             </q-card-section>
             <q-card-actions>
-              <q-btn icon="save" type="submit" label="Simpan" color="primary" :disable="form.processing" @click="submit" />
+              <q-btn icon="save" type="submit" label="Simpan" color="primary" :disable="form.processing"
+                @click="submit" />
               <q-btn icon="cancel" label="Batal" class="text-black" :disable="form.processing"
                 @click="router.get(route('admin.user.index'))" />
             </q-card-actions>

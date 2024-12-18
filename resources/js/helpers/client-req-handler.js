@@ -1,12 +1,17 @@
 import axios from "axios";
 import { Notify, Dialog } from "quasar";
 
-export function default_submit_handler(form, url) {
+export function handleSubmit(data) {
+  const { form, url } = data;
+
   form.clearErrors();
   form.post(url,
     {
       preserveScroll: true,
       onError: (response) => {
+        if (typeof(response.message) !== 'string' || response.message.length === 0)
+          return;
+
         Notify.create({
           message: response.message,
           icon: "info",
@@ -20,11 +25,12 @@ export function default_submit_handler(form, url) {
   );
 }
 
-export function default_delete_handler(confirmationMessage, url, fetchItems, loading) {
+export function handleDelete(data) {
+  const {message, url, fetchItemsCallback, loading} = data;
   Dialog.create({
-    title: "Confirm",
+    title: "Konfirmasi",
     icon: "question",
-    message: confirmationMessage,
+    message: message,
     focus: "cancel",
     cancel: true,
     persistent: true,
@@ -34,7 +40,7 @@ export function default_delete_handler(confirmationMessage, url, fetchItems, loa
       .post(url)
       .then((response) => {
         Notify.create(response.data.message);
-        fetchItems();
+        fetchItemsCallback();
       })
       .finally(() => {
         loading.value = false;
@@ -46,19 +52,24 @@ export function default_delete_handler(confirmationMessage, url, fetchItems, loa
         } else if (error.message) {
           message = error.message;
         }
-        Notify.create({ message: message, color: "red" });
+
+        if (message.length > 0) {
+          Notify.create({ message: message, color: "red" });
+        }
         console.log(error);
       });
   });
 }
 
-export function default_fetch_handler(pagination, filter, props, rows, url, loading) {
+export function handleFetchItems(options) {
+  const { pagination, props, rows, url, loading, filter } = options;
+
   let params = {
     page: pagination.value.page,
     per_page: pagination.value.rowsPerPage,
     order_by: pagination.value.sortBy,
     order_type: pagination.value.descending ? "desc" : "asc",
-    filter: filter.value,
+    filter: filter,
   };
 
   if (props != null) {
@@ -66,8 +77,6 @@ export function default_fetch_handler(pagination, filter, props, rows, url, load
     params.per_page = props.pagination.rowsPerPage;
     params.order_by = props.pagination.sortBy;
     params.order_type = props.pagination.descending ? "desc" : "asc";
-    params.filter = props.filter;
-    filter.value = props.filter;
   }
 
   loading.value = true;

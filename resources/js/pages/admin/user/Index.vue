@@ -1,8 +1,16 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { useQuasar } from "quasar";
 import { router, usePage } from "@inertiajs/vue3";
-import { default_fetch_handler, default_delete_handler } from "@/helpers/client-req-handler";
+import { handleFetchItems, handleDelete } from "@/helpers/client-req-handler";
+import { create_options } from "@/helpers/utils";
+
+const roles = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.USER_ROLES)];
+const statuses = [
+  { value: 'all', label: 'Semua' },
+  { value: 'active', label: 'Aktif' },
+  { value: 'inactive', label: 'Tidak Aktif' },
+];
 
 const page = usePage();
 const currentUser = page.props.auth.user;
@@ -11,7 +19,12 @@ const $q = useQuasar();
 const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
-const filter = ref("");
+const filter = reactive({
+  role: 'all',
+  status: 'all',
+  search: '',
+});
+
 const pagination = ref({
   page: 1,
   rowsPerPage: 10,
@@ -51,22 +64,30 @@ const columns = [{
 }];
 
 onMounted(() => {
-  filter.value = localStorage.getItem("fixsync.user-list-page.filter");
+  const savedFilter = localStorage.getItem('fixsync.users.filter');
+  if (savedFilter) {
+    Object.assign(filter, JSON.parse(savedFilter));
+  }
   fetchItems();
 });
 
 watch(filter, (newValue) => {
-  if (!newValue && newValue != "") newValue = "";
-  localStorage.setItem("fixsync.user-list-page.filter", newValue);
+  localStorage.setItem('fixsync.users.filter', JSON.stringify(newValue));
+}, { deep: true });
+
+const onFilterChange = () =>
+  fetchItems();
+
+const fetchItems = (props = null) =>
+  handleFetchItems({ pagination, props, rows, loading, filter, url: route('admin.user.data') });
+
+const deleteItem = (row) => handleDelete({
+  url: route('admin.user.delete', row.id),
+  title: `Hapus pelanggan ${row.name}?`,
+  fetchItemsCallback: fetchItems,
+  loading,
 });
 
-const deleteItem = (row) => {
-  default_delete_handler(`Hapus pelanggan ${row.name}?`, route('admin.user.delete', row.id), fetchItems, loading);
-};
-
-const fetchItems = (props = null) => {
-  default_fetch_handler(pagination, filter, props, rows, route('admin.user.data'), loading);
-};
 </script>
 
 <template>
@@ -75,31 +96,38 @@ const fetchItems = (props = null) => {
     <template #title>{{ title }}</template>
     <div class="q-pa-md">
       <q-table ref="tableRef" flat bordered square :dense="true || $q.screen.lt.md" color="primary" row-key="id"
-        virtual-scroll title="Pengguna" v-model:pagination="pagination" :filter="filter" :loading="loading"
+        virtual-scroll title="Pengguna" v-model:pagination="pagination" :filter="filter.search" :loading="loading"
         :columns="columns" :rows="rows" :rows-per-page-options="[10, 25, 50]" @request="fetchItems" binary-state-sort>
         <template v-slot:loading>
           <q-inner-loading showing color="red" />
         </template>
 
-        <template v-slot:top-left>
-          <div class="q-gutter-sm">
-            <q-btn color="primary" icon="add" @click="router.get(route('admin.user.add'))" label="Tambah">
-              <q-tooltip>Tambah Pengguna</q-tooltip>
-            </q-btn>
+        <template #top>
+          <div class="col">
+            <div class="row q-my-sm items-center">
+              <q-btn color="primary" icon="add" @click="router.get(route('admin.user.add'))" label="Tambah">
+                <q-tooltip>Tambah Pengguna</q-tooltip>
+              </q-btn>
+              <q-space />
+              <q-input dense debounce="300" v-model="filter.search" placeholder="Cari" clearable>
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </div>
+            <div class="row q-my-sm q-gutter-sm items-center">
+              <span>Filter:</span>
+              <q-select v-model="filter.role" :options="roles" label="Role" dense map-options emit-value outlined
+                @update:model-value="onFilterChange" />
+              <q-select v-model="filter.status" :options="statuses" label="Status" dense map-options emit-value outlined
+                @update:model-value="onFilterChange" />
+            </div>
           </div>
         </template>
 
-        <template v-slot:top-right>
-          <q-input dense debounce="300" v-model="filter" placeholder="Cari" clearable>
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </template>
-
-        <template v-slot:no-data="{ icon, message, filter }">
+        <template v-slot:no-data="{ icon, message, term }">
           <div class="full-width row flex-center text-grey-8 q-gutter-sm">
-            <span>{{ message }} {{ filter ? " with term " + filter : "" }}</span>
+            <span>{{ message }} {{ term ? " with term " + term : "" }}</span>
           </div>
         </template>
 

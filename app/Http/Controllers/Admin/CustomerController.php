@@ -19,17 +19,24 @@ class CustomerController extends Controller
     {
         $orderBy = $request->get('order_by', 'name');
         $orderType = $request->get('order_type', 'asc');
-        $search = $request->get('filter', '');
+        $filter = $request->get('filter', []);
 
         $q = Customer::query();
-        $q->orderBy($orderBy, $orderType);
-
         $q->where('company_id', Auth::user()->company_id);
-        if (!empty($search)) {
-            $q->where('name', 'like', '%' . $search . '%');
-            $q->orWhere('phone', 'like', '%' . $search . '%');
-            $q->orWhere('address', 'like', '%' . $search . '%');
+
+        if (!empty($filter['search'])) {
+            $q->where(function ($q) use ($filter) {
+                $q->where('name', 'like', '%' . $filter['search'] . '%');
+                $q->orWhere('phone', 'like', '%' . $filter['search'] . '%');
+                $q->orWhere('address', 'like', '%' . $filter['search'] . '%');
+            });
         }
+
+        if (!empty($filter['status']) && ($filter['status'] == 'active' || $filter['status'] == 'inactive')) {
+            $q->where('active', '=', $filter['status'] == 'active' ? true : false);
+        }
+
+        $q->orderBy($orderBy, $orderType);
 
         $items = $q->paginate($request->get('per_page', 10))->withQueryString();
 

@@ -22,16 +22,32 @@ class ServiceOrderController extends Controller
     {
         $orderBy = $request->get('order_by', 'id');
         $orderType = $request->get('order_type', 'desc');
-        $search = $request->get('filter', '');
+        $filter = $request->get('filter', []);
 
         $q = ServiceOrder::query();
         $q->orderBy($orderBy, $orderType);
         $q->where('company_id', Auth::user()->company_id);
-        if (!empty($search)) {
-            $q->where('customer_name', 'like', '%' . $search . '%');
-            $q->orWhere('customer_phone', 'like', '%' . $search . '%');
-            $q->orWhere('customer_address', 'like', '%' . $search . '%');
-            $q->orWhere('device', 'like', '%' . $search . '%');
+
+        if (!empty($filter['order_status'] && $filter['order_status'] != 'all')) {
+            $q->where('order_status', '=', $filter['order_status']);
+        }
+
+        if (!empty($filter['service_status'] && $filter['service_status'] != 'all')) {
+            $q->where('service_status', '=', $filter['service_status']);
+        }
+
+        if (!empty($filter['payment_status'] && $filter['payment_status'] != 'all')) {
+            $q->where('payment_status', '=', $filter['payment_status']);
+        }
+
+        if (!empty($filter['search'])) {
+            $search = $filter['search'];
+            $q->where(function ($q) use ($search) {
+                $q->where('customer_name', 'like', '%' . $search . '%');
+                $q->orWhere('customer_phone', 'like', '%' . $search . '%');
+                $q->orWhere('customer_address', 'like', '%' . $search . '%');
+                $q->orWhere('device', 'like', '%' . $search . '%');
+            });
         }
 
         $items = $q->paginate($request->get('per_page', 10))->withQueryString();

@@ -20,15 +20,25 @@ class UserController extends Controller
     {
         $orderBy = $request->get('order_by', 'name');
         $orderType = $request->get('order_type', 'asc');
-        $search = $request->get('filter', '');
+        $filter = $request->get('filter', []);
 
         $q = User::query();
         $q->orderBy($orderBy, $orderType);
         $q->where('company_id', Auth::user()->company->id);
 
-        if (!empty($search)) {
-            $q->where('name', 'like', '%' . $search . '%');
-            $q->orWhere('email', 'like', '%' . $search . '%');
+        if (!empty($filter['role'] && $filter['role'] != 'all')) {
+            $q->where('role', '=', $filter['role']);
+        }
+
+        if (!empty($filter['status']) && ($filter['status'] == 'active' || $filter['status'] == 'inactive')) {
+            $q->where('active', '=', $filter['status'] == 'active' ? true : false);
+        }
+
+        if (!empty($filter['search'])) {
+            $q->where(function ($query) use ($filter) {
+                $query->where('name', 'like', '%' . $filter['search'] . '%');
+                $query->orWhere('email', 'like', '%' . $filter['search'] . '%');
+            });
         }
 
         $users = $q->paginate($request->get('per_page', 10))->withQueryString();

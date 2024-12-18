@@ -1,13 +1,12 @@
 <script setup>
 
-import { default_submit_handler } from '@/helpers/client-req-handler';
+import { handleSubmit } from '@/helpers/client-req-handler';
 import { scrollToFirstErrorField } from '@/helpers/utils';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const nameInputRef = ref();
 const page = usePage();
-
 const form = useForm({
   code: page.props.data.code,
   name: page.props.data.name,
@@ -16,9 +15,8 @@ const form = useForm({
   address: page.props.data.address,
 });
 
-const submit = () => {
-  default_submit_handler(form, route('admin.company-profile.update'));
-};
+const submit = () =>
+  handleSubmit({form, url: route('admin.company-profile.update')});
 
 </script>
 
