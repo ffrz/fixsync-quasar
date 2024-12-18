@@ -184,6 +184,8 @@ class ServiceOrderController extends Controller
 
     public function delete($id)
     {
+        allowed_roles(['admin']);
+
         $item = ServiceOrder::findOrFail($id);
         if ($item->company_id != Auth::user()->company_id) {
             return response()->json([

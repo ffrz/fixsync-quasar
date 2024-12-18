@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Auth;
 
 class CompanyProfileController extends Controller
 {
+    public function __construct()
+    {
+        allowed_roles('admin');
+    }
+
     /**
      * Display the company's profile form.
      */

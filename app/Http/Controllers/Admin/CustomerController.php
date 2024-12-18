@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
-    //
+    public function __construct()
+    {
+    }
+
     public function index()
     {
         return inertia('admin/customer/Index');
@@ -45,6 +48,8 @@ class CustomerController extends Controller
 
     public function editor($id = 0)
     {
+        allowed_roles(['admin', 'cashier']);
+
         $item = $id ? Customer::findOrFail($id) : new Customer();
 
         return inertia('admin/customer/Editor', [
@@ -82,6 +87,8 @@ class CustomerController extends Controller
 
     public function delete($id)
     {
+        allowed_roles(['admin']);
+
         $item = Customer::findOrFail($id);
         if ($item->company_id != Auth::user()->company_id) {
             return response()->json([

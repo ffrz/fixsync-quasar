@@ -2,18 +2,13 @@
 import { defineComponent, ref } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 
-const page = usePage();
-
 defineComponent({
   name: "AuthenticatedLayout",
 });
 
+const page = usePage();
 const leftDrawerOpen = ref(false);
-
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
-}
-
+const toggleLeftDrawer = () => leftDrawerOpen.value = !leftDrawerOpen.value;
 </script>
 
 <template>
@@ -29,15 +24,19 @@ function toggleLeftDrawer() {
       </q-toolbar>
     </q-header>
     <q-drawer :breakpoint="768" v-model="leftDrawerOpen" show-if-above style="border-right: 1px solid #ddd">
-      <q-img class="absolute-top" style="height: 80px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd">
+      <q-img class="absolute-top" style="height: 75px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd">
         <div class="absolute-middle bg-transparent">
-          <div><my-link class="text-black text-weight-bold" :href="route('admin.company-profile.edit')"
-              :label="page.props.auth.user.company_name" /></div>
-          <div><my-link class="text-black" :href="route('admin.profile.edit')" :label="page.props.auth.user.name" />
+          <div>
+            <my-link class="text-black text-bold" :href="route('admin.profile.edit')"
+              :label="page.props.auth.user.name" /><br />
+            <span class="text-grey-7 text-xs">
+              {{ $CONSTANTS.USER_ROLES[page.props.auth.user.role] }} -
+              {{ page.props.auth.user.company_name }}
+            </span>
           </div>
         </div>
       </q-img>
-      <q-scroll-area style="height: calc(100% - 80px); margin-top: 80px;">
+      <q-scroll-area style="height: calc(100% - 75px); margin-top: 75px;">
         <q-list id="main-nav" style="margin-bottom: 50px;">
           <q-item clickable v-ripple :active="$page.url == '/admin/dashboard'"
             @click="router.get(route('admin.dashboard'))">

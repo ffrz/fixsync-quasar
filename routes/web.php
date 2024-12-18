@@ -22,7 +22,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(NonAuthenticated::class)->group(function () {
-    Route::prefix('/admin/auth')->group(function() {
+    Route::prefix('/admin/auth')->group(function () {
         Route::match(['get', 'post'], 'login', [AuthController::class, 'login'])->name('admin.auth.login');
         Route::match(['get', 'post'], 'logout', [AuthController::class, 'logout'])->name('admin.auth.logout');
         Route::match(['get', 'post'], 'register', [AuthController::class, 'register'])->name('admin.auth.register');
@@ -35,7 +35,9 @@ Route::middleware([Auth::class])->group(function () {
 
         Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('test', [DashboardController::class, 'test'])->name('admin.test');
-        Route::get('about', function() { return inertia('admin/About'); })->name('admin.about');
+        Route::get('about', function () {
+            return inertia('admin/About');
+        })->name('admin.about');
 
         Route::prefix('customers')->group(function () {
             Route::get('', [CustomerController::class, 'index'])->name('admin.customer.index');

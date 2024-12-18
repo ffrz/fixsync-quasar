@@ -5,7 +5,6 @@ defineComponent({
   name: 'AuthLayout'
 })
 
-
 </script>
 <style scoped>
 .q-toolbar a {
