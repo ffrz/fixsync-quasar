@@ -83,7 +83,7 @@ onMounted(() => {
    * ini harus dinonaktifkan karena mengakibatkan double fetch, siapa yg mentrigger fetch pertama kali selain baris ini?
    * anehnya, kode ini hampir sama dengan modul user, tapi di modul user tidak terjadi double fetch
    */
-  // fetchItems();
+  fetchItems();
 });
 
 watch(filter, (newValue) => {

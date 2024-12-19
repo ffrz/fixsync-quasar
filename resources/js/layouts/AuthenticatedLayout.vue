@@ -18,7 +18,6 @@ function handleScroll() {
 }
 
 watch(leftDrawerOpen, (newValue) => {
-  console.log('updating left drawer open state:', newValue);
   localStorage.setItem('fixsync.layout.left-drawer-open', newValue);
 });
 
