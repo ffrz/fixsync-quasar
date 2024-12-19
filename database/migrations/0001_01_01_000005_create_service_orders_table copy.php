@@ -65,7 +65,7 @@ return new class extends Migration
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null');
-            $table->foreign('technician_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('technician_id')->references('id')->on('technicians')->onDelete('set null');
             $table->foreign('created_by_uid')->references('id')->on('users')->onDelete('set null');
             $table->foreign('closed_by_uid')->references('id')->on('users')->onDelete('set null');
             $table->foreign('updated_by_uid')->references('id')->on('users')->onDelete('set null');

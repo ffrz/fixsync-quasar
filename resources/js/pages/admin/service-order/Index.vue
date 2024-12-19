@@ -180,7 +180,7 @@ const onFilterChange = () => {
                   @click="router.get(route('admin.service-order.edit', props.row.id))">
                   <q-tooltip>Edit Pesanan</q-tooltip>
                 </q-btn>
-                <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)">
+                <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)" :disable="$page.props.auth.user.role != 'admin'">
                   <q-tooltip>Hapus Pesanan</q-tooltip>
                 </q-btn>
               </q-td>

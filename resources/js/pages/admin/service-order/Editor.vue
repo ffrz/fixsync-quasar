@@ -131,7 +131,7 @@ const onCustomerChange = (val) => {
                   @update:model-value="onCustomerChange" :error="!!form.errors.customer_id" :disable="form.processing">
                   <template v-slot:no-option>
                     <q-item>
-                      <q-item-section>No customers found</q-item-section>
+                      <q-item-section>Pelanggan tidak ditemukan</q-item-section>
                     </q-item>
                   </template>
                 </q-select>

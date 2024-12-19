@@ -121,6 +121,15 @@ onUnmounted(() => {
               <q-item-label>Pelanggan</q-item-label>
             </q-item-section>
           </q-item>
+          <q-item clickable v-ripple :active="$page.url.startsWith('/admin/technicians')"
+            @click="router.get(route('admin.technician.index'))">
+            <q-item-section avatar>
+              <q-icon name="groups" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Teknisi</q-item-label>
+            </q-item-section>
+          </q-item>
           <q-expansion-item expand-separator icon="settings" label="Pengaturan"
             :default-opened="$page.url.startsWith('/admin/settings')">
             <q-item v-if="$page.props.auth.user.role == 'admin'" class="subnav" clickable v-ripple

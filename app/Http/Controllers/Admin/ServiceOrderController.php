@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\ServiceOrder;
-use App\Models\User;
+use App\Models\Technician;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -80,10 +80,8 @@ class ServiceOrderController extends Controller
         $customers = Customer::where('company_id', $companyId)
             ->get(['id', 'name', 'phone', 'address']);
 
-        $technicians = User::where('company_id', $companyId)
-            ->where('active', true)
-            ->where('role', 'technician')
-            ->get(['id', 'username', 'name']);
+        $technicians = Technician::where('company_id', $companyId)
+            ->get(['id', 'name']);
 
         return inertia('admin/service-order/Editor', [
             'data' => $item,

@@ -3,9 +3,15 @@ export function create_options(data) {
     .map(([key, value]) => ({ 'value': key, 'label': value }));
 }
 
+export function create_options_from_users(items) {
+  return items.map((user) => {
+    return { 'value': user.id, 'label': `${user.username} - ${user.name}` };
+  });
+}
+
 export function create_options_from_technicians(items) {
   return items.map((technician) => {
-    return { 'value': technician.id, 'label': `${technician.username} - ${technician.name}` };
+    return { 'value': technician.id, 'label': `#${technician.id} - ${technician.name}` };
   });
 }
 

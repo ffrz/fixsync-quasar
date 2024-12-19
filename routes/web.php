@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceOrderController;
+use App\Http\Controllers\Admin\TechnicianController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Middleware\Auth;
 use App\Http\Middleware\NonAuthenticated;
@@ -55,6 +56,15 @@ Route::middleware([Auth::class])->group(function () {
             Route::get('edit/{id}', [ServiceOrderController::class, 'editor'])->name('admin.service-order.edit');
             Route::post('save', [ServiceOrderController::class, 'save'])->name('admin.service-order.save');
             Route::post('delete/{id}', [ServiceOrderController::class, 'delete'])->name('admin.service-order.delete');
+        });
+
+        Route::prefix('technicians')->group(function () {
+            Route::get('', [TechnicianController::class, 'index'])->name('admin.technician.index');
+            Route::get('data', [TechnicianController::class, 'data'])->name('admin.technician.data');
+            Route::get('add', [TechnicianController::class, 'editor'])->name('admin.technician.add');
+            Route::get('edit/{id}', [TechnicianController::class, 'editor'])->name('admin.technician.edit');
+            Route::post('save', [TechnicianController::class, 'save'])->name('admin.technician.save');
+            Route::post('delete/{id}', [TechnicianController::class, 'delete'])->name('admin.technician.delete');
         });
 
         Route::prefix('settings')->group(function () {

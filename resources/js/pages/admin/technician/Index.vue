@@ -14,7 +14,7 @@ const filter = reactive({
   search: "",
   status: "all",
 });
-const title = "Pelanggan";
+const title = "Teknisi";
 const pagination = ref({
   page: 1,
   rowsPerPage: 10,
@@ -54,7 +54,7 @@ const statuses = [
 ];
 
 onMounted(() => {
-  const savedFilter = localStorage.getItem('fixsync.customers.filter');
+  const savedFilter = localStorage.getItem('fixsync.technician.filter');
   if (savedFilter) {
     Object.assign(filter, JSON.parse(savedFilter));
   }
@@ -63,20 +63,20 @@ onMounted(() => {
 });
 
 watch(filter, (newValue) => {
-  localStorage.setItem('fixsync.customers.filter', JSON.stringify(newValue));
+  localStorage.setItem('fixsync.technician.filter', JSON.stringify(newValue));
 }, { deep: true });
 
 const deleteItem = (row) =>
   handleDelete({
-    message: `Hapus pelanggan ${row.name}?`,
-    url: route('admin.customer.delete', row.id),
+    message: `Hapus teknisi ${row.name}?`,
+    url: route('admin.technician.delete', row.id),
     fetchItemsCallback: fetchItems,
     loading
   });
 
 const fetchItems = (props = null) => {
   console.log('fetching data');
-  handleFetchItems({ pagination, filter, props, rows, url: route('admin.customer.data'), loading });
+  handleFetchItems({ pagination, filter, props, rows, url: route('admin.technician.data'), loading });
 }
 
 
@@ -99,8 +99,8 @@ const onFilterChange = () => fetchItems();
           <template #top>
             <div class="col">
               <div class="row q-my-sm items-center">
-                <q-btn color="primary" icon="add" @click="router.get(route('admin.customer.add'))" label="Tambah">
-                  <q-tooltip>Tambah Pelanggan</q-tooltip>
+                <q-btn color="primary" icon="add" @click="router.get(route('admin.technician.add'))" label="Tambah" :disabled="$page.props.auth.user.role != 'admin'">
+                  <q-tooltip>Tambah Teknisi</q-tooltip>
                 </q-btn>
                 <q-space />
                 <q-input dense debounce="300" v-model="filter.search" placeholder="Cari" clearable>
@@ -139,11 +139,11 @@ const onFilterChange = () => fetchItems();
                 {{ props.row.address }}
               </q-td>
               <q-td key="action" class="q-gutter-x-sm" :props="props" align="center">
-                <q-btn flat dense rounded icon="edit" @click="router.get(route('admin.customer.edit', props.row.id))" :disabled="$page.props.auth.user.role != 'admin' || $page.props.auth.user.role != 'cashier'">
-                  <q-tooltip>Edit Pelanggan</q-tooltip>
+                <q-btn flat dense rounded icon="edit" @click="router.get(route('admin.technician.edit', props.row.id))" :disabled="$page.props.auth.user.role != 'admin'">
+                  <q-tooltip>Edit Teknisi</q-tooltip>
                 </q-btn>
                 <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)" :disabled="$page.props.auth.user.role != 'admin'">
-                  <q-tooltip>Hapus Pelanggan</q-tooltip>
+                  <q-tooltip>Hapus Teknisi</q-tooltip>
                 </q-btn>
               </q-td>
             </q-tr>
