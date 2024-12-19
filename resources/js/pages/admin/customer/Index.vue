@@ -1,4 +1,6 @@
 <script setup>
+// FIXME: Terkadang terjadi double fetch pada saat komponen di mount
+
 import { onMounted, reactive, ref, watch } from "vue";
 import { router } from "@inertiajs/vue3";
 import { useQuasar } from "quasar";
@@ -56,7 +58,8 @@ onMounted(() => {
   if (savedFilter) {
     Object.assign(filter, JSON.parse(savedFilter));
   }
-  fetchItems();
+
+  fetchItems(); // ini trigger fetch ketika komponen di mount
 });
 
 watch(filter, (newValue) => {
@@ -71,8 +74,11 @@ const deleteItem = (row) =>
     loading
   });
 
-const fetchItems = (props = null) =>
+const fetchItems = (props = null) => {
+  console.log('fetching data');
   handleFetchItems({ pagination, filter, props, rows, url: route('admin.customer.data'), loading });
+}
+
 
 const onFilterChange = () => fetchItems();
 </script>

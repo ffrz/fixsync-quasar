@@ -1,4 +1,6 @@
 <script setup>
+// FIXME: Terkadang terjadi double fetch pada saat komponen di mount
+
 import { onMounted, reactive, ref, watch } from "vue";
 import { router } from "@inertiajs/vue3";
 import { useQuasar } from "quasar";
@@ -76,7 +78,12 @@ onMounted(() => {
   if (savedFilter) {
     Object.assign(filter, JSON.parse(savedFilter));
   }
-  fetchItems();
+
+  /**
+   * ini harus dinonaktifkan karena mengakibatkan double fetch, siapa yg mentrigger fetch pertama kali selain baris ini?
+   * anehnya, kode ini hampir sama dengan modul user, tapi di modul user tidak terjadi double fetch
+   */
+  // fetchItems();
 });
 
 watch(filter, (newValue) => {
@@ -94,7 +101,9 @@ const deleteItem = (row) =>
 const fetchItems = (props = null) =>
   handleFetchItems({ pagination, filter, props, rows, url: route('admin.service-order.data'), loading });
 
-const onFilterChange = () => fetchItems();
+const onFilterChange = () => {
+  fetchItems();
+}
 
 </script>
 

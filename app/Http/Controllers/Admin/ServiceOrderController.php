@@ -137,7 +137,7 @@ class ServiceOrderController extends Controller
         $data['down_payment'] = $data['down_payment'] ?? 0;
         $data['total_cost'] = $data['total_cost'] ?? 0;
         $data['warranty_start_date'] = $data['warranty_start_date'] ?? null;
-        $data['warranty_day_count'] = $data['warranty_day_count'] ?? null;
+        $data['warranty_day_count'] = $data['warranty_day_count'] ?? 0;
 
         if (!$request->id) {
             $item = new ServiceOrder();

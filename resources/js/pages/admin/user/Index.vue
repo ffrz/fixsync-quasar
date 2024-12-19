@@ -75,8 +75,7 @@ watch(filter, (newValue) => {
   localStorage.setItem('fixsync.users.filter', JSON.stringify(newValue));
 }, { deep: true });
 
-const onFilterChange = () =>
-  fetchItems();
+const onFilterChange = () => fetchItems();
 
 const fetchItems = (props = null) =>
   handleFetchItems({ pagination, props, rows, loading, filter, url: route('admin.user.data') });

@@ -1,5 +1,5 @@
 <script setup>
-import { defineComponent, onMounted, onUnmounted, ref } from "vue";
+import { defineComponent, onMounted, onUnmounted, ref, watch } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 
 defineComponent({
@@ -7,7 +7,7 @@ defineComponent({
 });
 
 const page = usePage();
-const leftDrawerOpen = ref(false);
+const leftDrawerOpen = ref(JSON.parse(localStorage.getItem('fixsync.layout.left-drawer-open')));
 const isDropdownOpen = ref(false);
 const isScrolled = ref(false);
 
@@ -17,7 +17,13 @@ function handleScroll() {
   isScrolled.value = window.scrollY > 0;
 }
 
+watch(leftDrawerOpen, (newValue) => {
+  console.log('updating left drawer open state:', newValue);
+  localStorage.setItem('fixsync.layout.left-drawer-open', newValue);
+});
+
 onMounted(() => {
+  leftDrawerOpen.value = JSON.parse(localStorage.getItem('fixsync.layout.left-drawer-open'));
   window.addEventListener('scroll', handleScroll);
 });
 
@@ -34,20 +40,19 @@ onUnmounted(() => {
         <q-btn v-if="!leftDrawerOpen" flat dense aria-label="Menu" @click="toggleLeftDrawer">
           <q-icon class="material-symbols-outlined">dock_to_right</q-icon>
         </q-btn>
-        <q-toolbar-title :class="{ 'q-ml-sm': leftDrawerOpen }" style="font-size:18px;color:#555">
+        <q-toolbar-title :class="{ 'q-ml-sm': leftDrawerOpen }" style="font-size:18px;">
           <slot name="title">{{ $config.APP_NAME }}</slot>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
-    <q-drawer :breakpoint="768" v-model="leftDrawerOpen" show-if-above style="border-right: 1px solid #ddd"
-      class="bg-grey-2">
+    <q-drawer :breakpoint="768" v-model="leftDrawerOpen" bordered class="bg-grey-2" style="color:#444;">
       <div class="absolute-top"
-        style="height: 50px;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;align-items: center;justify-content: center;">
+        style="height: 50px;border-bottom: 1px solid #ddd;align-items: center;justify-content: center;">
         <div style="width:100%;padding: 8px;display:flex;justify-content: space-between;">
           <q-btn-dropdown v-model="isDropdownOpen" class="profile-btn text-bold" flat :label="page.props.auth.user.name"
             style="justify-content:space-between;flex-grow:1;overflow:hidden;"
             :class="{ 'profile-btn-active': isDropdownOpen }">
-            <q-list>
+            <q-list id="profile-btn-popup" style="color:#444">
               <q-item>
                 <q-avatar style="margin-left: -15px;"><q-icon name="person" /></q-avatar>
                 <q-item-section>
@@ -75,6 +80,7 @@ onUnmounted(() => {
                   <q-item-label><q-icon name="home_work" class="q-mr-sm" /> Profil Perusahaan</q-item-label>
                 </q-item-section>
               </q-item>
+              <q-separator />
               <q-item dense clickable v-close-popup v-ripple @click="router.post(route('logout'))">
                 <q-item-section>
                   <q-item-label><q-icon name="logout" class="q-mr-sm" /> Logout</q-item-label>
@@ -170,13 +176,22 @@ onUnmounted(() => {
 </style>
 <style scoped>
 .q-toolbar {
-  border-bottom: 1px solid transparent; /* Optional border line */
+  border-bottom: 1px solid transparent;
+  /* Optional border line */
 }
+
 .toolbar-scrolled {
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05); /* Add shadow */
-  border-bottom: 1px solid #ddd; /* Optional border line */
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  /* Add shadow */
+  border-bottom: 1px solid #ddd;
+  /* Optional border line */
 }
+
 .profile-btn-active {
   background-color: #ddd !important;
+}
+
+#profile-btn-popup .q-item--active {
+  color: inherit !important;
 }
 </style>
