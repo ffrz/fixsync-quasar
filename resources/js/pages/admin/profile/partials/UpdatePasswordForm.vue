@@ -37,14 +37,14 @@ const updatePassword = () => {
       <q-card-section>
         <h2 class="text-h6 q-my-xs">Perbarui Kata Sandi</h2>
         <p>Pastikan akun anda menggunakan kata sandi acak yang panjang agar akun tetap aman.</p>
-        <q-input v-model="form.current_password" label="Kata Sandi Sekarang" type="password" lazy-rules
+        <q-input v-model="form.current_password" label="Kata Sandi Sekarang" type="password" lazy-rules autocomplete="off"
           :disable="form.processing" :error="!!form.errors.current_password"
           :error-message="form.errors.current_password"
           :rules="[(val) => (val && val.length > 0) || 'Kata sandi harus diisi.']" />
-        <q-input v-model="form.password" label="Kata Sandi Baru" type="password" lazy-rules
+        <q-input v-model="form.password" label="Kata Sandi Baru" type="password" lazy-rules autocomplete="off"
           :disable="form.processing" :error="!!form.errors.password" :error-message="form.errors.password"
           :rules="[(val) => (val && val.length > 0) || 'Kata sandi harus diisi.']" />
-        <q-input v-model="form.password_confirmation" label="Konfirmasi Kata Sandi" type="password" lazy-rules
+        <q-input v-model="form.password_confirmation" label="Konfirmasi Kata Sandi" type="password" lazy-rules autocomplete="off"
           :disable="form.processing" :error="!!form.errors.password_confirmation"
           :error-message="form.errors.password_confirmation"
           :rules="[(val) => (val && val.length > 0) || 'Kata sandi harus diisi.']" />

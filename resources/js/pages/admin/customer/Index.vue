@@ -105,8 +105,8 @@ const onFilterChange = () => fetchItems();
               </div>
               <div class="row q-my-sm q-gutter-sm items-center">
                 <span>Filter:</span>
-                <q-select v-model="filter.status" :options="statuses" label="Status" dense map-options emit-value
-                  outlined @update:model-value="onFilterChange" />
+                <q-select style="min-width: 150px;" v-model="filter.status" :options="statuses" label="Status" dense
+                  map-options emit-value outlined @update:model-value="onFilterChange" />
               </div>
             </div>
           </template>

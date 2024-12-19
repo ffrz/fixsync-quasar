@@ -32,6 +32,9 @@ createInertiaApp({
       .use(ZiggyVue)
       .use(Quasar, {
         plugins: { Notify, Loading, Dialog },
+        framework: {
+          iconSet: 'material-icons-outlined', // Change this to use the outlined icon set
+        }
       })
       .component('i-head', Head)
       .component('i-link', Link)
@@ -39,10 +42,10 @@ createInertiaApp({
       .component('guest-layout', GuestLayout)
       .component('authenticated-layout', AuthenticatedLayout);
 
-      VueApp.config.globalProperties.$dayjs = dayjs;
-      VueApp.config.globalProperties.$config = window.CONFIG;
-      VueApp.config.globalProperties.$CONSTANTS = window.CONSTANTS;
-      VueApp.mount(el);
+    VueApp.config.globalProperties.$dayjs = dayjs;
+    VueApp.config.globalProperties.$config = window.CONFIG;
+    VueApp.config.globalProperties.$CONSTANTS = window.CONSTANTS;
+    VueApp.mount(el);
   },
   progress: {
     color: '#4B5563',

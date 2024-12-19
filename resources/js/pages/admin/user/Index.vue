@@ -118,9 +118,9 @@ const deleteItem = (row) => handleDelete({
             <div class="row q-my-sm q-gutter-sm items-center">
               <span>Filter:</span>
               <q-select v-model="filter.role" :options="roles" label="Role" dense map-options emit-value outlined
-                @update:model-value="onFilterChange" />
+                style="min-width: 150px;" @update:model-value="onFilterChange" />
               <q-select v-model="filter.status" :options="statuses" label="Status" dense map-options emit-value outlined
-                @update:model-value="onFilterChange" />
+                style="min-width: 150px;" @update:model-value="onFilterChange" />
             </div>
           </div>
         </template>

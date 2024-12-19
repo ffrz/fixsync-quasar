@@ -14,10 +14,17 @@ a:hover {
 
 #main-nav .q-item__section--side > .q-icon {
   font-size: 20px;
-  color: #444;
+  color: #555;
 }
+
+#main-nav .q-item--active .q-icon {
+  color: #309dcf;
+}
+
 #main-nav .q-item--active {
-  background: #eee;
+  background: #d0f0ff;
+  color: #309dcf;
+  font-weight: bold;
 }
 
 #main-nav .q-item {
@@ -25,9 +32,9 @@ a:hover {
 }
 
 #main-nav .subnav {
+  padding-left: 35px;
   box-shadow: inset 2px 0 0 #888;
 }
-
 #main-nav .subnav .subnav {
   box-shadow: inset 4px 0 0 #666;
 }
@@ -37,3 +44,6 @@ a:hover {
 }
 
 
+.q-btn {
+  text-transform: none !important;
+}
