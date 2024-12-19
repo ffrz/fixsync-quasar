@@ -1,5 +1,20 @@
+import { usePage } from "@inertiajs/vue3";
 import axios from "axios";
 import { Notify, Dialog } from "quasar";
+
+const _scrollToFirstError = () => {
+  const page = usePage();
+  const firstErrorKey = Object.keys(page.props.errors)[0];
+  if (firstErrorKey) {
+    setTimeout(() => {
+      const errorElement = document.querySelector('.q-field--error input');
+      if (errorElement) {
+        errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        errorElement.focus();
+      }
+    }, 0);
+  }
+};
 
 export function handleSubmit(data) {
   const { form, url } = data;
@@ -9,7 +24,9 @@ export function handleSubmit(data) {
     {
       preserveScroll: true,
       onError: (response) => {
-        if (typeof(response.message) !== 'string' || response.message.length === 0)
+        _scrollToFirstError();
+
+        if (typeof (response.message) !== 'string' || response.message.length === 0)
           return;
 
         Notify.create({
@@ -26,7 +43,7 @@ export function handleSubmit(data) {
 }
 
 export function handleDelete(data) {
-  const {message, url, fetchItemsCallback, loading} = data;
+  const { message, url, fetchItemsCallback, loading } = data;
   Dialog.create({
     title: "Konfirmasi",
     icon: "question",

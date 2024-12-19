@@ -71,7 +71,6 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
-            'username' => ['required', 'string', 'max:100'],
             'email' => 'email|min:3|max:100',
             'password' => 'required|min:5|max:40',
             'role' => 'required',
@@ -79,6 +78,7 @@ class UserController extends Controller
         $messages = [
             'name.required' => 'Nama pengguna harus diisi',
             'name.max' => 'Nama pengguna maksimal 255 karakter',
+            'username.alpha_num' => 'Gunakan huruf dan angka saja.',
             'username.required' => 'ID pengguna harus diisi',
             'username.max' => 'Nama pengguna maksimal 100 karakter',
             'username.unique' => 'ID Pengguna sudah digunakan',
@@ -94,14 +94,14 @@ class UserController extends Controller
         $companyId = Auth::user()->company_id;
         if (!$request->id) {
             // username harus unik untuk masing-masing company_id
-            $rules['username'] = "required|string|max:255|unique:users,username,NULL,id,company_id,{$companyId}";
+            $rules['username'] = "required|alpha_num|max:255|unique:users,username,NULL,id,company_id,{$companyId}";
             $request->validate($rules, $messages);
             $user = new User();
             $user->company_id = $companyId;
             $message = 'Pengguna baru telah dibuat.';
         } else {
             // username harus unik untuk masing-masing company_id, exclude id
-            $rules['username'] = "required|string|max:255|unique:users,username,{$request->id},id,company_id,{$companyId}";
+            $rules['username'] = "required|alpha_num|max:255|unique:users,username,{$request->id},id,company_id,{$companyId}";
             if (empty($request->get('password'))) {
                 // kalau password tidak diisi, skip validation dan jangan update password
                 unset($rules['password']);

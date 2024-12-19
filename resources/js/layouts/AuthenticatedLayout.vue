@@ -80,7 +80,7 @@ onUnmounted(() => {
                 </q-item-section>
               </q-item>
               <q-separator />
-              <q-item dense clickable v-close-popup v-ripple @click="router.post(route('logout'))">
+              <q-item dense clickable v-close-popup v-ripple @click="router.post(route('admin.auth.logout'))">
                 <q-item-section>
                   <q-item-label><q-icon name="logout" class="q-mr-sm" /> Logout</q-item-label>
                 </q-item-section>

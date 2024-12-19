@@ -38,7 +38,7 @@ const title = 'Dashboard';
             nobis
             minus, est enim similique quaerat vel asperiores ipsam harum et, totam fugit.</p>
           <div>
-            <btn-link label="Logout" :url="route('logout')" method="post" color="accent" icon="logout"/>
+            <btn-link label="Logout" :url="route('admin.auth.logout')" method="post" color="accent" icon="logout"/>
           </div>
         </q-card-section>
       </q-card>

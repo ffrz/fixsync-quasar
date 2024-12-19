@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Nette\NotImplementedException;
 
 class AuthController extends Controller
 {
@@ -72,7 +73,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $this->_logout($request);
-        return redirect(route('admin.auth.login'))->with('success', 'Anda telah logout.');
+        return redirect('/')->with('success', 'Anda telah logout.');
     }
 
     public function register(Request $request)
@@ -81,6 +82,68 @@ class AuthController extends Controller
             return inertia('admin/auth/Register');
         }
 
-        throw new NotImplementedException('Fitur ini belum diimplementasikan.');
+        $validator = Validator::make($request->all(), [
+            'company_code' => 'required|alpha_num|unique:companies,code|min:3|max:40',
+            'company_name' => 'required|min:2|max:100',
+            'company_email' => 'required|email|unique:companies,email|min:2|max:100',
+            'username' => 'required|alpha_num|min:3|max:40',
+            'name' => 'required|min:2|max:100',
+            'email' => 'required|email|min:2|max:255',
+            'password' => 'required|min:5|confirmed',
+        ], [
+            'company_code.required' => 'Kode harus diisi.',
+            'company_code.unique' => 'Kode sudah digunakan.',
+            'company_code.alpha_num' => 'Gunakan huruf dan angka saja.',
+
+            'company_name.min' => 'Nama terlalu pendek, minimal 2 karakter.',
+            'company_name.max' => 'Nama terlalu panjang, maksimal 100 karakter.',
+
+            'company_email.required' => 'Email sudah digunakan.',
+            'company_email.email' => 'Email tidak valid.',
+            'company_email.unique' => 'Email sudah pernah digunakan.',
+
+            'name.min' => 'Nama terlalu pendek, minimal 2 karakter.',
+            'name.max' => 'Nama terlalu panjang, maksimal 100 karakter.',
+
+            'email.required' => 'Email harus harus diisi.',
+            'email.email' => 'Email tidak valid.',
+            'email.min' => 'Email terlalu pendek, minimal 2 karakter.',
+            'email.max' => 'Email terlalu panjang, maksimal 255 karakter.',
+
+            'username.required' => 'Username harus harus diisi.',
+            'username.alpha_num' => 'Gunakan huruf dan angka saja.',
+            'username.min' => 'Username terlalu pendek, minimal 2 karakter.',
+            'username.max' => 'Username terlalu panjang, maksimal 40 karakter.',
+
+            'password.required' => 'Kata sandi harus diisi.',
+            'password.min' => 'Kata sandi terlalu pendek, minimal 5 karakter.',
+            'password.confirmed' => 'Kata sandi yang anda konfirmasi salah.',
+        ]);
+
+        // basic validations
+        if ($validator->fails()) {
+            return redirect()->back()->withInput()->withErrors($validator);
+        }
+
+        DB::transaction(function () use ($request) {
+            $company = new Company();
+            $company->code = $request->post('company_code');
+            $company->name = $request->post('company_name');
+            $company->email = $request->post('company_email');
+            $company->phone = '';
+            $company->address = '';
+            $company->active = true;
+            $company->save();
+
+            $user = new User();
+            $user->fill($request->only(['username', 'name', 'email']));
+            $user->company_id = $company->id;
+            $user->password = Hash::make($request->post('password'));
+            $user->role = 'admin';
+            $user->active = true;
+            $user->save();
+        });
+
+        return redirect(route('admin.auth.login'))->with('success', 'Pendaftaran berhasil, silahkan masuk.');
     }
 }

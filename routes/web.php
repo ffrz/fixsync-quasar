@@ -25,14 +25,16 @@ Route::get('/', function () {
 Route::middleware(NonAuthenticated::class)->group(function () {
     Route::prefix('/admin/auth')->group(function () {
         Route::match(['get', 'post'], 'login', [AuthController::class, 'login'])->name('admin.auth.login');
-        Route::match(['get', 'post'], 'logout', [AuthController::class, 'logout'])->name('admin.auth.logout');
         Route::match(['get', 'post'], 'register', [AuthController::class, 'register'])->name('admin.auth.register');
+        Route::match(['get', 'post'], 'reset-password', [AuthController::class, 'resetPassword'])->name('admin.auth.request-password');
     });
 });
 
 Route::middleware([Auth::class])->group(function () {
+    Route::match(['get', 'post'], 'admin/auth/logout', [AuthController::class, 'logout'])->name('admin.auth.logout');
+
     Route::prefix('admin')->group(function () {
-        Route::redirect('', '/admin/dashboard', 301);
+        Route::redirect('', 'admin/dashboard', 301);
 
         Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('test', [DashboardController::class, 'test'])->name('admin.test');
@@ -86,5 +88,3 @@ Route::middleware([Auth::class])->group(function () {
         });
     });
 });
-
-require __DIR__ . '/auth.php';
