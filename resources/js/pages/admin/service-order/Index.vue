@@ -5,7 +5,7 @@ import { onMounted, reactive, ref, watch } from "vue";
 import { router } from "@inertiajs/vue3";
 import { useQuasar } from "quasar";
 import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
-import { create_options } from "@/helpers/utils";
+import { create_options, check_role } from "@/helpers/utils";
 
 const $q = useQuasar();
 const tableRef = ref(null);
@@ -180,7 +180,7 @@ const onFilterChange = () => {
                   @click="router.get(route('admin.service-order.edit', props.row.id))">
                   <q-tooltip>Edit Pesanan</q-tooltip>
                 </q-btn>
-                <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)" :disable="$page.props.auth.user.role != 'admin'">
+                <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)" :disable="!check_role('admin')">
                   <q-tooltip>Hapus Pesanan</q-tooltip>
                 </q-btn>
               </q-td>

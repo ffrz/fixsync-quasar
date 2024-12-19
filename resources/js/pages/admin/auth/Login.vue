@@ -40,14 +40,14 @@ const submit = () => {
                     <q-icon name="store" />
                   </template>
                 </q-input>
-                <q-input v-model.trim="form.username" label="ID Pengguna" lazy-rules :error="!!form.errors.username"
+                <q-input v-model.trim="form.username" label="ID Pengguna" lazy-rules :error="!!form.errors.username" autocomplete="username"
                   :error-message="form.errors.username" :disable="form.processing"
                   :rules="[(val) => (val && val.length > 0) || 'Masukkan ID Pengguna',]">
                   <template v-slot:append>
                     <q-icon name="person" />
                   </template>
                 </q-input>
-                <q-input v-model="form.password" type="password" label="Kata Sandi" :error="!!form.errors.password"
+                <q-input v-model="form.password" type="password" label="Kata Sandi" :error="!!form.errors.password" autocomplete="current-password"
                   :error-message="form.errors.password" lazy-rules :disable="form.processing"
                   :rules="[(val) => (val && val.length > 0) || 'Masukkan kata sandi',]">
                   <template v-slot:append>
