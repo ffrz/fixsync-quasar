@@ -16,8 +16,7 @@ const customers = ref([{ value: 0, label: '<< Pelanggan Baru >>' }, ...create_op
 const filteredCustomers = ref([...customers.value]);
 const technicians = ref(create_options_from_technicians(page.props.technicians));
 const filteredTechnicians = ref([...technicians.value]);
-const title = !!page.props.data.id ? `Edit Order Servis #${form.id}` : 'Tambah Order Servis';
-
+const title = !!page.props.data.id ? `Edit Order Servis #${page.props.data.id}` : 'Tambah Order Servis';
 const form = useForm({
   id: page.props.data.id,
   order_status: page.props.data.order_status,
