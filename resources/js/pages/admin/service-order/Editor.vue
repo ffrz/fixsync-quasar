@@ -13,7 +13,11 @@ const order_statuses = create_options(window.CONSTANTS.SERVICEORDER_ORDER_STATUS
 const payment_statuses = create_options(window.CONSTANTS.SERVICEORDER_PAYMENT_STATUSES);
 const service_statuses = create_options(window.CONSTANTS.SERVICEORDER_SERVICE_STATUSES);
 const customers = ref([{ value: 0, label: '<< Pelanggan Baru >>' }, ...create_options_from_customers(page.props.customers)]);
-const technicians = create_options_from_technicians(page.props.technicians);
+const filteredCustomers = ref([...customers.value]);
+const technicians = ref(create_options_from_technicians(page.props.technicians));
+const filteredTechnicians = ref([...technicians.value]);
+const title = !!page.props.data.id ? `Edit Order Servis #${form.id}` : 'Tambah Order Servis';
+
 const form = useForm({
   id: page.props.data.id,
   order_status: page.props.data.order_status,
@@ -49,19 +53,23 @@ const form = useForm({
   notes: page.props.data.notes,
 });
 
-const title = !!page.props.data.id ? `Edit Order Servis #${form.id}` : 'Tambah Order Servis';
-
 const submit = () =>
-  handleSubmit({form, url: route('admin.service-order.save')});
+  handleSubmit({ form, url: route('admin.service-order.save') });
 
-const filteredCustomers = ref([...customers.value]); // Filtered list of customers
-
-// Custom filter function
 const filterCustomers = (val, update) => {
   update(() => {
     const search = val.toLowerCase();
-    filteredCustomers.value = customers.value.filter(customer =>
-      customer.label.toLowerCase().includes(search)
+    filteredCustomers.value = customers.value.filter(item =>
+      item.label.toLowerCase().includes(search)
+    );
+  });
+};
+
+const filterTechnicians = (val, update) => {
+  update(() => {
+    const search = val.toLowerCase();
+    filteredTechnicians.value = technicians.value.filter(item =>
+      item.label.toLowerCase().includes(search)
     );
   });
 };
@@ -69,7 +77,6 @@ const filterCustomers = (val, update) => {
 const onCustomerChange = (val) => {
   if (!!val) {
     const customer = page.props.customers.find(customer => customer.id === val);
-    console.log(customer);
     form.customer_name = customer.name;
     form.customer_phone = customer.phone;
     form.customer_address = customer.address;
@@ -180,8 +187,15 @@ const onCustomerChange = (val) => {
                 <div class="text-subtitle1">Info Servis</div>
                 <q-select v-model="form.service_status" label="Status Servis" :options="service_statuses" map-options
                   emit-value :error="!!form.errors.service_status" :disable="form.processing" />
-                <q-select v-model="form.technician_id" label="Teknisi" :options="technicians" map-options emit-value
-                  :error="!!form.errors.technician_id" :disable="form.processing" />
+                <q-select v-model="form.technician_id" label="Teknisi" :options="filteredTechnicians" map-options
+                  clearable emit-value @filter="filterTechnicians" use-input input-debounce="300"
+                  :error="!!form.errors.technician_id" :disable="form.processing">
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section>Teknisi tidak ditemukan</q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
                 <date-time-picker v-model="form.received_datetime" label="Tanggal Diterima"
                   :error="!!form.errors.received_datetime" :disable="form.processing" />
                 <date-time-picker v-model="form.checked_datetime" label="Tanggal Diperiksa"
@@ -216,8 +230,9 @@ const onCustomerChange = (val) => {
               </q-card-section>
               <q-card-section>
                 <div class="text-subtitle1">Catatan</div>
-                <q-input v-model.trim="form.notes" type="textarea" label="Buat catatan order" autogrow counter maxlength="1000" lazy-rules
-                  :disable="form.processing" :error="!!form.errors.notes" :error-message="form.errors.notes" />
+                <q-input v-model.trim="form.notes" type="textarea" label="Buat catatan order" autogrow counter
+                  maxlength="1000" lazy-rules :disable="form.processing" :error="!!form.errors.notes"
+                  :error-message="form.errors.notes" />
               </q-card-section>
               <q-card-section>
                 <q-card-actions>

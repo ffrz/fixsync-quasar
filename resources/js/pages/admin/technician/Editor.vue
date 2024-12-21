@@ -2,9 +2,11 @@
 import { router, useForm, usePage } from "@inertiajs/vue3";
 import { handleSubmit } from "@/helpers/client-req-handler";
 import { create_options_from_users, scrollToFirstErrorField } from "@/helpers/utils";
+import { ref } from "vue";
 
 const page = usePage();
-const users = create_options_from_users(page.props.users);
+const users = ref(create_options_from_users(page.props.users));
+const filteredUsers = ref([...users.value]);
 const title = (!!page.props.data.id ? "Edit" : "Tambah") + " Teknisi";
 const form = useForm({
   id: page.props.data.id,
@@ -18,6 +20,13 @@ const form = useForm({
 
 const submit = () =>
   handleSubmit({ form, url: route('admin.technician.save') });
+
+const filterUsers = (val, update) => {
+  update(() => {
+    filteredUsers.value = users.value.filter(user => user.label.toLowerCase().includes(val.toLowerCase()));
+  });
+};
+
 </script>
 
 <template>
@@ -37,8 +46,15 @@ const submit = () =>
                 :disable="form.processing" :error-message="form.errors.name" :rules="[
                   (val) => (val && val.length > 0) || 'Nama harus diisi.',
                 ]" />
-              <q-select v-model="form.user_id" label="Pengguna" use-input clearable :options="users" map-options
-                emit-value :error="!!form.errors.user_id" :disable="form.processing" />
+              <q-select v-model="form.user_id" label="Pengguna" use-input input-debounce="300" clearable
+                :options="filteredUsers" map-options emit-value @filter="filterUsers" :error="!!form.errors.user_id"
+                :disable="form.processing">
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section>Pengguna tidak ditemukan</q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
               <q-input v-model.trim="form.phone" type="text" label="No HP" lazy-rules :disable="form.processing"
                 :error="!!form.errors.phone" :error-message="form.errors.phone" />
               <q-input v-model.trim="form.address" type="textarea" autogrow counter maxlength="1000" label="Alamat"
