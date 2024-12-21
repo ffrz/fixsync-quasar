@@ -17,9 +17,14 @@ define('SERVICEORDER_SERVICE_STATUSES', [
     'checked' => 'Diperiksa',
     'waiting_parts' => 'Menunggu Sparepart',
     'in_progress' => 'Dalam Proses Pengerjaan',
+    'completed' => 'Selesai',
+    'picked' => 'Diambil',
+]);
+
+define('SERVICEORDER_REPAIR_STATUSES', [
+    'incomplete' => 'Belum Selesai',
     'success' => 'Selesai (Sukses)',
     'failed' => 'Selesai (Gagal)',
-    'picked' => 'Diambil',
 ]);
 
 define('SERVICEORDER_PAYMENT_STATUSES', [
