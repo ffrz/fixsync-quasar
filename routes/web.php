@@ -26,7 +26,7 @@ Route::middleware(NonAuthenticated::class)->group(function () {
     Route::prefix('/admin/auth')->group(function () {
         Route::match(['get', 'post'], 'login', [AuthController::class, 'login'])->name('admin.auth.login');
         Route::match(['get', 'post'], 'register', [AuthController::class, 'register'])->name('admin.auth.register');
-        Route::match(['get', 'post'], 'reset-password', [AuthController::class, 'resetPassword'])->name('admin.auth.request-password');
+        Route::match(['get', 'post'], 'forgot-password', [AuthController::class, 'forgotPassword'])->name('admin.auth.forgot-password');
     });
 });
 

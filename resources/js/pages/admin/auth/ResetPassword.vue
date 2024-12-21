@@ -29,10 +29,8 @@ const submit = () => {
 </script>
 
 <template>
+  <i-head title="Reset Password" />
   <guest-layout>
-
-    <i-head title="Reset Password" />
-
     <q-page class="row justify-center items-center">
       <div class="column">
         <div class="row">
@@ -43,7 +41,7 @@ const submit = () => {
               </q-card-section>
               <q-card-section>
                 <q-input square v-model.trim="form.email" label="Email" lazy-rules :error="!!form.errors.email"
-                  :error-message="form.errors.email" :rules="[(val) => validateEmail(val) || 'Must be a valid email']">
+                  :error-message="form.errors.email" :rules="[(val) => validateEmail(val) || 'Format Email tidak valid']">
                   <template v-slot:append>
                     <q-icon name="email" />
                   </template>

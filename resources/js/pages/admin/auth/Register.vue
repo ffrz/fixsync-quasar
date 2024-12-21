@@ -57,7 +57,7 @@ const submit = () =>
                   :error-message="form.errors.email" :disable="form.processing"
                   :rules="[
                     (val) => (val && val.length > 0) || 'Email perusahaan harus diisi',
-                    (val) => validateEmail(val) || 'Must be a valid email'
+                    (val) => validateEmail(val) || 'Format email tidak valid.'
                   ]">
                   <template v-slot:append>
                     <q-icon name="email" />

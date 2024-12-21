@@ -22,8 +22,8 @@ const submit = () =>
   <q-form class="row" @submit.prevent="submit" @validation-error="scrollToFirstErrorField">
     <q-card square flat bordered class="col q-pa-sm">
       <q-card-section>
-        <h2 class="text-h6 q-my-xs">Informasi Profil</h2>
-        <p>Perbarui profil anda.</p>
+        <div class="text-h6 q-my-xs text-subtitle1">Profil Saya</div>
+        <p class="text-caption text-grey-9">Perbarui profil anda.</p>
         <q-input readonly v-model="form.username" label="ID Pengguna" :disable="form.processing" />
         <q-input ref="nameInputRef" v-model.trim="form.name" label="Nama" :disable="form.processing" lazy-rules
           :error="!!form.errors.name" :error-message="form.errors.name"

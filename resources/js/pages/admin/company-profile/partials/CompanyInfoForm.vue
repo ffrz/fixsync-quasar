@@ -22,10 +22,10 @@ const submit = () =>
 
 <template>
   <q-form class="row" @submit.prevent="submit" @validation-error="scrollToFirstErrorField">
-    <q-card square flat bordered class="col q-pa-sm">
+    <q-card flat bordered class="col q-pa-sm">
       <q-card-section>
-        <h2 class="text-h6 q-my-xs">Informasi Profil Perusahaan</h2>
-        <p>Perbarui profil perusahaan anda.</p>
+        <div class="text-subtitle1 q-my-xs">Profil Perusahaan</div>
+        <p class="text-caption text-grey-9">Perbarui profil perusahaan anda.</p>
         <q-input readonly v-model="form.code" label="Kode Perusahaan" :disable="form.processing" />
         <q-input ref="nameInputRef" v-model.trim="form.name" label="Nama Perusahaan" :disable="form.processing"
           lazy-rules :error="!!form.errors.name" :error-message="form.errors.name"

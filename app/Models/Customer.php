@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Customer extends Model
 {
@@ -26,5 +28,13 @@ class Customer extends Model
     public function serviceOrders()
     {
         return $this->hasMany(ServiceOrder::class);
+    }
+
+    public static function activeCustomerCount()
+    {
+        return DB::select(
+            'select count(0) as count from customers where active = 1 and company_id=?',
+            [Auth::user()->company_id]
+        )[0]->count;
     }
 }

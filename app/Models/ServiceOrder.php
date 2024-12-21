@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ServiceOrder extends Model
 {
@@ -74,5 +76,21 @@ class ServiceOrder extends Model
     public function closedBy()
     {
         return $this->belongsTo(User::class, 'closed_by_uid', 'id');
+    }
+
+    public static function activeOrderCount()
+    {
+        return DB::select(
+            "select count(0) as count from service_orders where order_status=? and company_id=?",
+            ['open', Auth::user()->company_id]
+        )[0]->count;
+    }
+
+    public static function notTakenYetCount()
+    {
+        return DB::select(
+            "select count(0) as count from service_orders where order_status='' and company_id=?",
+            [Auth::user()->company_id]
+        )[0]->count;
     }
 }

@@ -10,7 +10,6 @@ defineProps({
   },
 });
 
-const $q = useQuasar();
 const emailInput = ref();
 const form = useForm({
   email: '',
@@ -26,38 +25,31 @@ const submit = () => {
   });
 };
 
-// watch(
-//   () => usePage().props.status,
-//   (newValue, oldValue) => {
-//     if (newValue) {
-//       // $q.notify(newValue);
-//     }
-//   }
-// );
+
 </script>
 
 <template>
   <guest-layout>
-    <i-head title="Forgot Password" />
+    <i-head title="Lupa Kata Sandi" />
     <q-page class="row justify-center items-center">
       <div class="column">
         <q-form @submit.prevent="submit">
           <q-card square bordered class="q-pa-md shadow-1">
             <q-card-section>
-              <h5 class="q-my-sm text-center">Forgot Password</h5>
+              <h5 class="q-my-sm text-center">Lupa Kata Sandi</h5>
             </q-card-section>
             <q-card-section class="text-grey-8">
-              Forgot your password? No problem. Just let us know your email
-              address and we will email you a password reset link that will allow
-              you to choose a new one.
+              Lupa kata sandi? Tidak masalah. Beri tahu kami alamat email anda
+              dan kami akan mengirim tautan untuk mengatur ulang kata sandi ke email anda
+              sehingga anda bisa membuat kata sandi baru.
             </q-card-section>
             <q-card-section v-if="status" class="text-green-9 text-weight-bold border">
               {{ status }}
             </q-card-section>
             <q-card-section>
-              <q-input ref="emailInput" autofocus square v-model.trim="form.email" label="Email" lazy-rules
-                :error="!!form.errors.email" :error-message="form.errors.email" :disable="form.processing"
-                :rules="[(val) => validateEmail(val) || 'Must be a valid email.']">
+              <q-input square v-model.trim="form.email" label="Email" lazy-rules :error="!!form.errors.email"
+                :error-message="form.errors.email" :disable="form.processing"
+                :rules="[(val) => validateEmail(val) || 'Format Email tidak valid.']">
                 <template v-slot:append>
                   <q-icon name="email" />
                 </template>
@@ -69,7 +61,7 @@ const submit = () => {
             </q-card-actions>
             <q-card-section class="text-center q-pa-none q-mt-md">
               <p class="q-my-xs text-grey-7">
-                <i-link :href="route('login')">Back to login page</i-link>
+                <i-link :href="route('admin.auth.login')">Kembali ke halaman login</i-link>
               </p>
             </q-card-section>
           </q-card>

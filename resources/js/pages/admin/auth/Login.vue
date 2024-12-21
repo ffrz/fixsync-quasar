@@ -16,8 +16,8 @@ const submit = () => handleSubmit({ form, url: route('admin.auth.login') });
 </script>
 
 <template>
+  <i-head title="Login" />
   <guest-layout>
-    <i-head title="Login" />
     <q-page class="row justify-center items-center">
       <div class="column">
         <div class="row">
@@ -64,7 +64,7 @@ const submit = () => handleSubmit({ form, url: route('admin.auth.login') });
                 </p>
                 <p class="q-my-xs text-grey-7">
                   Lupa sandi?
-                  <i-link :href="route('admin.auth.request-password')">Atur ulang kata sandi</i-link>
+                  <i-link :href="route('admin.auth.forgot-password')">Atur ulang kata sandi</i-link>
                 </p>
               </q-card-section>
             </q-card>

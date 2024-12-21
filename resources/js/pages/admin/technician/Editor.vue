@@ -18,7 +18,6 @@ const form = useForm({
 
 const submit = () =>
   handleSubmit({ form, url: route('admin.technician.save') });
-
 </script>
 
 <template>
@@ -30,7 +29,7 @@ const submit = () =>
         <q-form class="row" @submit.prevent="submit" @validation-error="scrollToFirstErrorField">
           <q-card square flat bordered class="col q-pa-sm">
             <q-card-section>
-              <div class="text-h6">Profil Teknisi</div>
+              <div class="text-subtitle1">Profil Teknisi</div>
             </q-card-section>
             <q-card-section class="q-pt-none">
               <input type="hidden" name="id" v-model="form.id" />

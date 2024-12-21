@@ -146,4 +146,11 @@ class AuthController extends Controller
 
         return redirect(route('admin.auth.login'))->with('success', 'Pendaftaran berhasil, silahkan masuk.');
     }
+
+    public function forgotPassword(Request $request) {
+        if ($request->getMethod() === 'GET') {
+            return inertia('admin/auth/ForgotPassword');
+        }
+
+    }
 }

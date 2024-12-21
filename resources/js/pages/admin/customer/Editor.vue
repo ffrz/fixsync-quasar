@@ -27,7 +27,7 @@ const submit = () =>
         <q-form class="row" @submit.prevent="submit" @validation-error="scrollToFirstErrorField">
           <q-card square flat bordered class="col q-pa-sm">
             <q-card-section>
-              <div class="text-h6">Info Pelanggan</div>
+              <div class="text-subtitle1">Info Pelanggan</div>
             </q-card-section>
             <q-card-section class="q-pt-none">
               <input type="hidden" name="id" v-model="form.id" />
