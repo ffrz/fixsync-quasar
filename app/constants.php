@@ -1,4 +1,5 @@
 <?php
+// TODO: PINDAH KE KELAS SUPAYA LEBIH MODERN
 
 // User Roles Definitions
 define('USER_ROLE_ADMIN', 'admin');

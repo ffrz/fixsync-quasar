@@ -7,8 +7,8 @@
             <q-item :style="`background-color: ${item.color1}`" class="q-pa-none" clickable
               @click="if (item.url) this.$inertia.visit(item.url);">
               <q-item-section v-if="icon_position === 'left'" side :style="`background-color: ${item.color2}`"
-                class=" q-pa-lg q-mr-none text-white">
-                <q-icon :name="item.icon" color="white" size="24px"></q-icon>
+                class="q-pa-lg q-mr-none text-white">
+                <q-icon class="material-icons" :name="item.icon" color="white" size="24px" />
               </q-item-section>
               <q-item-section class=" q-pa-md q-ml-none  text-white">
                 <q-item-label class="text-white text-h6 text-weight-bolder">{{ item.value }}</q-item-label>
@@ -41,7 +41,7 @@ export default defineComponent({
       return [
         {
           title: this.$t('customers'),
-          icon: "people",
+          icon: "groups_2",
           value: this.$page.props.data.active_customer_count,
           color1: "#888",
           color2: "#666",

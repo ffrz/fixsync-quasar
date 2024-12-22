@@ -37,7 +37,7 @@ onUnmounted(() => {
     <q-header>
       <q-toolbar class="bg-grey-1 text-black" :class="{ 'toolbar-scrolled': isScrolled }">
         <q-btn v-if="!leftDrawerOpen" flat dense aria-label="Menu" @click="toggleLeftDrawer">
-          <q-icon class="material-symbols-outlined">dock_to_right</q-icon>
+          <q-icon name="dock_to_right" />
         </q-btn>
         <q-toolbar-title :class="{ 'q-ml-sm': leftDrawerOpen }" style="font-size:18px;">
           <slot name="title">{{ $config.APP_NAME }}</slot>
@@ -72,8 +72,8 @@ onUnmounted(() => {
                   <q-item-label><q-icon name="manage_accounts" class="q-mr-sm" /> {{ $t('my_profile') }}</q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item dense v-close-popup v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN" class="subnav" clickable v-ripple
-                :active="$page.url.startsWith('/admin/settings/company-profile')"
+              <q-item dense v-close-popup v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN" class="subnav"
+                clickable v-ripple :active="$page.url.startsWith('/admin/settings/company-profile')"
                 @click="router.get(route('admin.company-profile.edit'))">
                 <q-item-section>
                   <q-item-label><q-icon name="home_work" class="q-mr-sm" /> {{ $t('company_profile') }}</q-item-label>
@@ -88,7 +88,7 @@ onUnmounted(() => {
             </q-list>
           </q-btn-dropdown>
           <q-btn v-if="leftDrawerOpen" flat dense aria-label="Menu" @click="toggleLeftDrawer">
-            <q-icon class="material-symbols-outlined">dock_to_right</q-icon>
+            <q-icon name="dock_to_right" />
           </q-btn>
         </div>
       </div>
@@ -97,7 +97,7 @@ onUnmounted(() => {
           <q-item clickable v-ripple :active="$page.url == '/admin/dashboard'"
             @click="router.get(route('admin.dashboard'))">
             <q-item-section avatar>
-              <q-icon class="material-icons-outlined">dashboard</q-icon>
+              <q-icon name="dashboard" />
             </q-item-section>
             <q-item-section>
               <q-item-label>{{ $t('dashboard') }}</q-item-label>
@@ -106,7 +106,7 @@ onUnmounted(() => {
           <q-item clickable v-ripple :active="$page.url.startsWith('/admin/service-orders')"
             @click="router.get(route('admin.service-order.index'))">
             <q-item-section avatar>
-              <q-icon name="construction" />
+              <q-icon name="handyman" />
             </q-item-section>
             <q-item-section>
               <q-item-label>{{ $t('service_orders') }}</q-item-label>
@@ -115,7 +115,7 @@ onUnmounted(() => {
           <q-item clickable v-ripple :active="$page.url.startsWith('/admin/customers')"
             @click="router.get(route('admin.customer.index'))">
             <q-item-section avatar>
-              <q-icon name="groups" />
+              <q-icon name="groups_2" />
             </q-item-section>
             <q-item-section>
               <q-item-label>{{ $t('customers') }}</q-item-label>
@@ -124,14 +124,13 @@ onUnmounted(() => {
           <q-item clickable v-ripple :active="$page.url.startsWith('/admin/technicians')"
             @click="router.get(route('admin.technician.index'))">
             <q-item-section avatar>
-              <q-icon name="groups" />
+              <q-icon name="engineering" />
             </q-item-section>
             <q-item-section>
               <q-item-label>{{ $t('technicians') }}</q-item-label>
             </q-item-section>
           </q-item>
-          <q-expansion-item expand-separator icon="settings" :label="$t('settings')"
-            :default-opened="$page.url.startsWith('/admin/settings')">
+          <q-expansion-item expand-separator icon="settings" :label="$t('settings')" :default-opened="$page.url.startsWith('/admin/settings')">
             <q-item v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN" class="subnav" clickable v-ripple
               :active="$page.url.startsWith('/admin/settings/users')" @click="router.get(route('admin.user.index'))">
               <q-item-section avatar>
@@ -154,7 +153,7 @@ onUnmounted(() => {
               :active="$page.url.startsWith('/admin/settings/company-profile')"
               @click="router.get(route('admin.company-profile.edit'))">
               <q-item-section avatar>
-                <q-icon name="home_work" />
+                <q-icon name="apartment" />
               </q-item-section>
               <q-item-section>
                 <q-item-label>{{ $t('company_profile') }}</q-item-label>

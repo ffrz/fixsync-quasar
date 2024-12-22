@@ -31,5 +31,8 @@ return [
         'company_name' => 'Nama Perusahaan',
         'company_phone' => 'No Telepon',
         'company_address' => 'Alamat',
+
+        'device' => 'Perangkat',
+        'equipments' => 'Kelengkapan',
     ],
 ];

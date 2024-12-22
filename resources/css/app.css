@@ -47,3 +47,15 @@ a:hover {
 .q-btn {
   text-transform: none !important;
 }
+
+.q-icon {
+  font-family: 'Material Symbols Outlined', sans-serif !important;
+}
+
+.material-icons {
+  font-family: 'Material Icons' !important;
+}
+
+.material-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+}

@@ -98,9 +98,11 @@ class ServiceOrderController extends Controller
             'customer_name' => 'required|max:255',
             'customer_phone' => 'required|max:100',
             'address' => 'nullable|max:1000',
+
+            'device' => 'required',
+            'equipments' => 'required',
         ];
         $item = null;
-        $message = '';
         $fields = [
             'order_status',
             'customer_id',
