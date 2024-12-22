@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        allowed_roles('admin');
+        allowed_roles(USER_ROLE_ADMIN);
     }
 
     public function index()
@@ -75,18 +75,7 @@ class UserController extends Controller
             'password' => 'required|min:5|max:40',
             'role' => 'required',
         ];
-        $messages = [
-            'name.required' => 'Nama pengguna harus diisi',
-            'name.max' => 'Nama pengguna maksimal 255 karakter',
-            'username.alpha_num' => 'Gunakan huruf dan angka saja.',
-            'username.required' => 'ID pengguna harus diisi',
-            'username.max' => 'Nama pengguna maksimal 100 karakter',
-            'username.unique' => 'ID Pengguna sudah digunakan',
-            'password.required' => 'Kata sandi harus diisi',
-            'password.min' => 'Kata sandi minimal 5 karakter',
-            'password.max' => 'Kata sandi maksimal 40 karakter',
-            'role.required' => 'Role harus diisi',
-        ];
+
         $user = null;
         $message = '';
         $fields = ['name', 'username', 'email', 'role', 'active'];
@@ -95,7 +84,7 @@ class UserController extends Controller
         if (!$request->id) {
             // username harus unik untuk masing-masing company_id
             $rules['username'] = "required|alpha_num|max:255|unique:users,username,NULL,id,company_id,{$companyId}";
-            $request->validate($rules, $messages);
+            $request->validate($rules);
             $user = new User();
             $user->company_id = $companyId;
             $message = 'Pengguna baru telah dibuat.';
@@ -107,7 +96,7 @@ class UserController extends Controller
                 unset($rules['password']);
                 unset($fields['password']);
             }
-            $request->validate($rules, $messages);
+            $request->validate($rules);
             $user = User::findOrFail($request->id);
             $message = "Pengguna {$user->username} telah diperbarui.";
         }

@@ -1,34 +1,61 @@
 <?php
 
+// User Roles Definitions
+define('USER_ROLE_ADMIN', 'admin');
+define('USER_ROLE_CASHIER', 'cashier');
+define('USER_ROLE_TECHNICIAN', 'technician');
+
 define('USER_ROLES', [
-    'admin' => 'Administrator',
-    'cashier' => 'Kasir',
-    'technician' => 'Teknisi',
+    USER_ROLE_ADMIN => 'Administrator',
+    USER_ROLE_CASHIER => 'Kasir',
+    USER_ROLE_TECHNICIAN => 'Teknisi',
 ]);
 
-define('SERVICEORDER_ORDER_STATUSES', [
-    'open' => 'Aktif',
-    'closed' => 'Selesai',
-    'canceled' => 'Dibatalkan',
+// Service Order Statuses Definitions
+define('SERVICEORDER_ORDERSTATUS_OPEN', 'open');
+define('SERVICEORDER_ORDERSTATUS_CLOSED', 'closed');
+define('SERVICEORDER_ORDERSTATUS_CANCELED', 'canceled');
+
+define('SERVICEORDER_ORDERSTATUSES', [
+    SERVICEORDER_ORDERSTATUS_OPEN => 'Aktif',
+    SERVICEORDER_ORDERSTATUS_CLOSED => 'Selesai',
+    SERVICEORDER_ORDERSTATUS_CANCELED => 'Dibatalkan',
 ]);
 
-define('SERVICEORDER_SERVICE_STATUSES', [
-    'received' => 'Diterima',
-    'checked' => 'Diperiksa',
-    'waiting_parts' => 'Menunggu Sparepart',
-    'in_progress' => 'Dalam Proses Pengerjaan',
-    'completed' => 'Selesai',
-    'picked' => 'Diambil',
+// Service Order - Service Statuses Definitions
+define('SERVICEORDER_SERVICESTATUS_RECEIVED', 'received');
+define('SERVICEORDER_SERVICESTATUS_CHECKED', 'checked');
+define('SERVICEORDER_SERVICESTATUS_WAITINGPARTS', 'waiting_parts');
+define('SERVICEORDER_SERVICESTATUS_INPROGRESS', 'in_progress');
+define('SERVICEORDER_SERVICESTATUS_COMPLETED', 'completed');
+define('SERVICEORDER_SERVICESTATUS_PICKED', 'picked');
+
+define('SERVICEORDER_SERVICESTATUSES', [
+    SERVICEORDER_SERVICESTATUS_RECEIVED => 'Diterima',
+    SERVICEORDER_SERVICESTATUS_CHECKED => 'Diperiksa',
+    SERVICEORDER_SERVICESTATUS_WAITINGPARTS => 'Menunggu Sparepart',
+    SERVICEORDER_SERVICESTATUS_INPROGRESS => 'Dalam Proses Pengerjaan',
+    SERVICEORDER_SERVICESTATUS_COMPLETED => 'Selesai',
+    SERVICEORDER_SERVICESTATUS_PICKED => 'Diambil',
 ]);
 
-define('SERVICEORDER_REPAIR_STATUSES', [
-    'incomplete' => 'Belum Selesai',
-    'success' => 'Selesai (Sukses)',
-    'failed' => 'Selesai (Gagal)',
+// Service Order - Repair Statuses Definitions
+define('SERVICEORDER_REPAIRSTATUS_NOTFINISHED', 'not_finished');
+define('SERVICEORDER_REPAIRSTATUS_SUCCESS', 'success');
+define('SERVICEORDER_REPAIRSTATUS_FAILED', 'failed');
+define('SERVICEORDER_REPAIRSTATUSES', [
+    SERVICEORDER_REPAIRSTATUS_NOTFINISHED => 'Belum Selesai',
+    SERVICEORDER_REPAIRSTATUS_SUCCESS => 'Selesai (Sukses)',
+    SERVICEORDER_REPAIRSTATUS_FAILED => 'Selesai (Gagal)',
 ]);
 
-define('SERVICEORDER_PAYMENT_STATUSES', [
-    'unpaid' => 'Belum Dibayar',
-    'partially_paid' => 'Dibayar Sebagian',
-    'fully_paid' => 'Lunas',
+// Service Order - Payment Statuses Definitions
+define('SERVICEORDER_PAYMENTSTATUS_UNPAID', 'unpaid');
+define('SERVICEORDER_PAYMENTSTATUS_PARTIALLYPAID', 'partially_paid');
+define('SERVICEORDER_PAYMENTSTATUS_FULLYPAID', 'fully_paid');
+
+define('SERVICEORDER_PAYMENTSTATUSES', [
+    SERVICEORDER_PAYMENTSTATUS_UNPAID => 'Belum Dibayar',
+    SERVICEORDER_PAYMENTSTATUS_PARTIALLYPAID => 'Dibayar Sebagian',
+    SERVICEORDER_PAYMENTSTATUS_FULLYPAID => 'Lunas',
 ]);

@@ -72,7 +72,7 @@ onUnmounted(() => {
                   <q-item-label><q-icon name="manage_accounts" class="q-mr-sm" /> Profil Saya</q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item dense v-close-popup v-if="$page.props.auth.user.role == 'admin'" class="subnav" clickable v-ripple
+              <q-item dense v-close-popup v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN" class="subnav" clickable v-ripple
                 :active="$page.url.startsWith('/admin/settings/company-profile')"
                 @click="router.get(route('admin.company-profile.edit'))">
                 <q-item-section>
@@ -132,7 +132,7 @@ onUnmounted(() => {
           </q-item>
           <q-expansion-item expand-separator icon="settings" label="Pengaturan"
             :default-opened="$page.url.startsWith('/admin/settings')">
-            <q-item v-if="$page.props.auth.user.role == 'admin'" class="subnav" clickable v-ripple
+            <q-item v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN" class="subnav" clickable v-ripple
               :active="$page.url.startsWith('/admin/settings/users')" @click="router.get(route('admin.user.index'))">
               <q-item-section avatar>
                 <q-icon name="group" />
@@ -150,7 +150,7 @@ onUnmounted(() => {
                 <q-item-label>Profil Saya</q-item-label>
               </q-item-section>
             </q-item>
-            <q-item v-if="$page.props.auth.user.role == 'admin'" class="subnav" clickable v-ripple
+            <q-item v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN" class="subnav" clickable v-ripple
               :active="$page.url.startsWith('/admin/settings/company-profile')"
               @click="router.get(route('admin.company-profile.edit'))">
               <q-item-section avatar>

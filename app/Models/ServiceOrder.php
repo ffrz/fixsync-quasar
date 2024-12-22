@@ -17,6 +17,7 @@ class ServiceOrder extends Model
         'order_status',
         'service_status',
         'payment_status',
+        'repair_status',
         'created_datetime',
         'created_by_uid',
         'closed_datetime',
@@ -82,15 +83,23 @@ class ServiceOrder extends Model
     {
         return DB::select(
             "select count(0) as count from service_orders where order_status=? and company_id=?",
-            ['open', Auth::user()->company_id]
+            [SERVICEORDER_ORDERSTATUS_OPEN, Auth::user()->company_id]
         )[0]->count;
     }
 
-    public static function notTakenYetCount()
+    public static function receivedOrderCount()
     {
         return DB::select(
-            "select count(0) as count from service_orders where order_status='' and company_id=?",
-            [Auth::user()->company_id]
+            "select count(0) as count from service_orders where service_status=? and company_id=?",
+            [SERVICEORDER_SERVICESTATUS_RECEIVED, Auth::user()->company_id]
+        )[0]->count;
+    }
+
+    public static function inProgressCount()
+    {
+        return DB::select(
+            "select count(0) as count from service_orders where service_status=? and company_id=?",
+            [SERVICEORDER_SERVICESTATUS_INPROGRESS, Auth::user()->company_id]
         )[0]->count;
     }
 }

@@ -140,10 +140,10 @@ const onFilterChange = () => fetchItems();
                 {{ props.row.address }}
               </q-td>
               <q-td key="action" class="q-gutter-x-sm" :props="props" align="center">
-                <q-btn flat dense rounded icon="edit" @click="router.get(route('admin.customer.edit', props.row.id))" :disabled="!check_role(['admin', 'cashier'])">
+                <q-btn flat dense rounded icon="edit" @click="router.get(route('admin.customer.edit', props.row.id))" :disabled="!check_role([$CONSTANTS.USER_ROLE_ADMIN, $CONSTANTS.USER_ROLE_CASHIER])">
                   <q-tooltip>Edit Pelanggan</q-tooltip>
                 </q-btn>
-                <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)" :disabled="!check_role('admin')">
+                <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)" :disabled="!check_role($CONSTANTS.USER_ROLE_ADMIN)">
                   <q-tooltip>Hapus Pelanggan</q-tooltip>
                 </q-btn>
               </q-td>

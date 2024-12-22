@@ -18,9 +18,10 @@ return new class extends Migration
             $table->unsignedBigInteger('company_id');
 
             // statuses
-            $table->enum('order_status', array_keys(SERVICEORDER_ORDER_STATUSES))->default('open');
-            $table->enum('service_status', array_keys(SERVICEORDER_SERVICE_STATUSES))->default('received');
-            $table->enum('payment_status', array_keys(SERVICEORDER_PAYMENT_STATUSES))->default('unpaid');
+            $table->enum('order_status', array_keys(SERVICEORDER_ORDERSTATUSES))->default(SERVICEORDER_ORDERSTATUS_OPEN);
+            $table->enum('service_status', array_keys(SERVICEORDER_SERVICESTATUSES))->default(SERVICEORDER_SERVICESTATUS_RECEIVED);
+            $table->enum('payment_status', array_keys(SERVICEORDER_PAYMENTSTATUSES))->default(SERVICEORDER_PAYMENTSTATUS_UNPAID);
+            $table->enum('repair_status', array_keys(SERVICEORDER_REPAIRSTATUSES))->default(SERVICEORDER_REPAIRSTATUS_NOTFINISHED);
 
             // order
             $table->datetime('created_datetime')->nullable()->default(null);

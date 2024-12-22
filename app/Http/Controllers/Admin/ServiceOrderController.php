@@ -40,6 +40,10 @@ class ServiceOrderController extends Controller
             $q->where('payment_status', '=', $filter['payment_status']);
         }
 
+        if (!empty($filter['repair_status'] && $filter['repair_status'] != 'all')) {
+            $q->where('repair_status', '=', $filter['repair_status']);
+        }
+
         if (!empty($filter['search'])) {
             $search = $filter['search'];
             $q->where(function ($q) use ($search) {
@@ -61,20 +65,18 @@ class ServiceOrderController extends Controller
             'createdBy:id,username,name',
             'updatedBy:id,username,name',
             'closedBy:id,username,name',
-        ])
-            ->findOrFail($id) : new ServiceOrder();
+        ])->findOrFail($id) : new ServiceOrder([
+            'received_datetime' => date('Y-m-d H:i:s'),
+            'order_status' => SERVICEORDER_ORDERSTATUS_OPEN,
+            'service_status' => SERVICEORDER_SERVICESTATUS_RECEIVED,
+            'payment_status' => SERVICEORDER_PAYMENTSTATUS_UNPAID,
+            'repair_status' => SERVICEORDER_REPAIRSTATUS_NOTFINISHED,
+        ]);
 
         $companyId = Auth::user()->company_id;
 
         if ($id && $item->company_id != $companyId) {
             return response()->json(['error' => 'Unauthorized'], 403);
-        }
-
-        if (!$item->id) {
-            $item->received_datetime = date('Y-m-d H:i:s');
-            $item->order_status = 'open';
-            $item->service_status = 'received';
-            $item->payment_status = 'unpaid';
         }
 
         $customers = Customer::where('company_id', $companyId)
@@ -93,9 +95,9 @@ class ServiceOrderController extends Controller
     public function save(Request $request)
     {
         $rules = [
-            // 'name' => 'required|max:255',
-            // 'phone' => 'required|max:100',
-            // 'address' => 'required|max:1000',
+            'customer_name' => 'required|max:255',
+            'customer_phone' => 'required|max:100',
+            'address' => 'nullable|max:1000',
         ];
         $item = null;
         $message = '';
@@ -111,6 +113,7 @@ class ServiceOrderController extends Controller
             'problems',
             'actions',
             'service_status',
+            'repair_status',
             'technician_id',
             'received_datetime',
             'checked_datetime',
@@ -142,12 +145,10 @@ class ServiceOrderController extends Controller
             $item->company_id = Auth::user()->company_id;
             $item->created_by_uid = Auth::user()->id;
             $item->created_datetime = date('Y-M-d H:i:s');
-            $message = "Order Servis baru #$item->id telah ditambahkan.";
         } else {
             $item = ServiceOrder::findOrFail($request->post('id', 0));
             $item->updated_by_uid = Auth::user()->id;
             $item->updated_datetime = date('Y-M-d H:i:s');
-            $message = "Order Servis #$item->id telah diperbarui.";
         }
 
         if ($item->company_id != Auth::user()->company_id) {
@@ -177,23 +178,23 @@ class ServiceOrderController extends Controller
             $item->save();
         });
 
-        return redirect(route('admin.service-order.index'))->with('success', $message);
+        return redirect(route('admin.service-order.index'))->with('success', __('messages.service-order-saved', ['id' => $item->id]));
     }
 
     public function delete($id)
     {
-        allowed_roles(['admin']);
+        allowed_roles([USER_ROLE_ADMIN]);
 
         $item = ServiceOrder::findOrFail($id);
         if ($item->company_id != Auth::user()->company_id) {
             return response()->json([
-                'message' => 'Akses ditolak, tidak bisa menghapus item berbeda perusahaan.'
+                'message' => __('messages.cant-delete-item-with-different-company')
             ], 403);
         }
         $item->delete();
 
         return response()->json([
-            'message' => "Pesanan $item->id telah dihapus"
+            'message' => __('messages.service-order-deleted', ['id' => $item->id])
         ]);
     }
 }

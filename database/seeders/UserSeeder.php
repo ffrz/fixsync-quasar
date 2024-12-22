@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'username' => 'admin',
             'name' => 'Administrator',
             'email' => 'admin@shiftech.my.id',
-            'role' => 'admin',
+            'role' => USER_ROLE_ADMIN,
             'active' => 1,
         ]);
         User::factory()->create([
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             'username' => 'fahmi',
             'name' => 'Fahmi',
             'email' => 'fahmi@shiftech.my.id',
-            'role' => 'technician',
+            'role' => USER_ROLE_TECHNICIAN,
             'active' => 1,
         ]);
         User::factory(100)->create();

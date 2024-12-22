@@ -2,26 +2,29 @@
 // FIXME: Terkadang terjadi double fetch pada saat komponen di mount
 
 import { onMounted, reactive, ref, watch } from "vue";
-import { router } from "@inertiajs/vue3";
+import { router, usePage } from "@inertiajs/vue3";
 import { useQuasar } from "quasar";
 import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
 import { create_options, check_role } from "@/helpers/utils";
 
+const page = usePage();
 const $q = useQuasar();
 const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
 const filter = reactive({
   search: '',
-  order_status: 'all',
+  order_status: page.props.filter ? page.props.filter.order_status : 'all',
   service_status: 'all',
   payment_status: 'all',
+  repair_status: 'all',
 });
 const title = 'Order Servis';
 
-const order_statuses = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.SERVICEORDER_ORDER_STATUSES)];
-const service_statuses = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.SERVICEORDER_SERVICE_STATUSES)];
-const payment_statuses = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.SERVICEORDER_PAYMENT_STATUSES)];
+const order_statuses = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.SERVICEORDER_ORDERSTATUSES)];
+const service_statuses = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.SERVICEORDER_SERVICESTATUSES)];
+const payment_statuses = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.SERVICEORDER_PAYMENTSTATUSES)];
+const repair_statuses = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.SERVICEORDER_REPAIRSTATUSES)];
 
 const pagination = ref({
   page: 1,
@@ -136,11 +139,13 @@ const onFilterChange = () => {
               <div class="row q-my-sm q-gutter-sm items-center">
                 <span>Filter:</span>
                 <q-select v-model="filter.order_status" :options="order_statuses" label="Status Order" dense map-options
-                  style="min-width:150px;" emit-value outlined @update:model-value="onFilterChange" />
+                  class="custom-select" emit-value outlined @update:model-value="onFilterChange" />
                 <q-select v-model="filter.service_status" :options="service_statuses" label="Status Servis" dense
-                  map-options style="min-width:150px;" emit-value outlined @update:model-value="onFilterChange" />
+                  class="custom-select" map-options emit-value outlined @update:model-value="onFilterChange" />
+                <q-select v-model="filter.repair_status" :options="repair_statuses" label="Status Selesai" dense
+                  class="custom-select" map-options emit-value outlined @update:model-value="onFilterChange" />
                 <q-select v-model="filter.payment_status" :options="payment_statuses" label="Status Pembayaran" dense
-                  map-options style="min-width:150px;" emit-value outlined @update:model-value="onFilterChange" />
+                  class="custom-select" map-options emit-value outlined @update:model-value="onFilterChange" />
               </div>
             </div>
           </template>
@@ -180,7 +185,8 @@ const onFilterChange = () => {
                   @click="router.get(route('admin.service-order.edit', props.row.id))">
                   <q-tooltip>Edit Pesanan</q-tooltip>
                 </q-btn>
-                <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)" :disable="!check_role('admin')">
+                <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)"
+                  :disable="!check_role($CONSTANTS.USER_ROLE_ADMIN)">
                   <q-tooltip>Hapus Pesanan</q-tooltip>
                 </q-btn>
               </q-td>
@@ -191,3 +197,8 @@ const onFilterChange = () => {
     </div>
   </authenticated-layout>
 </template>
+<style scoped>
+.custom-select {
+  min-width: 150px;
+}
+</style>

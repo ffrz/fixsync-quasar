@@ -100,7 +100,7 @@ const onFilterChange = () => fetchItems();
           <template #top>
             <div class="col">
               <div class="row q-my-sm items-center">
-                <q-btn color="primary" icon="add" @click="router.get(route('admin.technician.add'))" label="Tambah" :disabled="!check_role('admin')">
+                <q-btn color="primary" icon="add" @click="router.get(route('admin.technician.add'))" label="Tambah" :disabled="!check_role($CONSTANTS.USER_ROLE_ADMIN)">
                   <q-tooltip>Tambah Teknisi</q-tooltip>
                 </q-btn>
                 <q-space />
@@ -140,10 +140,10 @@ const onFilterChange = () => fetchItems();
                 {{ props.row.address }}
               </q-td>
               <q-td key="action" class="q-gutter-x-sm" :props="props" align="center">
-                <q-btn flat dense rounded icon="edit" @click="router.get(route('admin.technician.edit', props.row.id))" :disabled="!check_role('admin')">
+                <q-btn flat dense rounded icon="edit" @click="router.get(route('admin.technician.edit', props.row.id))" :disabled="!check_role($CONSTANTS.USER_ROLE_ADMIN)">
                   <q-tooltip>Edit Teknisi</q-tooltip>
                 </q-btn>
-                <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)" :disabled="!check_role('admin')">
+                <q-btn flat dense rounded icon="delete" @click="deleteItem(props.row)" :disabled="!check_role($CONSTANTS.USER_ROLE_ADMIN)">
                   <q-tooltip>Hapus Teknisi</q-tooltip>
                 </q-btn>
               </q-td>

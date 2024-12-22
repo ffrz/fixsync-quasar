@@ -1,10 +1,11 @@
 <template>
-  <div class="row q-my-sm">
+  <div class="row">
     <q-card class="bg-transparent no-shadow no-border col" bordered>
       <q-card-section class="q-pa-none">
         <div class="row q-col-gutter-sm ">
           <div v-for="(item, index) in items" :key="index" class="col-md-3 col-sm-12 col-xs-12">
-            <q-item :style="`background-color: ${item.color1}`" class="q-pa-none" clickable>
+            <q-item :style="`background-color: ${item.color1}`" class="q-pa-none" clickable
+              @click="if (item.url) this.$inertia.visit(item.url);">
               <q-item-section v-if="icon_position === 'left'" side :style="`background-color: ${item.color2}`"
                 class=" q-pa-lg q-mr-none text-white">
                 <q-icon :name="item.icon" color="white" size="24px"></q-icon>
@@ -26,7 +27,7 @@
 
 <script>
 import { defineComponent } from 'vue'
-
+import { router } from '@inertiajs/vue3';
 export default defineComponent({
   name: "SummaryCard",
   props: {
@@ -37,67 +38,40 @@ export default defineComponent({
   },
   computed: {
     items: function () {
-      return this.icon_position === "left"
-        ? [
-          {
-            title: "Pelanggan",
-            icon: "people",
-            value: this.$page.props.data.active_customer_count,
-            color1: "#888",
-            color2: "#666"
-          },
-          {
-            title: "Order Aktif",
-            icon: "construction",
-            value: this.$page.props.data.active_order_count ?? 0,
-            color1: "#888",
-            color2: "#666"
-          },
-          {
-            title: "Belum Diambli",
-            icon: "fab fa-google",
-            value: "50",
-            color1: "#5064b5",
-            color2: "#3e51b5"
-          },
-          {
-            title: "Sedang Dikerjakan",
-            icon: "bar_chart",
-            value: "1020",
-            color1: "#5064b5",
-            color2: "#3e51b5"
-          }
-        ]
-        : [
-          {
-            title: "Monthly Income",
-            icon: "fas fa-dollar-sign",
-            value: "$ 20k",
-            color1: "#546bfa",
-            color2: "#3e51b5"
-          },
-          {
-            title: "Weekly Sales",
-            icon: "fas fa-chart-bar",
-            value: "20",
-            color1: "#3a9688",
-            color2: "#3e51b5"
-          },
-          {
-            title: "New Customers",
-            icon: "fas fa-chart-line",
-            value: "321",
-            color1: "#7cb342",
-            color2: "#3e51b5"
-          },
-          {
-            title: "Active Users",
-            icon: "person",
-            value: "82",
-            color1: "#f88c2b",
-            color2: "#3e51b5"
-          }
-        ];
+      return [
+        {
+          title: "Pelanggan",
+          icon: "people",
+          value: this.$page.props.data.active_customer_count,
+          color1: "#888",
+          color2: "#666",
+          url: route('admin.customer.index')
+        },
+        {
+          title: "Order Aktif",
+          icon: "handyman",
+          value: this.$page.props.data.active_order_count ?? 0,
+          color1: "#888",
+          color2: "#666",
+          url: route('admin.service-order.index')
+        },
+        {
+          title: "Belum Diperiksa",
+          icon: "handyman",
+          value: this.$page.props.data.received_order_count ?? 0,
+          color1: "#888",
+          color2: "#666",
+          url: route('admin.service-order.index')
+        },
+        {
+          title: "Sedang Dikerjakan",
+          icon: "handyman",
+          value: this.$page.props.data.in_progress_order_count ?? 0,
+          color1: "#888",
+          color2: "#666",
+          url: route('admin.service-order.index')
+        }
+      ]
     }
   }
 })

@@ -9,10 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
-    public function __construct()
-    {
-    }
-
     public function index()
     {
         return inertia('admin/customer/Index');
@@ -48,9 +44,9 @@ class CustomerController extends Controller
 
     public function editor($id = 0)
     {
-        allowed_roles(['admin', 'cashier']);
+        allowed_roles([USER_ROLE_ADMIN, USER_ROLE_CASHIER]);
 
-        $item = $id ? Customer::findOrFail($id) : new Customer();
+        $item = $id ? Customer::findOrFail($id) : new Customer(['active' => true]);
 
         return inertia('admin/customer/Editor', [
             'data' => $item,
@@ -64,6 +60,7 @@ class CustomerController extends Controller
             'phone' => 'required|max:100',
             'address' => 'required|max:1000',
         ];
+
         $item = null;
         $message = '';
         $fields = ['name', 'phone', 'address', 'active'];
@@ -73,32 +70,32 @@ class CustomerController extends Controller
         if (!$request->id) {
             $item = new Customer();
             $item->company_id = Auth::user()->company_id;
-            $message = 'Pelanggan baru telah ditambahkan.';
+            $message = 'customer-created';
         } else {
             $item = Customer::findOrFail($request->post('id', 0));
-            $message = 'Pelanggan telah diperbarui.';
+            $message = 'customer-updated';
         }
 
         $item->fill($request->only($fields));
         $item->save();
 
-        return redirect(route('admin.customer.index'))->with('success', $message);
+        return redirect(route('admin.customer.index'))->with('success', __("messages.$message", ['name' => $item->name]));
     }
 
     public function delete($id)
     {
-        allowed_roles(['admin']);
+        allowed_roles([USER_ROLE_ADMIN]);
 
         $item = Customer::findOrFail($id);
         if ($item->company_id != Auth::user()->company_id) {
             return response()->json([
-                'message' => 'Akses ditolak, tidak bisa menghapus item berbeda perusahaan.'
+                'message' => __('messages.cant-delete-item-with-different-company'),
             ], 403);
         }
         $item->delete();
 
         return response()->json([
-            'message' => "Pelanggan $item->name telah dihapus"
+            'message' => __('messages.customer-deleted', ['name' => $item->name])
         ]);
     }
 }
