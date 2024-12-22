@@ -6,9 +6,9 @@
           <div v-for="(item, index) in items" :key="index" class="col-md-3 col-sm-12 col-xs-12">
             <q-item :style="`background-color: ${item.color1}`" class="q-pa-none" clickable
               @click="if (item.url) this.$inertia.visit(item.url);">
-              <q-item-section v-if="icon_position === 'left'" side :style="`background-color: ${item.color2}`"
+              <q-item-section side :style="`background-color: ${item.color2}`"
                 class="q-pa-lg q-mr-none text-white">
-                <q-icon class="material-icons" :name="item.icon" color="white" size="24px" />
+                <q-icon class="material-filled" :name="item.icon" color="white" size="24px" />
               </q-item-section>
               <q-item-section class=" q-pa-md q-ml-none  text-white">
                 <q-item-label class="text-white text-h6 text-weight-bolder">{{ item.value }}</q-item-label>
