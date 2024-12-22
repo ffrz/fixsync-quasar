@@ -69,20 +69,20 @@ onUnmounted(() => {
                 :active="$page.url.startsWith('/admin/settings/profile')"
                 @click="router.get(route('admin.profile.edit'))">
                 <q-item-section>
-                  <q-item-label><q-icon name="manage_accounts" class="q-mr-sm" /> Profil Saya</q-item-label>
+                  <q-item-label><q-icon name="manage_accounts" class="q-mr-sm" /> {{ $t('my_profile') }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-item dense v-close-popup v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN" class="subnav" clickable v-ripple
                 :active="$page.url.startsWith('/admin/settings/company-profile')"
                 @click="router.get(route('admin.company-profile.edit'))">
                 <q-item-section>
-                  <q-item-label><q-icon name="home_work" class="q-mr-sm" /> Profil Perusahaan</q-item-label>
+                  <q-item-label><q-icon name="home_work" class="q-mr-sm" /> {{ $t('company_profile') }}</q-item-label>
                 </q-item-section>
               </q-item>
               <q-separator />
               <q-item dense clickable v-close-popup v-ripple @click="router.post(route('admin.auth.logout'))">
                 <q-item-section>
-                  <q-item-label><q-icon name="logout" class="q-mr-sm" /> Logout</q-item-label>
+                  <q-item-label><q-icon name="logout" class="q-mr-sm" /> {{ $t('logout') }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -100,7 +100,7 @@ onUnmounted(() => {
               <q-icon class="material-icons-outlined">dashboard</q-icon>
             </q-item-section>
             <q-item-section>
-              <q-item-label>Dashboard</q-item-label>
+              <q-item-label>{{ $t('dashboard') }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple :active="$page.url.startsWith('/admin/service-orders')"
@@ -109,7 +109,7 @@ onUnmounted(() => {
               <q-icon name="construction" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Order Servis</q-item-label>
+              <q-item-label>{{ $t('service_orders') }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple :active="$page.url.startsWith('/admin/customers')"
@@ -118,7 +118,7 @@ onUnmounted(() => {
               <q-icon name="groups" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Pelanggan</q-item-label>
+              <q-item-label>{{ $t('customers') }}</q-item-label>
             </q-item-section>
           </q-item>
           <q-item clickable v-ripple :active="$page.url.startsWith('/admin/technicians')"
@@ -127,10 +127,10 @@ onUnmounted(() => {
               <q-icon name="groups" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Teknisi</q-item-label>
+              <q-item-label>{{ $t('technicians') }}</q-item-label>
             </q-item-section>
           </q-item>
-          <q-expansion-item expand-separator icon="settings" label="Pengaturan"
+          <q-expansion-item expand-separator icon="settings" :label="$t('settings')"
             :default-opened="$page.url.startsWith('/admin/settings')">
             <q-item v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN" class="subnav" clickable v-ripple
               :active="$page.url.startsWith('/admin/settings/users')" @click="router.get(route('admin.user.index'))">
@@ -138,7 +138,7 @@ onUnmounted(() => {
                 <q-icon name="group" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>Pengguna</q-item-label>
+                <q-item-label>{{ $t('users') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item class="subnav" clickable v-ripple :active="$page.url.startsWith('/admin/settings/profile')"
@@ -147,7 +147,7 @@ onUnmounted(() => {
                 <q-icon name="manage_accounts" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>Profil Saya</q-item-label>
+                <q-item-label>{{ $t('my_profile') }}</q-item-label>
               </q-item-section>
             </q-item>
             <q-item v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN" class="subnav" clickable v-ripple
@@ -157,7 +157,7 @@ onUnmounted(() => {
                 <q-icon name="home_work" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>Profil Perusahaan</q-item-label>
+                <q-item-label>{{ $t('company_profile') }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-expansion-item>

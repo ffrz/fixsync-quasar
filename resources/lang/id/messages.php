@@ -18,4 +18,6 @@ return [
     'update-company-profile-success' => 'Profil perusahaan berhasil diperbarui.',
 
     'cant-delete-item-with-different-company' => 'Akses ditolak, tidak bisa menghapus item berbeda perusahaan.',
+
+    'service-order_order-status_active' => 'Aktif',
 ];

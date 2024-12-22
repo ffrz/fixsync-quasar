@@ -40,7 +40,7 @@ export default defineComponent({
     items: function () {
       return [
         {
-          title: "Pelanggan",
+          title: this.$t('customers'),
           icon: "people",
           value: this.$page.props.data.active_customer_count,
           color1: "#888",
@@ -48,7 +48,7 @@ export default defineComponent({
           url: route('admin.customer.index')
         },
         {
-          title: "Order Aktif",
+          title: this.$t('active_order'),
           icon: "handyman",
           value: this.$page.props.data.active_order_count ?? 0,
           color1: "#888",
@@ -56,7 +56,7 @@ export default defineComponent({
           url: route('admin.service-order.index')
         },
         {
-          title: "Belum Diperiksa",
+          title: this.$t('not_yet_checked'),
           icon: "handyman",
           value: this.$page.props.data.received_order_count ?? 0,
           color1: "#888",
@@ -64,7 +64,7 @@ export default defineComponent({
           url: route('admin.service-order.index')
         },
         {
-          title: "Sedang Dikerjakan",
+          title: this.$t('in_progress'),
           icon: "handyman",
           value: this.$page.props.data.in_progress_order_count ?? 0,
           color1: "#888",

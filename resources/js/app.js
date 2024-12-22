@@ -15,6 +15,7 @@ import processFlashMessage from "@/helpers/flash-message";
 import MyLink from "@/components/MyLink.vue";
 import dayjs from 'dayjs';
 import 'dayjs/locale/id'; // Import the Indonesian locale
+import i18n from './i18n';
 
 // Set Indonesian as the global locale
 dayjs.locale('id');
@@ -36,6 +37,7 @@ createInertiaApp({
           iconSet: 'material-icons-outlined', // Change this to use the outlined icon set
         }
       })
+      .use(i18n)
       .component('i-head', Head)
       .component('i-link', Link)
       .component('my-link', MyLink)

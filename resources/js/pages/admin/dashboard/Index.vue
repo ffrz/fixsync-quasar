@@ -20,9 +20,9 @@ const title = 'Dashboard';
       <div class="row q-my-md">
         <q-card class="col" square flat bordered>
           <q-card-section>
-            <div class="q-mb-md text-h6">Selamat Datang, {{ $page.props.auth.user.name }}</div>
+            <div class="q-mb-md text-h6">{{ $t('greeting', { name: $page.props.auth.user.name}) }}</div>
             <div>
-              <btn-link label="Logout" :url="route('admin.auth.logout')" method="post" color="accent" icon="logout" />
+              <btn-link :label="$t('logout')" :url="route('admin.auth.logout')" method="post" color="accent" icon="logout" />
             </div>
           </q-card-section>
         </q-card>
