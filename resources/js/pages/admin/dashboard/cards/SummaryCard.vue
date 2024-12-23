@@ -1,21 +1,76 @@
+<script setup>
+import { usePage, router } from '@inertiajs/vue3';
+
+const page = usePage();
+
+const goToUrl = (url, newFilter) => {
+  const baseFilter = { order_status: 'all', service_status: 'all', repair_status: 'all', payment_status: 'all', search: '' };
+  const mergedFilter = { ...baseFilter, ...newFilter };
+  localStorage.setItem('fixsync.service-orders.filter', JSON.stringify(mergedFilter));
+  router.visit(url);
+}
+
+</script>
+
+
 <template>
   <div class="row">
     <q-card class="bg-transparent no-shadow no-border col" bordered>
       <q-card-section class="q-pa-none">
         <div class="row q-col-gutter-sm ">
-          <div v-for="(item, index) in items" :key="index" class="col-md-3 col-sm-12 col-xs-12">
-            <q-item :style="`background-color: ${item.color1}`" class="q-pa-none" clickable
-              @click="if (item.url) this.$inertia.visit(item.url);">
-              <q-item-section side :style="`background-color: ${item.color2}`"
-                class="q-pa-lg q-mr-none text-white">
-                <q-icon class="material-filled" :name="item.icon" color="white" size="24px" />
+          <div class="col-md-3 col-sm-12 col-xs-12">
+            <q-item :style="`background-color: #888`" class="q-pa-none" clickable
+              @click="$inertia.visit(route('admin.customer.index'))">
+              <q-item-section side :style="`background-color: #666`" class="q-pa-lg q-mr-none text-white">
+                <q-icon class="material-filled" name="groups_2" color="white" size="24px" />
               </q-item-section>
               <q-item-section class=" q-pa-md q-ml-none  text-white">
-                <q-item-label class="text-white text-h6 text-weight-bolder">{{ item.value }}</q-item-label>
-                <q-item-label>{{ item.title }}</q-item-label>
+                <q-item-label class="text-white text-h6 text-weight-bolder">
+                  {{ $page.props.data.active_customer_count }}
+                </q-item-label>
+                <q-item-label>{{ $t('customers') }}</q-item-label>
               </q-item-section>
-              <q-item-section v-if="icon_position === 'right'" side class="q-mr-md text-white">
-                <q-icon :name="item.icon" color="white" size="44px"></q-icon>
+            </q-item>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-12">
+            <q-item :style="`background-color: #888`" class="q-pa-none" clickable
+              @click="goToUrl(route('admin.service-order.index'), { order_status: 'open' })">
+              <q-item-section side :style="`background-color: #666`" class="q-pa-lg q-mr-none text-white">
+                <q-icon class="material-filled" name="handyman" color="white" size="24px" />
+              </q-item-section>
+              <q-item-section class=" q-pa-md q-ml-none  text-white">
+                <q-item-label class="text-white text-h6 text-weight-bolder">
+                  {{ $page.props.data.active_order_count }}
+                </q-item-label>
+                <q-item-label>{{ $t('active_order') }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-12">
+            <q-item :style="`background-color: #888`" class="q-pa-none" clickable
+              @click="goToUrl(route('admin.service-order.index'), { order_status: 'open', service_status: 'received' })">
+              <q-item-section side :style="`background-color: #666`" class="q-pa-lg q-mr-none text-white">
+                <q-icon class="material-filled" name="handyman" color="white" size="24px" />
+              </q-item-section>
+              <q-item-section class=" q-pa-md q-ml-none  text-white">
+                <q-item-label class="text-white text-h6 text-weight-bolder">
+                  {{ $page.props.data.received_order_count }}
+                </q-item-label>
+                <q-item-label>{{ $t('not_yet_checked') }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-12">
+            <q-item :style="`background-color: #888`" class="q-pa-none" clickable
+              @click="goToUrl(route('admin.service-order.index'), { order_status: 'open', service_status: 'in_progress' })">
+              <q-item-section side :style="`background-color: #666`" class="q-pa-lg q-mr-none text-white">
+                <q-icon class="material-filled" name="handyman" color="white" size="24px" />
+              </q-item-section>
+              <q-item-section class=" q-pa-md q-ml-none  text-white">
+                <q-item-label class="text-white text-h6 text-weight-bolder">
+                  {{ $page.props.data.in_progress_order_count }}
+                </q-item-label>
+                <q-item-label>{{ $t('in_progress') }}</q-item-label>
               </q-item-section>
             </q-item>
           </div>
@@ -24,55 +79,3 @@
     </q-card>
   </div>
 </template>
-
-<script>
-import { defineComponent } from 'vue'
-import { router } from '@inertiajs/vue3';
-export default defineComponent({
-  name: "SummaryCard",
-  props: {
-    icon_position: {
-      required: false,
-      default: "left"
-    }
-  },
-  computed: {
-    items: function () {
-      return [
-        {
-          title: this.$t('customers'),
-          icon: "groups_2",
-          value: this.$page.props.data.active_customer_count,
-          color1: "#888",
-          color2: "#666",
-          url: route('admin.customer.index')
-        },
-        {
-          title: this.$t('active_order'),
-          icon: "handyman",
-          value: this.$page.props.data.active_order_count ?? 0,
-          color1: "#888",
-          color2: "#666",
-          url: route('admin.service-order.index')
-        },
-        {
-          title: this.$t('not_yet_checked'),
-          icon: "handyman",
-          value: this.$page.props.data.received_order_count ?? 0,
-          color1: "#888",
-          color2: "#666",
-          url: route('admin.service-order.index')
-        },
-        {
-          title: this.$t('in_progress'),
-          icon: "handyman",
-          value: this.$page.props.data.in_progress_order_count ?? 0,
-          color1: "#888",
-          color2: "#666",
-          url: route('admin.service-order.index')
-        }
-      ]
-    }
-  }
-})
-</script>

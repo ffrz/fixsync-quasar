@@ -46,7 +46,7 @@ const filterUsers = (val, update) => {
                 :disable="form.processing" :error-message="form.errors.name" :rules="[
                   (val) => (val && val.length > 0) || 'Nama harus diisi.',
                 ]" />
-              <q-select v-model="form.user_id" label="Pengguna" use-input input-debounce="300" clearable
+              <q-select v-model="form.user_id" label="Akun Pengguna" use-input input-debounce="300" clearable
                 :options="filteredUsers" map-options emit-value @filter="filterUsers" :error="!!form.errors.user_id"
                 :disable="form.processing">
                 <template v-slot:no-option>
@@ -57,11 +57,11 @@ const filterUsers = (val, update) => {
               </q-select>
               <q-input v-model.trim="form.phone" type="text" label="No HP" lazy-rules :disable="form.processing"
                 :error="!!form.errors.phone" :error-message="form.errors.phone" />
+                <q-input v-model.trim="form.email" type="email" label="Email" lazy-rules :disable="form.processing"
+                :error="!!form.errors.email" :error-message="form.errors.email" />
               <q-input v-model.trim="form.address" type="textarea" autogrow counter maxlength="1000" label="Alamat"
                 lazy-rules :disable="form.processing" :error="!!form.errors.address"
                 :error-message="form.errors.address" />
-              <q-input v-model.trim="form.email" type="email" label="Email" lazy-rules :disable="form.processing"
-                :error="!!form.errors.email" :error-message="form.errors.email" />
               <div style="margin-left: -10px;">
                 <q-checkbox class="full-width q-pl-none" v-model="form.active" :disable="form.processing"
                   label="Aktif" />
