@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Company;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -32,7 +33,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$defaultPassword,
             'remember_token' => Str::random(10),
-            'role' => fake()->randomElement(array_keys(USER_ROLES)),
+            'role' => fake()->randomElement(array_keys(User::Roles)),
             'active' => fake()->randomElement([true, false]),
         ];
     }

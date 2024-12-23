@@ -9,6 +9,17 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    public const Role_Admin = 'admin';
+    public const Role_Technician = 'technician';
+    public const Role_Cashier = 'cashier';
+
+    // Display role di hardcode saja, tidak diambil dari translations
+    public const Roles = [
+        self::Role_Admin => 'Administrator',
+        self::Role_Technician => 'Teknisi',
+        self::Role_Cashier => 'Kasir',
+    ];
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 

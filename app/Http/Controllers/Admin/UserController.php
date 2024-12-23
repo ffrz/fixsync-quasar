@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        allowed_roles(USER_ROLE_ADMIN);
+        allowed_roles(User::Role_Admin);
     }
 
     public function index()

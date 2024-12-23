@@ -139,7 +139,7 @@ class AuthController extends Controller
             $user->fill($request->only(['username', 'name', 'email']));
             $user->company_id = $company->id;
             $user->password = Hash::make($request->post('password'));
-            $user->role = USER_ROLE_ADMIN;
+            $user->role = User::Role_Admin;
             $user->active = true;
             $user->save();
         });

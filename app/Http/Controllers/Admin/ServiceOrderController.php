@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\ServiceOrder;
 use App\Models\Technician;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -67,10 +68,10 @@ class ServiceOrderController extends Controller
             'closedBy:id,username,name',
         ])->findOrFail($id) : new ServiceOrder([
             'received_datetime' => date('Y-m-d H:i:s'),
-            'order_status' => SERVICEORDER_ORDERSTATUS_OPEN,
-            'service_status' => SERVICEORDER_SERVICESTATUS_RECEIVED,
-            'payment_status' => SERVICEORDER_PAYMENTSTATUS_UNPAID,
-            'repair_status' => SERVICEORDER_REPAIRSTATUS_NOTFINISHED,
+            'order_status' => ServiceOrder::OrderStatus_Open,
+            'service_status' => ServiceOrder::ServiceStatus_Received,
+            'payment_status' => ServiceOrder::PaymentStatus_Unpaid,
+            'repair_status' => ServiceOrder::RepairStatus_NotFinished,
         ]);
 
         $companyId = Auth::user()->company_id;
@@ -185,7 +186,7 @@ class ServiceOrderController extends Controller
 
     public function delete($id)
     {
-        allowed_roles([USER_ROLE_ADMIN]);
+        allowed_roles([User::Role_Admin]);
 
         $item = ServiceOrder::findOrFail($id);
         if ($item->company_id != Auth::user()->company_id) {

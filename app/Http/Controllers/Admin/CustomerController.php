@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,7 +45,7 @@ class CustomerController extends Controller
 
     public function editor($id = 0)
     {
-        allowed_roles([USER_ROLE_ADMIN, USER_ROLE_CASHIER]);
+        allowed_roles([User::Role_Admin, User::Role_Cashier]);
 
         $item = $id ? Customer::findOrFail($id) : new Customer(['active' => true]);
 
@@ -84,7 +85,7 @@ class CustomerController extends Controller
 
     public function delete($id)
     {
-        allowed_roles([USER_ROLE_ADMIN]);
+        allowed_roles([User::Role_Admin]);
 
         $item = Customer::findOrFail($id);
         if ($item->company_id != Auth::user()->company_id) {

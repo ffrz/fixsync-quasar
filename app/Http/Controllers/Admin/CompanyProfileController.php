@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Company;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,7 +12,7 @@ class CompanyProfileController extends Controller
 {
     public function __construct()
     {
-        allowed_roles(USER_ROLE_ADMIN);
+        allowed_roles(User::Role_Admin);
     }
 
     /**

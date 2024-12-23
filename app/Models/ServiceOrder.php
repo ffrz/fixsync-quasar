@@ -11,6 +11,64 @@ class ServiceOrder extends Model
 {
     use HasFactory;
 
+    /**
+     * OrderStatuses
+     */
+    const OrderStatus_Open = 'open';
+    const OrderStatus_Closed = 'closed';
+    const OrderStatus_Canceled = 'canceled';
+
+    const OrderStatuses = [
+        self::OrderStatus_Open => 'Aktif',
+        self::OrderStatus_Closed => 'Nonaktif',
+        self::OrderStatus_Canceled => 'Dibatalkan',
+    ];
+
+    /**
+     * ServiceStatuses
+     */
+    const ServiceStatus_Received = 'received';
+    const ServiceStatus_Checked = 'checked';
+    const ServiceStatus_WaitingParts = 'waiting_parts';
+    const ServiceStatus_InProgress = 'in_progress';
+    const ServiceStatus_Completed = 'completed';
+    const ServiceStatus_Picked = 'picked';
+
+    const ServiceStatuses = [
+        self::ServiceStatus_Received => 'Diterima',
+        self::ServiceStatus_Checked => 'Diperiksa',
+        self::ServiceStatus_WaitingParts => 'Menunggu Sparepart',
+        self::ServiceStatus_InProgress => 'Dikerjakan',
+        self::ServiceStatus_Completed => 'Selesai',
+        self::ServiceStatus_Picked => 'Diambil',
+    ];
+
+    /**
+     * RepairStatus
+     */
+    const RepairStatus_NotFinished = 'not_finished';
+    const RepairStatus_Success = 'success';
+    const RepairStatus_Failed = 'failed';
+
+    const RepairStatuses = [
+        self::RepairStatus_NotFinished => 'Belum Selesai',
+        self::RepairStatus_Success => 'Sukses',
+        self::RepairStatus_Failed => 'Gagal',
+    ];
+
+        /**
+     * RepairStatus
+     */
+    const PaymentStatus_Unpaid = 'not_finished';
+    const PaymentStatus_PartiallyPaid = 'success';
+    const PaymentStatus_FullyPaid = 'failed';
+
+    const PaymentStatuses = [
+        self::PaymentStatus_Unpaid => 'Belum Dibayar',
+        self::PaymentStatus_PartiallyPaid => 'Dibayar Sebagian',
+        self::PaymentStatus_FullyPaid => 'Lunas',
+    ];
+
     protected $fillable = [
         'company_id',
         'customer_id',
@@ -83,7 +141,7 @@ class ServiceOrder extends Model
     {
         return DB::select(
             "select count(0) as count from service_orders where order_status=? and company_id=?",
-            [SERVICEORDER_ORDERSTATUS_OPEN, Auth::user()->company_id]
+            [self::OrderStatus_Open, Auth::user()->company_id]
         )[0]->count;
     }
 
@@ -91,7 +149,7 @@ class ServiceOrder extends Model
     {
         return DB::select(
             "select count(0) as count from service_orders where service_status=? and company_id=?",
-            [SERVICEORDER_SERVICESTATUS_RECEIVED, Auth::user()->company_id]
+            [self::ServiceStatus_Received, Auth::user()->company_id]
         )[0]->count;
     }
 
@@ -99,7 +157,7 @@ class ServiceOrder extends Model
     {
         return DB::select(
             "select count(0) as count from service_orders where service_status=? and company_id=?",
-            [SERVICEORDER_SERVICESTATUS_INPROGRESS, Auth::user()->company_id]
+            [self::ServiceStatus_InProgress, Auth::user()->company_id]
         )[0]->count;
     }
 }

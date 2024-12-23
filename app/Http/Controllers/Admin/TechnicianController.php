@@ -46,7 +46,7 @@ class TechnicianController extends Controller
 
     public function editor($id = 0)
     {
-        allowed_roles([USER_ROLE_ADMIN]);
+        allowed_roles([User::Role_Admin]);
 
         $item = $id ? Technician::findOrFail($id) : new Technician(['active' => true]);
 
@@ -95,7 +95,7 @@ class TechnicianController extends Controller
 
     public function delete($id)
     {
-        allowed_roles([USER_ROLE_ADMIN]);
+        allowed_roles([User::Role_Admin]);
 
         $item = Technician::findOrFail($id);
         if ($item->company_id != Auth::user()->company_id) {

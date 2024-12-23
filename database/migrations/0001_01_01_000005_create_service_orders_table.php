@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ServiceOrder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,10 +19,10 @@ return new class extends Migration
             $table->unsignedBigInteger('company_id');
 
             // statuses
-            $table->enum('order_status', array_keys(SERVICEORDER_ORDERSTATUSES))->default(SERVICEORDER_ORDERSTATUS_OPEN);
-            $table->enum('service_status', array_keys(SERVICEORDER_SERVICESTATUSES))->default(SERVICEORDER_SERVICESTATUS_RECEIVED);
-            $table->enum('payment_status', array_keys(SERVICEORDER_PAYMENTSTATUSES))->default(SERVICEORDER_PAYMENTSTATUS_UNPAID);
-            $table->enum('repair_status', array_keys(SERVICEORDER_REPAIRSTATUSES))->default(SERVICEORDER_REPAIRSTATUS_NOTFINISHED);
+            $table->enum('order_status', array_keys(ServiceOrder::OrderStatuses))->default(ServiceOrder::OrderStatus_Open);
+            $table->enum('service_status', array_keys(ServiceOrder::ServiceStatuses))->default(ServiceOrder::ServiceStatus_Received);
+            $table->enum('payment_status', array_keys(ServiceOrder::PaymentStatuses))->default(ServiceOrder::PaymentStatus_Unpaid);
+            $table->enum('repair_status', array_keys(ServiceOrder::RepairStatuses))->default(ServiceOrder::RepairStatus_NotFinished);
 
             // order
             $table->datetime('created_datetime')->nullable()->default(null);

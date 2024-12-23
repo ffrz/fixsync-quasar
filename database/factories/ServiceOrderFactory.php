@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Customer;
+use App\Models\ServiceOrder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -38,7 +39,7 @@ class ServiceOrderFactory extends Factory
     public function definition(): array
     {
         $customer = Customer::find(Customer::where('company_id', 1)->pluck('id')->random());
-        $orderStatus = $this->faker->randomElement(array_keys(SERVICEORDER_ORDERSTATUSES));
+        $orderStatus = $this->faker->randomElement(array_keys(ServiceOrder::OrderStatuses));
         $createdDateTime = $this->faker->dateTimeThisMonth;
 
         return [
@@ -50,9 +51,9 @@ class ServiceOrderFactory extends Factory
             'customer_address' => $customer->address,
 
             'order_status' => $orderStatus,
-            'service_status' => $this->faker->randomElement(array_keys(SERVICEORDER_SERVICESTATUSES)),
-            'payment_status' => $this->faker->randomElement(array_keys(SERVICEORDER_PAYMENTSTATUSES)),
-            'repair_status' => $this->faker->randomElement(array_keys(SERVICEORDER_REPAIRSTATUSES)),
+            'service_status' => $this->faker->randomElement(array_keys(ServiceOrder::ServiceStatuses)),
+            'payment_status' => $this->faker->randomElement(array_keys(ServiceOrder::PaymentStatuses)),
+            'repair_status' => $this->faker->randomElement(array_keys(ServiceOrder::RepairStatuses)),
 
             // Tanggal ini juga harus rasional, yaitu berurutan
             'created_datetime' => $createdDateTime,
