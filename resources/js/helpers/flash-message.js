@@ -35,5 +35,11 @@ export default function processFlashMessage() {
     return;
   }
 
-  Notify.create(options);
+  Notify.create({
+    ...options, actions: [{
+      icon: 'close',
+      color: 'white',
+      handler: () => { }
+    }]
+  });
 }
