@@ -85,7 +85,6 @@ const deleteItem = (row) =>
   });
 
 const fetchItems = (props = null) => {
-  console.log("fetching data");
   handleFetchItems({
     pagination,
     filter,

@@ -1,37 +1,39 @@
 <script setup>
-import { defineComponent, onMounted, onUnmounted, ref, watch } from "vue";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  ref,
+  watch,
+} from "vue";
 import { router, usePage } from "@inertiajs/vue3";
+import { useQuasar } from "quasar";
 
 defineComponent({
   name: "AuthenticatedLayout",
 });
 
+const LEFT_DRAWER_STORAGE_KEY = "hafizmonitor.layout.left-drawer-open";
+const $q = useQuasar();
 const page = usePage();
 const leftDrawerOpen = ref(
-  JSON.parse(localStorage.getItem("fixsync.layout.left-drawer-open"))
+  JSON.parse(localStorage.getItem(LEFT_DRAWER_STORAGE_KEY))
 );
 const isDropdownOpen = ref(false);
-const isScrolled = ref(false);
-
 const toggleLeftDrawer = () => (leftDrawerOpen.value = !leftDrawerOpen.value);
 
-function handleScroll() {
-  isScrolled.value = window.scrollY > 0;
-}
-
 watch(leftDrawerOpen, (newValue) => {
-  localStorage.setItem("fixsync.layout.left-drawer-open", newValue);
+  localStorage.setItem(LEFT_DRAWER_STORAGE_KEY, newValue);
 });
 
 onMounted(() => {
   leftDrawerOpen.value = JSON.parse(
-    localStorage.getItem("fixsync.layout.left-drawer-open")
+    localStorage.getItem(LEFT_DRAWER_STORAGE_KEY)
   );
-  window.addEventListener("scroll", handleScroll);
-});
 
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
+  if ($q.screen.lt.md) {
+    leftDrawerOpen.value = false;
+  }
 });
 </script>
 
