@@ -10,7 +10,7 @@ const title = 'Dashboard';
   <i-head :title="title" />
   <authenticated-layout>
     <template #title>{{ title }}</template>
-    <div class="q-ma-md">
+    <div class="q-ma-sm">
       <div>
         <summary-card class="q-my-none" />
       </div>
