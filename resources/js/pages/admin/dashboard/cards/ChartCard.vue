@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-col-gutter-md">
+  <div class="row q-col-gutter-sm">
     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
       <q-card square class="no-shadow" bordered style="background-color: #38b1c5">
         <q-card-section class="text-h6 text-white">

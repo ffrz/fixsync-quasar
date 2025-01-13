@@ -10,14 +10,14 @@ const title = 'Dashboard';
   <i-head :title="title" />
   <authenticated-layout>
     <template #title>{{ title }}</template>
-    <div class="q-ma-sm">
+    <div class="q-pa-sm">
       <div>
-        <summary-card class="q-my-none" />
+        <summary-card class="q-py-none" />
       </div>
       <div>
-        <chart-card class="q-my-none" />
+        <chart-card class="q-py-none q-pt-sm" />
       </div>
-      <div class="row q-my-md">
+      <div class="row q-py-none q-pt-sm">
         <q-card class="col" square flat bordered>
           <q-card-section>
             <div class="q-mb-md text-h6">{{ $t('greeting', { name: $page.props.auth.user.name}) }}</div>
