@@ -33,7 +33,7 @@ const updatePassword = () => {
 
 <template>
   <q-form class="row" @submit.prevent="updatePassword" @validation-error="scrollToFirstErrorField">
-    <q-card square flat bordered class="col q-pa-sm">
+    <q-card square flat bordered class="col">
       <q-card-section>
         <div class="text-h6 q-my-xs text-subtitle1">Perbarui Kata Sandi</div>
         <p class="text-caption text-grey-9">Pastikan akun anda menggunakan kata sandi acak yang panjang agar akun tetap aman.</p>

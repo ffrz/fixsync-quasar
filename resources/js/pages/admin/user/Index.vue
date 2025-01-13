@@ -4,26 +4,29 @@ import { useQuasar } from "quasar";
 import { router, usePage } from "@inertiajs/vue3";
 import { handleFetchItems, handleDelete } from "@/helpers/client-req-handler";
 import { create_options } from "@/helpers/utils";
-import i18n from '@/i18n';
+import i18n from "@/i18n";
 
-const roles = [{ value: 'all', label: 'Semua' }, ...create_options(window.CONSTANTS.USER_ROLES)];
+const roles = [
+  { value: "all", label: "Semua" },
+  ...create_options(window.CONSTANTS.USER_ROLES),
+];
 const statuses = [
-  { value: 'all', label: 'Semua' },
-  { value: 'active', label: 'Aktif' },
-  { value: 'inactive', label: 'Tidak Aktif' },
+  { value: "all", label: "Semua" },
+  { value: "active", label: "Aktif" },
+  { value: "inactive", label: "Tidak Aktif" },
 ];
 
 const page = usePage();
 const currentUser = page.props.auth.user;
-const title = i18n.global.t('users');
+const title = i18n.global.t("users");
 const $q = useQuasar();
 const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
 const filter = reactive({
-  role: 'all',
-  status: 'all',
-  search: '',
+  role: "all",
+  status: "all",
+  search: "",
 });
 
 const pagination = ref({
@@ -34,95 +37,162 @@ const pagination = ref({
   descending: false,
 });
 
-const columns = [{
-  name: "username",
-  label: "ID Pengguna",
-  field: "username",
-  align: "left",
-  sortable: true
-}, {
-  name: "name",
-  label: "Nama",
-  field: "name",
-  align: "left",
-  sortable: true
-}, {
-  name: "email",
-  label: "Email",
-  field: "email",
-  align: "left",
-  sortable: true,
-}, {
-  name: "role",
-  label: "Hak Akses",
-  field: "role",
-  align: "center",
-  sortable: true,
-}, {
-  name: "action",
-  label: "Aksi",
-  align: "center"
-}];
+const columns = [
+  {
+    name: "username",
+    label: "ID Pengguna",
+    field: "username",
+    align: "left",
+    sortable: true,
+  },
+  {
+    name: "name",
+    label: "Nama",
+    field: "name",
+    align: "left",
+    sortable: true,
+  },
+  {
+    name: "email",
+    label: "Email",
+    field: "email",
+    align: "left",
+    sortable: true,
+  },
+  {
+    name: "role",
+    label: "Hak Akses",
+    field: "role",
+    align: "center",
+    sortable: true,
+  },
+  {
+    name: "action",
+    label: "Aksi",
+    align: "center",
+  },
+];
 
 onMounted(() => {
-  const savedFilter = localStorage.getItem('fixsync.users.filter');
+  const savedFilter = localStorage.getItem("fixsync.users.filter");
   if (savedFilter) {
     Object.assign(filter, JSON.parse(savedFilter));
   }
   fetchItems();
 });
 
-watch(filter, (newValue) => {
-  localStorage.setItem('fixsync.users.filter', JSON.stringify(newValue));
-}, { deep: true });
+watch(
+  filter,
+  (newValue) => {
+    localStorage.setItem("fixsync.users.filter", JSON.stringify(newValue));
+  },
+  { deep: true }
+);
 
 const onFilterChange = () => fetchItems();
 
 const fetchItems = (props = null) =>
-  handleFetchItems({ pagination, props, rows, loading, filter, url: route('admin.user.data') });
+  handleFetchItems({
+    pagination,
+    props,
+    rows,
+    loading,
+    filter,
+    url: route("admin.user.data"),
+  });
 
-const deleteItem = (row) => handleDelete({
-  url: route('admin.user.delete', row.id),
-  title: `Hapus pelanggan ${row.name}?`,
-  fetchItemsCallback: fetchItems,
-  loading,
-});
-
+const deleteItem = (row) =>
+  handleDelete({
+    url: route("admin.user.delete", row.id),
+    title: `Hapus pelanggan ${row.name}?`,
+    fetchItemsCallback: fetchItems,
+    loading,
+  });
+const showFilter = ref(false);
 </script>
 
 <template>
   <i-head :title="title" />
   <authenticated-layout>
     <template #title>{{ title }}</template>
-    <div class="q-pa-md">
-      <q-table ref="tableRef" flat bordered square :dense="true || $q.screen.lt.md" color="primary" row-key="id"
-        virtual-scroll :title="$t('users')" v-model:pagination="pagination" :filter="filter.search" :loading="loading"
-        :columns="columns" :rows="rows" :rows-per-page-options="[10, 25, 50]" @request="fetchItems" binary-state-sort>
+    <template #right-button>
+      <q-btn
+        icon="add"
+        dense
+        color="primary"
+        @click="router.get(route('admin.user.add'))"
+      />
+      <q-btn
+        class="q-ml-sm"
+        :icon="!showFilter ? 'filter_alt' : 'filter_alt_off'"
+        color="grey"
+        dense
+        @click="showFilter = !showFilter"
+      />
+    </template>
+    <template #header v-if="showFilter">
+      <q-toolbar class="filter-bar">
+        <div class="row q-col-gutter-xs items-center q-pa-sm full-width">
+          <q-select
+            v-model="filter.role"
+            class="custom-select col-xs-12 col-sm-2"
+            :options="roles"
+            label="Role"
+            dense
+            map-options
+            emit-value
+            outlined
+            style="min-width: 150px"
+            @update:model-value="onFilterChange"
+          />
+          <q-select
+            v-model="filter.status"
+            class="custom-select col-xs-12 col-sm-2"
+            :options="statuses"
+            label="Status"
+            dense
+            map-options
+            emit-value
+            outlined
+            style="min-width: 150px"
+            @update:model-value="onFilterChange"
+          />
+          <q-input
+            class="col"
+            outlined
+            dense
+            debounce="300"
+            v-model="filter.search"
+            placeholder="Cari"
+            clearable
+          >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
+      </q-toolbar>
+    </template>
+    <q-page class="flex flex-col q-pa-sm">
+      <q-table
+        class="full-height-table"
+        flat
+        bordered
+        square
+        color="primary"
+        row-key="id"
+        virtual-scroll
+        v-model:pagination="pagination"
+        :filter="filter.search"
+        :loading="loading"
+        :columns="columns"
+        :rows="rows"
+        :rows-per-page-options="[10, 25, 50]"
+        @request="fetchItems"
+        binary-state-sort
+      >
         <template v-slot:loading>
           <q-inner-loading showing color="red" />
-        </template>
-
-        <template #top>
-          <div class="col">
-            <div class="row q-my-sm items-center">
-              <q-btn color="primary" icon="add" @click="router.get(route('admin.user.add'))" :label="$t('add')">
-                <q-tooltip>{{ $t('add_user') }}</q-tooltip>
-              </q-btn>
-              <q-space />
-              <q-input dense debounce="300" v-model="filter.search" placeholder="Cari" clearable>
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
-            </div>
-            <div class="row q-my-sm q-gutter-sm items-center">
-              <span>{{ $t('filter') }}:</span>
-              <q-select v-model="filter.role" :options="roles" label="Role" dense map-options emit-value outlined
-                style="min-width: 150px;" @update:model-value="onFilterChange" />
-              <q-select v-model="filter.status" :options="statuses" label="Status" dense map-options emit-value outlined
-                style="min-width: 150px;" @update:model-value="onFilterChange" />
-            </div>
-          </div>
         </template>
 
         <template v-slot:no-data="{ icon, message, term }">
@@ -132,7 +202,7 @@ const deleteItem = (row) => handleDelete({
         </template>
 
         <template v-slot:body="props">
-          <q-tr :props="props" :class="(!props.row.active) ? 'bg-red-1' : ''">
+          <q-tr :props="props" :class="!props.row.active ? 'bg-red-1' : ''">
             <q-td key="username" :props="props">
               {{ props.row.username }}
             </q-td>
@@ -145,19 +215,42 @@ const deleteItem = (row) => handleDelete({
             <q-td key="role" :props="props" align="center">
               <span>{{ $CONSTANTS.USER_ROLES[props.row.role] }}</span>
             </q-td>
-            <q-td key="action" class="q-gutter-x-sm" :props="props" align="center">
-              <q-btn :disable="props.row.id == currentUser.id || props.row.email == 'admin@example.com'" rounded dense
-                flat icon="edit" @click="router.get(route('admin.user.edit', props.row.id))">
-                <q-tooltip>{{ $t('edit_user') }}</q-tooltip>
+            <q-td
+              key="action"
+              class="q-gutter-x-sm"
+              :props="props"
+              align="center"
+            >
+              <q-btn
+                :disable="
+                  props.row.id == currentUser.id ||
+                  props.row.email == 'admin@example.com'
+                "
+                rounded
+                dense
+                flat
+                icon="edit"
+                @click="router.get(route('admin.user.edit', props.row.id))"
+              >
+                <q-tooltip>{{ $t("edit_user") }}</q-tooltip>
               </q-btn>
-              <q-btn :disable="props.row.id == currentUser.id || props.row.email == 'admin@example.com'" rounded dense
-                flat icon="delete" @click="deleteItem(props.row)">
-                <q-tooltip>{{ $t('delete_user') }}</q-tooltip>
+              <q-btn
+                :disable="
+                  props.row.id == currentUser.id ||
+                  props.row.email == 'admin@example.com'
+                "
+                rounded
+                dense
+                flat
+                icon="delete"
+                @click="deleteItem(props.row)"
+              >
+                <q-tooltip>{{ $t("delete_user") }}</q-tooltip>
               </q-btn>
             </q-td>
           </q-tr>
         </template>
       </q-table>
-    </div>
+    </q-page>
   </authenticated-layout>
 </template>

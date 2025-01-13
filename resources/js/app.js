@@ -37,7 +37,6 @@ createInertiaApp({
         config: {
           iconSet: 'material-symbols-outlined',
         }
-
       })
       .use(i18n)
       .component('i-head', Head)

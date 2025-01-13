@@ -34,9 +34,9 @@ const filterUsers = (val, update) => {
   <authenticated-layout>
     <template #title>{{ title }}</template>
     <q-page class="row justify-center">
-      <div class="col col-lg-6 q-pa-md">
+      <div class="col col-lg-6 q-pa-sm">
         <q-form class="row" @submit.prevent="submit" @validation-error="scrollToFirstErrorField">
-          <q-card square flat bordered class="col q-pa-sm">
+          <q-card square flat bordered class="col">
             <q-card-section>
               <div class="text-subtitle1">Profil Teknisi</div>
             </q-card-section>
@@ -67,11 +67,11 @@ const filterUsers = (val, update) => {
                   label="Aktif" />
               </div>
             </q-card-section>
-            <q-card-actions>
+            <q-card-section class="q-gutter-sm">
               <q-btn icon="save" type="submit" label="Simpan" color="primary" :disable="form.processing" />
               <q-btn icon="cancel" label="Batal" :disable="form.processing"
                 @click="router.get(route('admin.technician.index'))" />
-            </q-card-actions>
+            </q-card-section>
           </q-card>
         </q-form>
       </div>

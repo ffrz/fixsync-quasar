@@ -22,7 +22,7 @@ const submit = () =>
 
 <template>
   <q-form class="row" @submit.prevent="submit" @validation-error="scrollToFirstErrorField">
-    <q-card flat bordered class="col q-pa-sm">
+    <q-card flat bordered square class="col">
       <q-card-section>
         <div class="text-subtitle1 q-my-xs">Profil Perusahaan</div>
         <p class="text-caption text-grey-9">Perbarui profil perusahaan anda.</p>

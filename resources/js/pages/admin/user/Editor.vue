@@ -27,9 +27,9 @@ const submit = () =>
   <authenticated-layout>
     <template #title>{{ title }}</template>
     <div class="row justify-center">
-      <div class="col col-lg-6 q-pa-md">
+      <div class="col col-lg-6 q-pa-sm">
         <q-form class="row" @submit.prevent="submit">
-          <q-card square flat bordered class="col q-pa-sm">
+          <q-card square flat bordered class="col">
             <q-card-section class="q-pt-none">
               <input type="hidden" name="id" v-model="form.id" />
               <q-input autofocus v-model.trim="form.name" label="Nama" lazy-rules :error="!!form.errors.name"
@@ -54,12 +54,12 @@ const submit = () =>
                 <q-checkbox class="full-width" v-model="form.active" :disable="form.processing" label="Aktif" />
               </div>
             </q-card-section>
-            <q-card-actions>
+            <q-card-section class="q-gutter-sm">
               <q-btn icon="save" type="submit" label="Simpan" color="primary" :disable="form.processing"
                 @click="submit" />
               <q-btn icon="cancel" label="Batal" class="text-black" :disable="form.processing"
                 @click="router.get(route('admin.user.index'))" />
-            </q-card-actions>
+            </q-card-section>
           </q-card>
         </q-form>
       </div>

@@ -101,7 +101,7 @@ const tab = ref('main');
   <authenticated-layout>
     <template #title>{{ title }}</template>
     <div class="row justify-center">
-      <div class="col col-lg-6 q-pa-md">
+      <div class="col col-lg-6 q-pa-sm">
         <q-form @submit.prevent="submit" class="q-gutter-md" @validation-error="scrollToFirstErrorField">
           <div class="row">
             <q-card square flat bordered class="q-card col">
@@ -242,11 +242,11 @@ const tab = ref('main');
                     :error-message="form.errors.notes" />
                 </q-tab-panel>
               </q-tab-panels>
-              <q-card-actions class="q-pa-md">
+              <q-card-section class="q-gutter-sm">
                 <q-btn icon="save" type="submit" label="Simpan" color="primary" :disable="form.processing" />
                 <q-btn icon="cancel" label="Batal" :disable="form.processing"
                   @click="router.get(route('admin.service-order.index'))" />
-              </q-card-actions>
+              </q-card-section>
             </q-card>
           </div>
         </q-form>

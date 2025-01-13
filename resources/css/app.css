@@ -59,3 +59,49 @@ a:hover {
 .material-filled {
   font-family: 'Material Icons' !important;
 }
+
+.filter-bar {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 0 !important;
+  width: 100%;
+}
+
+/** Tabel full height */
+.q-table.full-height-table {
+  flex: 1 !important; /* Fill available space */
+  min-height: 0 !important; /* Prevent overflow issues */
+}
+
+/** Paginasi center */
+.q-table__card {
+  width: 100%;
+  display: flex !important;
+  flex-wrap: inherit !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.q-table__card > * {
+  width: 100%;
+}
+
+.q-table__bottom {
+  justify-content: center !important;
+}
+
+.q-table__bottom .q-table__separator{
+  display:none !important;
+}
+
+ /** Select menampilkan elipsis ketika teks terlalu panjang */
+.custom-select .q-field__control-container {
+  white-space: nowrap;
+}
+
+.custom-select .q-field__control-container * {
+  max-width: 133%;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
