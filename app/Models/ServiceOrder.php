@@ -122,6 +122,11 @@ class ServiceOrder extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function technician()
+    {
+        return $this->belongsTo(Technician::class);
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by_uid', 'id');

@@ -104,7 +104,7 @@ const fetchItems = (props = null) =>
 const deleteItem = (row) =>
   handleDelete({
     url: route("admin.user.delete", row.id),
-    title: `Hapus pelanggan ${row.name}?`,
+    message: `Hapus pengguna ${row.name}?`,
     fetchItemsCallback: fetchItems,
     loading,
   });

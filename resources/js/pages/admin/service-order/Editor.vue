@@ -199,7 +199,7 @@ const tab = ref('main');
                 <q-tab-panel name="service">
                   <q-select v-model="form.service_status" label="Status Servis" :options="service_statuses" map-options
                     emit-value :error="!!form.errors.service_status" :disable="form.processing" />
-                  <q-select v-model="form.repair_status" label="Status Servis" :options="repair_statuses" map-options
+                  <q-select v-model="form.repair_status" label="Sukses / Gagal" :options="repair_statuses" map-options
                     emit-value :error="!!form.errors.repair_status" :disable="form.processing" />
                   <q-select v-model="form.technician_id" label="Teknisi" :options="filteredTechnicians" map-options
                     clearable emit-value @filter="filterTechnicians" use-input input-debounce="300"
@@ -222,6 +222,7 @@ const tab = ref('main');
                     :error="!!form.errors.picked_datetime" :disable="form.processing" />
                 </q-tab-panel>
                 <q-tab-panel name="other">
+                  <div class="text-subtitle1">Info Biaya</div>
                   <q-select v-model="form.payment_status" label="Status Pembayaran" :options="payment_statuses"
                     map-options emit-value :error="!!form.errors.payment_status" :disable="form.processing" />
                   <LocaleNumberInput v-model:modelValue="form.estimated_cost" label="Biaya Perkiraan" lazyRules
@@ -237,7 +238,7 @@ const tab = ref('main');
                     :error="!!form.errors.warranty_start_date" :disable="form.processing" />
                   <q-input v-model.trim="form.warranty_day_count" label="Lama Garanasi (hari)" type="number" step="1" lazy-rules
                     :disable="form.processing" />
-                  <q-input v-model.trim="form.notes" type="textarea" label="Buat catatan order" autogrow counter
+                  <q-input v-model.trim="form.notes" type="textarea" label="Catatan" autogrow counter
                     maxlength="1000" lazy-rules :disable="form.processing" :error="!!form.errors.notes"
                     :error-message="form.errors.notes" />
                 </q-tab-panel>

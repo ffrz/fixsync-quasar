@@ -142,6 +142,10 @@ const fetchItems = (props = null) =>
 const onFilterChange = () => {
   fetchItems();
 };
+
+const onRowClicked = (row) => {
+  router.get(route("admin.service-order.detail", row.id));
+}
 </script>
 
 <template>
@@ -261,7 +265,7 @@ const onFilterChange = () => {
         </template>
 
         <template v-slot:body="props">
-          <q-tr :props="props">
+          <q-tr :props="props" @click="onRowClicked(props.row)" class="cursor-pointer">
             <q-td key="id" :props="props">
               {{ props.row.id }}
             </q-td>
@@ -291,7 +295,7 @@ const onFilterChange = () => {
                 dense
                 rounded
                 icon="edit"
-                @click="
+                @click.stop="
                   router.get(route('admin.service-order.edit', props.row.id))
                 "
               >
@@ -302,7 +306,7 @@ const onFilterChange = () => {
                 dense
                 rounded
                 icon="delete"
-                @click="deleteItem(props.row)"
+                @click.stop="deleteItem(props.row)"
                 :disable="!check_role($CONSTANTS.USER_ROLE_ADMIN)"
               >
                 <q-tooltip>Hapus Pesanan</q-tooltip>

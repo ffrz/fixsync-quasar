@@ -31,7 +31,7 @@ return [
         'company_name' => 'Nama Perusahaan',
         'company_phone' => 'No Telepon',
         'company_address' => 'Alamat',
-
+        'password' => 'Kata Sandi',
         'device' => 'Perangkat',
         'equipments' => 'Kelengkapan',
     ],

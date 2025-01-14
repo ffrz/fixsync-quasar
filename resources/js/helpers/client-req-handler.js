@@ -23,6 +23,16 @@ export function handleSubmit(data) {
   form.post(url,
     {
       preserveScroll: true,
+      onSuccess: (response) => {
+        // Notify.create({
+        //   message: response.message,
+        //   icon: "info",
+        //   color: "positive",
+        //   actions: [
+        //     { icon: "close", color: "white", round: true, dense: true },
+        //   ],
+        // });
+      },
       onError: (response) => {
         _scrollToFirstError();
 

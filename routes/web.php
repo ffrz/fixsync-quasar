@@ -56,6 +56,7 @@ Route::middleware([Auth::class])->group(function () {
             Route::get('data', [ServiceOrderController::class, 'data'])->name('admin.service-order.data');
             Route::get('add', [ServiceOrderController::class, 'editor'])->name('admin.service-order.add');
             Route::get('edit/{id}', [ServiceOrderController::class, 'editor'])->name('admin.service-order.edit');
+            Route::get('detail/{id}', [ServiceOrderController::class, 'detail'])->name('admin.service-order.detail');
             Route::post('save', [ServiceOrderController::class, 'save'])->name('admin.service-order.save');
             Route::post('delete/{id}', [ServiceOrderController::class, 'delete'])->name('admin.service-order.delete');
         });

@@ -42,3 +42,16 @@ export async function scrollToFirstErrorField(ref) {
     element.focus();
   }
 }
+
+export const formatNumber = (value, locale = 'id-ID', maxDecimals = 0) => {
+  let number = value;
+
+  if (number === null || number === undefined || isNaN(number)) {
+    number = 0;
+  }
+
+  return new Intl.NumberFormat(locale, {
+    minimumFractionDigits: maxDecimals,
+    maximumFractionDigits: maxDecimals,
+  }).format(number);
+};

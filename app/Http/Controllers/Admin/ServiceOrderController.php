@@ -60,6 +60,20 @@ class ServiceOrderController extends Controller
         return response()->json($items);
     }
 
+    public function detail($id = 0)
+    {
+        $item = ServiceOrder::with([
+            'createdBy:id,username,name',
+            'updatedBy:id,username,name',
+            'closedBy:id,username,name',
+            'technician:id,name'
+        ])->findOrFail($id);
+
+        return inertia('admin/service-order/Detail', [
+            'data' => $item
+        ]);
+    }
+
     public function editor($id = 0)
     {
         $item = $id ? ServiceOrder::with([
@@ -181,7 +195,7 @@ class ServiceOrderController extends Controller
             $item->save();
         });
 
-        return redirect(route('admin.service-order.index'))->with('success', __('messages.service-order-saved', ['id' => $item->id]));
+        return redirect(route('admin.service-order.edit', ['id' => $item->id]))->with('success', __('messages.service-order-saved', ['id' => $item->id]));
     }
 
     public function delete($id)

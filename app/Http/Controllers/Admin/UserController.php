@@ -71,7 +71,7 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
-            'email' => 'email|min:3|max:100',
+            'email' => 'required|email|min:3|max:100',
             'password' => 'required|min:5|max:40',
             'role' => 'required',
         ];
@@ -87,7 +87,6 @@ class UserController extends Controller
             $request->validate($rules);
             $user = new User();
             $user->company_id = $companyId;
-            $message = 'Pengguna baru telah dibuat.';
         } else {
             // username harus unik untuk masing-masing company_id, exclude id
             $rules['username'] = "required|alpha_num|max:255|unique:users,username,{$request->id},id,company_id,{$companyId}";
@@ -98,7 +97,6 @@ class UserController extends Controller
             }
             $request->validate($rules);
             $user = User::findOrFail($request->id);
-            $message = "Pengguna {$user->username} telah diperbarui.";
         }
 
         if (!empty($password)) {
@@ -106,6 +104,8 @@ class UserController extends Controller
         }
         $user->fill($request->only($fields));
         $user->save();
+
+        $message = "Pengguna {$user->username} telah " . ($request->id ? 'diperbarui' : 'ditambahkan') . '.';
 
         return redirect(route('admin.user.index'))->with('success', $message);
     }

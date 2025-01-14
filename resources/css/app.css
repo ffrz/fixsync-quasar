@@ -1,4 +1,5 @@
-a, a:visited {
+a,
+a:visited {
   color: #07d;
   text-decoration: none;
 }
@@ -43,21 +44,20 @@ a:hover {
   box-shadow: inset 8px 0 0 #444;
 }
 
-
 .q-btn {
   text-transform: none !important;
 }
 
 .q-icon {
-  font-family: 'Material Symbols Outlined', sans-serif !important;
+  font-family: "Material Symbols Outlined", sans-serif !important;
 }
 
 .material-outlined {
-  font-family: 'Material Symbols Outlined' !important;
+  font-family: "Material Symbols Outlined" !important;
 }
 
 .material-filled {
-  font-family: 'Material Icons' !important;
+  font-family: "Material Icons" !important;
 }
 
 .filter-bar {
@@ -67,6 +67,9 @@ a:hover {
   width: 100%;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
 /** Tabel full height */
 .q-table.full-height-table {
   flex: 1 !important; /* Fill available space */
@@ -90,11 +93,11 @@ a:hover {
   justify-content: center !important;
 }
 
-.q-table__bottom .q-table__separator{
-  display:none !important;
+.q-table__bottom .q-table__separator {
+  display: none !important;
 }
 
- /** Select menampilkan elipsis ketika teks terlalu panjang */
+/** Select menampilkan elipsis ketika teks terlalu panjang */
 .custom-select .q-field__control-container {
   white-space: nowrap;
 }
@@ -104,4 +107,48 @@ a:hover {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/** butuh border untuk pemisah tab dengan content */
+.q-tabs {
+  border-bottom: 1px solid #ddd;
+}
+
+.q-tab {
+  text-transform: none !important;
+}
+
+.q-tab__label {
+  font-weight: bold !important;
+  color: #555;
+}
+
+.no-wrap {
+  text-wrap-mode: nowrap;
+}
+
+/** table detail view */
+table.detail td {
+  vertical-align: top;
+}
+
+/** Timeline */
+.q-timeline__heading-title {
+  font-size: 18px;
+  margin: 0;
+  padding: 0 !important;
+}
+
+.q-timeline__title {
+  font-size: 16px;
+  margin-bottom: 0 !important;
+  padding-bottom: 0;
+}
+
+.q-timeline__subtitle {
+  margin: 0 !important;
+}
+.q-timeline__entry {
+  margin: 0 !important;
+
 }
