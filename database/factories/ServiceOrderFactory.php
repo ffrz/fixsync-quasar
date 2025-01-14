@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Customer;
 use App\Models\ServiceOrder;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -31,6 +32,7 @@ class ServiceOrderFactory extends Factory
         'HP LaserJet 1020',
         'HP LaserJet 1022'
     ];
+
     /**
      * Define the model's default state.
      *
@@ -39,8 +41,92 @@ class ServiceOrderFactory extends Factory
     public function definition(): array
     {
         $customer = Customer::find(Customer::where('company_id', 1)->pluck('id')->random());
-        $orderStatus = $this->faker->randomElement(array_keys(ServiceOrder::OrderStatuses));
-        $createdDateTime = $this->faker->dateTimeThisMonth;
+        $orderStatus = ServiceOrder::OrderStatus_Open;
+        $serviceStatus = $this->faker->randomElement([
+            ServiceOrder::ServiceStatus_Received,
+            ServiceOrder::ServiceStatus_Checked,
+            ServiceOrder::ServiceStatus_WaitingParts,
+            ServiceOrder::ServiceStatus_InProgress,
+        ]);
+        $paymentStatus = $this->faker->randomElement([
+            ServiceOrder::PaymentStatus_Unpaid,
+            ServiceOrder::PaymentStatus_PartiallyPaid,
+            ServiceOrder::PaymentStatus_FullyPaid,
+        ]);
+
+        $createdDateTime = Carbon::instance($this->faker->dateTimeThisMonth);
+        $received_datetime = $createdDateTime->copy();
+
+        $checked_datetime = null;
+        if ($serviceStatus == ServiceOrder::ServiceStatus_Checked ||
+            $serviceStatus == ServiceOrder::ServiceStatus_WaitingParts ||
+            $serviceStatus == ServiceOrder::ServiceStatus_InProgress) {
+            $checked_datetime = $received_datetime->copy()->addDays(1);
+        }
+
+        $worked_datetime = null;
+        if ($serviceStatus == ServiceOrder::ServiceStatus_WaitingParts ||
+            $serviceStatus == ServiceOrder::ServiceStatus_InProgress) {
+            $worked_datetime = $checked_datetime->copy()->addDays(1);
+
+            $serviceStatus = $this->faker->randomElement([
+                ServiceOrder::ServiceStatus_WaitingParts,
+                ServiceOrder::ServiceStatus_InProgress,
+                ServiceOrder::ServiceStatus_Completed,
+            ]);
+        }
+
+        $completed_datetime = null;
+        if ($serviceStatus == ServiceOrder::ServiceStatus_Completed) {
+            $completed_datetime = $worked_datetime->copy()->addDays(1);
+            $serviceStatus = $this->faker->randomElement([
+                ServiceOrder::ServiceStatus_Completed,
+                ServiceOrder::ServiceStatus_Picked,
+            ]);
+        }
+
+        $picked_datetime = null;
+        if ($serviceStatus == ServiceOrder::ServiceStatus_Picked) {
+            $picked_datetime = $completed_datetime->copy()->addDays(1);
+        }
+
+        $estimated_cost = $this->faker->randomFloat(2, 1, 50) * 25000;
+        $down_payment = 0;
+        if ($paymentStatus == ServiceOrder::PaymentStatus_PartiallyPaid) {
+            $down_payment = (0.25 * $estimated_cost);
+        }
+        else if ($paymentStatus == ServiceOrder::PaymentStatus_FullyPaid) {
+            $down_payment = $estimated_cost;
+        }
+
+        $total_cost = 0;
+
+        // set status perbaikan, inisialisasi dengan belum selesai
+        $repair_status = ServiceOrder::RepairStatus_NotFinished;
+        if ($serviceStatus == ServiceOrder::ServiceStatus_Completed
+            || $serviceStatus == ServiceOrder::ServiceStatus_Picked) {
+            // set status perbaikan dengan nilai sukses atau gagal
+            $repair_status = $this->faker->randomElement([
+                ServiceOrder::RepairStatus_Success,
+                ServiceOrder::RepairStatus_Failed,
+            ]);
+        }
+
+        // set biaya jika selesai / sukses
+        if ($repair_status == ServiceOrder::RepairStatus_Success) {
+            $total_cost = $estimated_cost;
+        }
+
+        if ($serviceStatus == ServiceOrder::ServiceStatus_Picked
+            && $paymentStatus == ServiceOrder::PaymentStatus_FullyPaid) {
+            $orderStatus = ServiceOrder::OrderStatus_Closed;
+        }
+        else if ($repair_status != ServiceOrder::RepairStatus_Success) {
+            $orderStatus = $this->faker->randomElement([
+                ServiceOrder::OrderStatus_Open,
+                ServiceOrder::OrderStatus_Canceled,
+            ]);
+        }
 
         return [
             'company_id' => 1,
@@ -51,20 +137,15 @@ class ServiceOrderFactory extends Factory
             'customer_address' => $customer->address,
 
             'order_status' => $orderStatus,
-            'service_status' => $this->faker->randomElement(array_keys(ServiceOrder::ServiceStatuses)),
-            'payment_status' => $this->faker->randomElement(array_keys(ServiceOrder::PaymentStatuses)),
-            'repair_status' => $this->faker->randomElement(array_keys(ServiceOrder::RepairStatuses)),
+            'service_status' => $serviceStatus,
+            'payment_status' => $paymentStatus,
+            'repair_status' => $repair_status,
 
-            // Tanggal ini juga harus rasional, yaitu berurutan
             'created_datetime' => $createdDateTime,
             'created_by_uid' => 1,
-
-            // closed_date time harus lebih besar dari created dan jika status order nya closed / canceled, null jika masih open
-            'closed_datetime' => $this->faker->dateTimeThisMonth,
+            'closed_datetime' => $picked_datetime,
             'closed_by_uid' => 1,
-
-            // updated date time bole sama dengan created time  saja
-            'updated_datetime' => $this->faker->dateTimeThisMonth,
+            'updated_datetime' => $picked_datetime,
             'updated_by_uid' => 1,
 
             'device' => $this->faker->randomElement(static::$devices),
@@ -73,22 +154,19 @@ class ServiceOrderFactory extends Factory
             'problems' => $this->faker->sentence, // Ganti dengan masalah umum
             'actions' => $this->faker->sentence, // Ganti dengan aksi yang umum
 
-            // buat tanggal lebih logis dengan waktu yang berurutan
-            'received_datetime' => $this->faker->dateTimeThisMonth,
-            'checked_datetime' => $this->faker->dateTimeThisMonth,
-            'worked_datetime' => $this->faker->dateTimeThisMonth,
-            'completed_datetime' => $this->faker->dateTimeThisMonth,
-            'picked_datetime' => $this->faker->dateTimeThisMonth,
+            'received_datetime' => $received_datetime,
+            'checked_datetime' => $checked_datetime,
+            'worked_datetime' => $worked_datetime,
+            'completed_datetime' => $completed_datetime,
+            'picked_datetime' => $picked_datetime,
 
-            // buat keuangan lebih logis dengan jumlah acak yang sesuai
-            'down_payment' => $this->faker->randomFloat(2, 1, 50) * 25000,
-            'estimated_cost' => $this->faker->randomFloat(2, 1, 50) * 25000,
-            'total_cost' => $this->faker->randomFloat(2, 1, 50) * 25000,
+            'down_payment' => $down_payment,
+            'estimated_cost' => $estimated_cost,
+            'total_cost' => $total_cost,
             'technician_id' => 2,
 
-            // garansi bisa dibuat random kalau dan diisi berdasarkan statusnya selesai / tidak
-            'warranty_start_date' => null,
-            'warranty_day_count' => 0,
+            'warranty_start_date' => $repair_status == ServiceOrder::RepairStatus_Success ? $completed_datetime : null,
+            'warranty_day_count' => $repair_status == ServiceOrder::RepairStatus_Success ? $this->faker->randomElement([3, 7, 14, 30]) : 0,
 
             'notes' => $this->faker->paragraph,
         ];
