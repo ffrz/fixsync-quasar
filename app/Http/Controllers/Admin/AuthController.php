@@ -17,10 +17,9 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         if ($user) {
-            // TODO:: log activity
+            $user->setLastActivity('Logout');
         }
         Auth::logout();
-        Auth::user()->setLastActivity('Logout');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
     }
