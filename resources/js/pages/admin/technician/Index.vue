@@ -1,21 +1,17 @@
 <script setup>
-// FIXME: Terkadang terjadi double fetch pada saat komponen di mount
-
 import { onMounted, reactive, ref, watch } from "vue";
 import { router } from "@inertiajs/vue3";
-import { useQuasar } from "quasar";
 import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
 import { check_role } from "@/helpers/utils";
 
-const $q = useQuasar();
-const tableRef = ref(null);
+const title = "Teknisi";
+const showFilter = ref(false);
 const rows = ref([]);
 const loading = ref(true);
 const filter = reactive({
   search: "",
   status: "all",
 });
-const title = "Teknisi";
 const pagination = ref({
   page: 1,
   rowsPerPage: 10,
@@ -60,21 +56,8 @@ const statuses = [
 ];
 
 onMounted(() => {
-  const savedFilter = localStorage.getItem("fixsync.technician.filter");
-  if (savedFilter) {
-    Object.assign(filter, JSON.parse(savedFilter));
-  }
-
-  fetchItems(); // ini trigger fetch ketika komponen di mount
+  fetchItems();
 });
-
-watch(
-  filter,
-  (newValue) => {
-    localStorage.setItem("fixsync.technician.filter", JSON.stringify(newValue));
-  },
-  { deep: true }
-);
 
 const deleteItem = (row) =>
   handleDelete({
@@ -96,8 +79,8 @@ const fetchItems = (props = null) => {
 };
 
 const onFilterChange = () => fetchItems();
+const onRowClicked = (row) => router.get(route('admin.technician.detail', {id: row.id}));
 
-const showFilter = ref(false);
 </script>
 
 <template>
@@ -182,7 +165,7 @@ const showFilter = ref(false);
           </div>
         </template>
         <template v-slot:body="props">
-          <q-tr :props="props" :class="!props.row.active ? 'bg-red-1' : ''">
+          <q-tr :props="props" :class="!props.row.active ? 'bg-red-1' : ''" class="cursor-pointer" @click="onRowClicked(props.row)">
             <q-td key="name" :props="props">
               {{ props.row.name }}
             </q-td>
@@ -203,7 +186,7 @@ const showFilter = ref(false);
                 dense
                 rounded
                 icon="edit"
-                @click="
+                @click.stop="
                   router.get(route('admin.technician.edit', props.row.id))
                 "
                 :disabled="!check_role($CONSTANTS.USER_ROLE_ADMIN)"
@@ -215,7 +198,7 @@ const showFilter = ref(false);
                 dense
                 rounded
                 icon="delete"
-                @click="deleteItem(props.row)"
+                @click.stop="deleteItem(props.row)"
                 :disabled="!check_role($CONSTANTS.USER_ROLE_ADMIN)"
               >
                 <q-tooltip>Hapus Teknisi</q-tooltip>

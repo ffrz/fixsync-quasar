@@ -15,6 +15,13 @@ class TechnicianController extends Controller
         return inertia('admin/technician/Index');
     }
 
+    public function detail($id)
+    {
+        return inertia('admin/technician/Detail', [
+            'data' => Technician::with('user')->findOrFail($id),
+        ]);
+    }
+
     public function data(Request $request)
     {
         $orderBy = $request->get('order_by', 'name');

@@ -84,7 +84,11 @@ const tab = ref("main");
                     <tr>
                       <td style="min-width: 120px">Nama</td>
                       <td>:</td>
-                      <td>{{ page.props.data.customer_name }}</td>
+                      <td>
+                        <i-link :href="route('admin.customer.detail', {id: page.props.data.customer_id})">
+                          {{ page.props.data.customer_name }}
+                        </i-link>
+                      </td>
                     </tr>
                     <tr>
                       <td>Kontak</td>
@@ -167,11 +171,9 @@ const tab = ref("main");
                       <td>Teknisi</td>
                       <td>:</td>
                       <td>
-                        {{
-                          page.props.data.technician
-                            ? page.props.data.technician.name
-                            : ""
-                        }}
+                        <i-link v-if="!!page.props.data.technician" :href="route('admin.technician.detail', {id: page.props.data.technician_id })">
+                          {{ page.props.data.technician.name }}
+                        </i-link>
                       </td>
                     </tr>
                   </tbody>

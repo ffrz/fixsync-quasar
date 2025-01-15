@@ -47,6 +47,7 @@ Route::middleware([Auth::class])->group(function () {
             Route::get('data', [CustomerController::class, 'data'])->name('admin.customer.data');
             Route::get('add', [CustomerController::class, 'editor'])->name('admin.customer.add');
             Route::get('edit/{id}', [CustomerController::class, 'editor'])->name('admin.customer.edit');
+            Route::get('detail/{id}', [CustomerController::class, 'detail'])->name('admin.customer.detail');
             Route::post('save', [CustomerController::class, 'save'])->name('admin.customer.save');
             Route::post('delete/{id}', [CustomerController::class, 'delete'])->name('admin.customer.delete');
         });
@@ -66,6 +67,7 @@ Route::middleware([Auth::class])->group(function () {
             Route::get('data', [TechnicianController::class, 'data'])->name('admin.technician.data');
             Route::get('add', [TechnicianController::class, 'editor'])->name('admin.technician.add');
             Route::get('edit/{id}', [TechnicianController::class, 'editor'])->name('admin.technician.edit');
+            Route::get('detail/{id}', [TechnicianController::class, 'detail'])->name('admin.technician.detail');
             Route::post('save', [TechnicianController::class, 'save'])->name('admin.technician.save');
             Route::post('delete/{id}', [TechnicianController::class, 'delete'])->name('admin.technician.delete');
         });

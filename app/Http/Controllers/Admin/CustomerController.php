@@ -15,6 +15,13 @@ class CustomerController extends Controller
         return inertia('admin/customer/Index');
     }
 
+    public function detail($id = 0)
+    {
+        return inertia('admin/customer/Detail', [
+            'data' => Customer::findOrFail($id),
+        ]);
+    }
+
     public function data(Request $request)
     {
         $orderBy = $request->get('order_by', 'name');

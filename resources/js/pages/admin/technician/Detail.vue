@@ -1,31 +1,45 @@
 <script setup>
-import { validateUsername, validateEmail } from "@/helpers/validations";
-import { usePage } from "@inertiajs/vue3";
+import { router, usePage } from "@inertiajs/vue3";
 
 const page = usePage();
-const title = "Rincian Pengguna";
+const title = "Rincian Teknisi";
+
 </script>
 
 <template>
   <i-head :title="title" />
   <authenticated-layout>
     <template #title>{{ title }}</template>
-    <div class="row justify-center">
+    <q-page class="row justify-center">
       <div class="col col-lg-6 q-pa-sm">
         <div class="row">
           <q-card square flat bordered class="col">
             <q-card-section>
-              <div class="text-subtitle1 text-bold text-grey-9">Profil Pengguna</div>
+              <div class="text-subtitle1 text-bold text-grey-8">Profil Teknisi</div>
               <table>
                 <tr>
-                  <td>ID Pengguna</td>
+                  <td>Akun Pengguna</td>
                   <td>:</td>
-                  <td>{{ page.props.data.username }}</td>
+                  <td>
+                    <template v-if="!!page.props.data.user">
+                      <i-link :href="route('admin.user.detail', { id: page.props.data.user.id })">
+                        {{ page.props.data.user.username }}
+                      </i-link>
+                    </template>
+                    <template v-else>
+                      <span class="text-grey-9">Tidak terhubung</span>
+                    </template>
+                  </td>
                 </tr>
                 <tr>
-                  <td>Nama Pengguna</td>
+                  <td>Nama Teknisi</td>
                   <td>:</td>
                   <td>{{ page.props.data.name }}</td>
+                </tr>
+                <tr>
+                  <td>No. Telepon</td>
+                  <td>:</td>
+                  <td>{{ page.props.data.phone }}</td>
                 </tr>
                 <tr>
                   <td>Email</td>
@@ -33,9 +47,9 @@ const title = "Rincian Pengguna";
                   <td>{{ page.props.data.email }}</td>
                 </tr>
                 <tr>
-                  <td>Hak Akses</td>
+                  <td>Alamat</td>
                   <td>:</td>
-                  <td>{{ $CONSTANTS.USER_ROLES[page.props.data.role] }}</td>
+                  <td>{{ page.props.data.address }}</td>
                 </tr>
                 <tr>
                   <td>Akun dibuat pada</td>
@@ -52,6 +66,7 @@ const title = "Rincian Pengguna";
           </q-card>
         </div>
       </div>
-    </div>
+    </q-page>
+
   </authenticated-layout>
 </template>
