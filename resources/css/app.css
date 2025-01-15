@@ -128,8 +128,16 @@ a:hover {
 }
 
 /** table detail view */
+table.detail {
+  border-collapse: collapse;
+}
 table.detail td {
   vertical-align: top;
+  padding: 2px 5px;
+}
+
+table.detail tr:nth-child(even) td {
+  background-color: #fafafa;
 }
 
 /** Timeline */

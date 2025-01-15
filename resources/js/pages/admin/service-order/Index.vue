@@ -1,14 +1,13 @@
 <script setup>
-// FIXME: Terkadang terjadi double fetch pada saat komponen di mount
 
-import { onMounted, reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 import { useQuasar } from "quasar";
 import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
 import { create_options, check_role } from "@/helpers/utils";
 
+const title = "Order Servis";
 const page = usePage();
-const $q = useQuasar();
 const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
@@ -20,7 +19,6 @@ const filter = reactive({
   payment_status: "all",
   repair_status: "all",
 });
-const title = "Order Servis";
 
 const order_statuses = [
   { value: "all", label: "Semua" },
@@ -92,34 +90,33 @@ const columns = [
   },
   {
     name: "action",
-    label: "Aksi",
-    align: "center",
+    align: "right",
   },
 ];
 
 onMounted(() => {
-  const savedFilter = localStorage.getItem("fixsync.service-orders.filter");
-  if (savedFilter) {
-    Object.assign(filter, JSON.parse(savedFilter));
-  }
+  // const savedFilter = localStorage.getItem("fixsync.service-orders.filter");
+  // if (savedFilter) {
+  //   Object.assign(filter, JSON.parse(savedFilter));
+  // }
 
-  /**
-   * ini harus dinonaktifkan karena mengakibatkan double fetch, siapa yg mentrigger fetch pertama kali selain baris ini?
-   * anehnya, kode ini hampir sama dengan modul user, tapi di modul user tidak terjadi double fetch
-   */
+  // /**
+  //  * ini harus dinonaktifkan karena mengakibatkan double fetch, siapa yg mentrigger fetch pertama kali selain baris ini?
+  //  * anehnya, kode ini hampir sama dengan modul user, tapi di modul user tidak terjadi double fetch
+  //  */
   fetchItems();
 });
 
-watch(
-  filter,
-  (newValue) => {
-    localStorage.setItem(
-      "fixsync.service-orders.filter",
-      JSON.stringify(newValue)
-    );
-  },
-  { deep: true }
-);
+// watch(
+//   filter,
+//   (newValue) => {
+//     localStorage.setItem(
+//       "fixsync.service-orders.filter",
+//       JSON.stringify(newValue)
+//     );
+//   },
+//   { deep: true }
+// );
 
 const deleteItem = (row) =>
   handleDelete({

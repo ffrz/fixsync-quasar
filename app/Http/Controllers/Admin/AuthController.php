@@ -20,6 +20,7 @@ class AuthController extends Controller
             // TODO:: log activity
         }
         Auth::logout();
+        Auth::user()->setLastActivity('Logout');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
     }
@@ -63,6 +64,8 @@ class AuthController extends Controller
             $validator->errors()->add('username', 'Akun anda tidak aktif. Silahkan hubungi administrator!');
             $this->_logout($request);
         } else {
+            Auth::user()->setLastLogin();
+            Auth::user()->setLastActivity('Login');
             $request->session()->regenerate();
             return redirect(route('admin.dashboard'));
         }

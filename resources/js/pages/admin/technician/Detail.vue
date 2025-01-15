@@ -16,7 +16,7 @@ const title = "Rincian Teknisi";
           <q-card square flat bordered class="col">
             <q-card-section>
               <div class="text-subtitle1 text-bold text-grey-8">Profil Teknisi</div>
-              <table>
+              <table class="detail">
                 <tr>
                   <td>Akun Pengguna</td>
                   <td>:</td>
@@ -60,6 +60,28 @@ const title = "Rincian Teknisi";
                   <td>Terakhir diperbarui</td>
                   <td>:</td>
                   <td>{{ $dayjs(new Date(page.props.data.updated_at)).format('DD MMMM YY HH:mm:ss') }}</td>
+                </tr>
+              </table>
+            </q-card-section>
+            <q-card-section>
+              <div class="text-subtitle1 text-bold text-grey-8">Statistik (Keseluruhan)</div>
+              <table>
+                <tr>
+                  <td>Jumlah Servis Ditangani</td>
+                  <td>:</td>
+                  <td>
+                    0
+                  </td>
+                </tr>
+                <tr>
+                  <td>Jumlah Servis Sukses</td>
+                  <td>:</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>Jumlah Servis Gagal</td>
+                  <td>:</td>
+                  <td>0</td>
                 </tr>
               </table>
             </q-card-section>

@@ -29,6 +29,8 @@ class CompanyProfileController extends Controller
      */
     public function update(Request $request)
     {
+        Auth::user()->setLastActivity('Memperbarui profil perusahaan');
+
         $rules = [
             'name' => 'required|min:2|max:100',
             'email' => 'required|email|max:255',

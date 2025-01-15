@@ -44,8 +44,7 @@ const columns = [
   },
   {
     name: "action",
-    label: "Aksi",
-    align: "center",
+    align: "right",
   },
 ];
 

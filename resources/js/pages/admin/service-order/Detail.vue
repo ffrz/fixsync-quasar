@@ -26,7 +26,7 @@ const tab = ref("main");
                 <div class="text-subtitle1 text-bold text-grey-9">
                   Info Order
                 </div>
-                <table>
+                <table class="detail">
                   <tbody>
                     <tr>
                       <td style="min-width: 120px">No Order</td>
@@ -79,7 +79,7 @@ const tab = ref("main");
                 <div class="text-subtitle1 q-pt-lg text-bold text-grey-9">
                   Info Pelanggan
                 </div>
-                <table>
+                <table class="detail">
                   <tbody>
                     <tr>
                       <td style="min-width: 120px">Nama</td>
@@ -105,7 +105,7 @@ const tab = ref("main");
                 <div class="text-subtitle1 q-pt-md text-bold text-grey-9">
                   Info Perangkat
                 </div>
-                <table>
+                <table class="detail">
                   <tbody>
                     <tr>
                       <td style="min-width: 120px">Perangkat</td>
@@ -127,7 +127,7 @@ const tab = ref("main");
                 <div class="text-subtitle1 q-pt-md text-bold text-grey-9">
                   Kendala dan Tindakan
                 </div>
-                <table>
+                <table class="detail">
                   <tbody>
                     <tr>
                       <td style="min-width: 120px">Kendala</td>
@@ -143,7 +143,7 @@ const tab = ref("main");
                 </table>
               </q-tab-panel>
               <q-tab-panel name="service">
-                <table>
+                <table class="detail">
                   <tbody>
                     <tr>
                       <td style="min-width: 120px">Status Servis</td>

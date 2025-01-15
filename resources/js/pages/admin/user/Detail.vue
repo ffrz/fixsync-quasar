@@ -16,7 +16,7 @@ const title = "Rincian Pengguna";
           <q-card square flat bordered class="col">
             <q-card-section>
               <div class="text-subtitle1 text-bold text-grey-9">Profil Pengguna</div>
-              <table>
+              <table class="detail">
                 <tr>
                   <td>ID Pengguna</td>
                   <td>:</td>
@@ -46,6 +46,19 @@ const title = "Rincian Pengguna";
                   <td>Terakhir diperbarui</td>
                   <td>:</td>
                   <td>{{ $dayjs(new Date(page.props.data.updated_at)).format('DD MMMM YY HH:mm:ss') }}</td>
+                </tr>
+                <tr>
+                  <td>Terakhir login</td>
+                  <td>:</td>
+                  <td>{{ $dayjs(new Date(page.props.data.last_login_datetime)).format('DD MMMM YY HH:mm:ss') }}</td>
+                </tr>
+                <tr v-if="page.props.data.last_activity_datetime">
+                  <td>Aktifitas Terakhir</td>
+                  <td>:</td>
+                  <td>
+                    {{ $dayjs(new Date(page.props.data.last_activity_datetime)).format('DD MMMM YY HH:mm:ss') }}
+                    <br>{{ page.props.data.last_activity_description }}
+                  </td>
                 </tr>
               </table>
             </q-card-section>

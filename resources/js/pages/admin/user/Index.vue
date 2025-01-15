@@ -1,6 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref, watch } from "vue";
-import { useQuasar } from "quasar";
+import { onMounted, reactive, ref } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 import { handleFetchItems, handleDelete } from "@/helpers/client-req-handler";
 import { create_options } from "@/helpers/utils";
@@ -19,8 +18,6 @@ const statuses = [
 const page = usePage();
 const currentUser = page.props.auth.user;
 const title = i18n.global.t("users");
-const $q = useQuasar();
-const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
 const filter = reactive({
@@ -68,26 +65,25 @@ const columns = [
   },
   {
     name: "action",
-    label: "Aksi",
-    align: "center",
+    align: "right",
   },
 ];
 
 onMounted(() => {
-  const savedFilter = localStorage.getItem("fixsync.users.filter");
-  if (savedFilter) {
-    Object.assign(filter, JSON.parse(savedFilter));
-  }
+  // const savedFilter = localStorage.getItem("fixsync.users.filter");
+  // if (savedFilter) {
+  //   Object.assign(filter, JSON.parse(savedFilter));
+  // }
   fetchItems();
 });
 
-watch(
-  filter,
-  (newValue) => {
-    localStorage.setItem("fixsync.users.filter", JSON.stringify(newValue));
-  },
-  { deep: true }
-);
+// watch(
+//   filter,
+//   (newValue) => {
+//     localStorage.setItem("fixsync.users.filter", JSON.stringify(newValue));
+//   },
+//   { deep: true }
+// );
 
 const onFilterChange = () => fetchItems();
 
