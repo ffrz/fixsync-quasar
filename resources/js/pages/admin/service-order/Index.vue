@@ -68,13 +68,6 @@ const columns = [
     sortable: true,
   },
   {
-    name: "status",
-    label: "Status",
-    field: "status",
-    align: "center",
-    sortable: true,
-  },
-  {
     name: "action",
     align: "right",
   },
