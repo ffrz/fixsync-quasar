@@ -20,7 +20,7 @@ class ServiceOrder extends Model
 
     const OrderStatuses = [
         self::OrderStatus_Open => 'Aktif',
-        self::OrderStatus_Closed => 'Nonaktif',
+        self::OrderStatus_Closed => 'Selesai',
         self::OrderStatus_Canceled => 'Dibatalkan',
     ];
 
