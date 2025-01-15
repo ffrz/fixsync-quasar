@@ -59,9 +59,9 @@ class ServiceOrder extends Model
         /**
      * RepairStatus
      */
-    const PaymentStatus_Unpaid = 'not_finished';
-    const PaymentStatus_PartiallyPaid = 'success';
-    const PaymentStatus_FullyPaid = 'failed';
+    const PaymentStatus_Unpaid = 'unpaid';
+    const PaymentStatus_PartiallyPaid = 'partially_paid';
+    const PaymentStatus_FullyPaid = 'fully_paid';
 
     const PaymentStatuses = [
         self::PaymentStatus_Unpaid => 'Belum Dibayar',

@@ -47,16 +47,9 @@ const pagination = ref({
 
 const columns = [
   {
-    name: "id",
-    label: "ID",
-    field: "id",
-    align: "left",
-    sortable: true,
-  },
-  {
-    name: "received_datetime",
-    label: "Tgl Masuk",
-    field: "received_datetime",
+    name: "order",
+    label: "Order",
+    field: "order",
     align: "left",
     sortable: true,
   },
@@ -68,24 +61,17 @@ const columns = [
     sortable: true,
   },
   {
-    name: "customer_name",
-    label: "Atas Nama",
-    field: "customer_name",
+    name: "customer",
+    label: "Pelanggan",
+    field: "customer",
     align: "left",
     sortable: true,
   },
   {
-    name: "customer_phone",
-    label: "No HP",
-    field: "customer_phone",
-    align: "left",
-    sortable: true,
-  },
-  {
-    name: "customer_address",
-    label: "Alamat",
-    field: "customer_address",
-    align: "left",
+    name: "status",
+    label: "Status",
+    field: "status",
+    align: "center",
     sortable: true,
   },
   {
@@ -234,7 +220,7 @@ const onRowClicked = (row) => {
         bordered
         square
         color="primary"
-        class="full-height-table"
+        class="full-height-table va-top"
         row-key="id"
         virtual-scroll
         v-model:pagination="pagination"
@@ -263,23 +249,30 @@ const onRowClicked = (row) => {
 
         <template v-slot:body="props">
           <q-tr :props="props" @click="onRowClicked(props.row)" class="cursor-pointer">
-            <q-td key="id" :props="props">
-              {{ props.row.id }}
-            </q-td>
-            <q-td key="received_datetime" :props="props">
-              {{ props.row.received_datetime }}
+            <q-td key="order" :props="props">
+              <b>#{{ props.row.id }}</b><br>
+              {{ $dayjs(new Date(props.row.received_datetime)).format('DD/MM/YYYY HH:mm') }}<br>
+              <q-chip
+                dense
+                :color="props.row.order_status === 'open' ? 'green' : (props.row.order_status === 'closed' ? 'grey' : 'red')"
+                :icon="props.row.order_status === 'open' ? 'question_mark' : (props.row.order_status === 'closed' ? 'check' : 'asterisk')">
+                {{ $CONSTANTS.SERVICEORDER_ORDERSTATUSES[props.row.order_status] }}
+              </q-chip>
             </q-td>
             <q-td key="device" :props="props">
-              {{ props.row.device }}
+              <b>{{ props.row.device }}</b><br>
+              {{ props.row.problems }}<br>
+              {{ props.row.actions }}<br>
+              <q-chip dense icon="handyman">{{ $CONSTANTS.SERVICEORDER_SERVICESTATUSES[props.row.service_status] }}</q-chip>
+              <q-chip dense icon="task_alt">{{ $CONSTANTS.SERVICEORDER_REPAIRSTATUSES[props.row.repair_status] }}</q-chip>
+              <q-chip dense icon="payments">{{ $CONSTANTS.SERVICEORDER_PAYMENTSTATUSES[props.row.payment_status] }}</q-chip>
             </q-td>
-            <q-td key="customer_name" :props="props">
-              {{ props.row.customer_name }}
-            </q-td>
-            <q-td key="customer_phone" :props="props">
-              {{ props.row.customer_phone }}
-            </q-td>
-            <q-td key="customer_address" :props="props">
+            <q-td key="customer" :props="props">
+              <b>{{ props.row.customer_name }}</b><br>
+              {{ props.row.customer_phone }}<br>
               {{ props.row.customer_address }}
+            </q-td>
+            <q-td key="status" :props="props">
             </q-td>
             <q-td
               key="action"

@@ -76,6 +76,10 @@ a:hover {
   min-height: 0 !important; /* Prevent overflow issues */
 }
 
+.va-top td {
+  vertical-align: top !important;
+}
+
 /** Paginasi center */
 .q-table__card {
   width: 100%;
@@ -159,4 +163,8 @@ table.detail tr:nth-child(even) td {
 .q-timeline__entry {
   margin: 0 !important;
 
+}
+
+.q-chip--dense {
+  padding: 0 8px !important;
 }
