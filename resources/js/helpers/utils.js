@@ -35,6 +35,12 @@ export function create_options_from_customers(items) {
   });
 }
 
+export function create_options_from_customers_with_phone(items) {
+  return items.map((customer) => {
+    return { 'value': customer.id, 'label': `#${customer.id}: ${customer.name} - ${customer.phone}` };
+  });
+}
+
 export async function scrollToFirstErrorField(ref) {
   const element = ref.getNativeElement();
   if (element) {

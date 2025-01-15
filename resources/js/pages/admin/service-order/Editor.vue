@@ -1,7 +1,7 @@
 <script setup>
 import { router, useForm, usePage } from "@inertiajs/vue3";
 import { handleSubmit } from "@/helpers/client-req-handler";
-import { create_options, create_options_from_technicians, create_options_from_customers, scrollToFirstErrorField } from "@/helpers/utils";
+import { create_options, create_options_from_technicians, create_options_from_customers_with_phone, scrollToFirstErrorField } from "@/helpers/utils";
 import LocaleNumberInput from "@/components/LocaleNumberInput.vue";
 import DateTimePicker from "@/components/DateTimePicker.vue";
 import DatePicker from "@/components/DatePicker.vue";
@@ -13,7 +13,7 @@ const order_statuses = create_options(window.CONSTANTS.SERVICEORDER_ORDERSTATUSE
 const payment_statuses = create_options(window.CONSTANTS.SERVICEORDER_PAYMENTSTATUSES);
 const service_statuses = create_options(window.CONSTANTS.SERVICEORDER_SERVICESTATUSES);
 const repair_statuses = create_options(window.CONSTANTS.SERVICEORDER_REPAIRSTATUSES);
-const customers = ref([{ value: 0, label: '<< Pelanggan Baru >>' }, ...create_options_from_customers(page.props.customers)]);
+const customers = ref([{ value: 0, label: '<< Pelanggan Baru >>' }, ...create_options_from_customers_with_phone(page.props.customers)]);
 const filteredCustomers = ref([...customers.value]);
 const technicians = ref(create_options_from_technicians(page.props.technicians));
 const filteredTechnicians = ref([...technicians.value]);
