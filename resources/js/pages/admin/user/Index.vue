@@ -108,7 +108,11 @@ const deleteItem = (row) =>
     fetchItemsCallback: fetchItems,
     loading,
   });
+
 const showFilter = ref(false);
+
+const onRowClicked = (row) => router.get(route("admin.user.detail", row.id));
+
 </script>
 
 <template>
@@ -202,7 +206,7 @@ const showFilter = ref(false);
         </template>
 
         <template v-slot:body="props">
-          <q-tr :props="props" :class="!props.row.active ? 'bg-red-1' : ''">
+          <q-tr :props="props" :class="!props.row.active ? 'bg-red-1' : ''" @click="onRowClicked(props.row)" class="cursor-pointer">
             <q-td key="username" :props="props">
               {{ props.row.username }}
             </q-td>
@@ -230,7 +234,7 @@ const showFilter = ref(false);
                 dense
                 flat
                 icon="edit"
-                @click="router.get(route('admin.user.edit', props.row.id))"
+                @click.stop="router.get(route('admin.user.edit', props.row.id))"
               >
                 <q-tooltip>{{ $t("edit_user") }}</q-tooltip>
               </q-btn>
@@ -243,7 +247,7 @@ const showFilter = ref(false);
                 dense
                 flat
                 icon="delete"
-                @click="deleteItem(props.row)"
+                @click.stop="deleteItem(props.row)"
               >
                 <q-tooltip>{{ $t("delete_user") }}</q-tooltip>
               </q-btn>

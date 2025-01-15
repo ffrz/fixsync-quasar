@@ -21,6 +21,13 @@ class UserController extends Controller
         return inertia('admin/user/Index');
     }
 
+    public function detail($id = 0)
+    {
+        return inertia('admin/user/Detail', [
+            'data' => User::findOrFail($id),
+        ]);
+    }
+
     public function data(Request $request)
     {
         $orderBy = $request->get('order_by', 'name');

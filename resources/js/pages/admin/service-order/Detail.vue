@@ -1,6 +1,6 @@
 <script setup>
 import { formatNumber } from "@/helpers/utils";
-import { usePage } from "@inertiajs/vue3";
+import { router, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const page = usePage();
@@ -48,42 +48,30 @@ const tab = ref("main");
                       <td>Dibuat Oleh</td>
                       <td>:</td>
                       <td>
-                        {{ page.props.data.created_by.name }} ({{
-                          page.props.data.created_by.username
-                        }}) -
-                        {{
-                          $dayjs(
-                            new Date(page.props.data.created_datetime)
-                          ).format("dddd, D MMMM YYYY pukul HH:mm:ss")
-                        }}
+                        <i-link :href="route('admin.user.detail', {id: page.props.auth.user.id})">
+                          {{ page.props.data.created_by.name }} ({{ page.props.data.created_by.username }})
+                        </i-link> -
+                        {{ $dayjs(new Date(page.props.data.created_datetime)).format("dddd, D MMMM YYYY pukul HH:mm:ss") }}
                       </td>
                     </tr>
                     <tr v-if="!!page.props.data.updated_datetime">
                       <td>Diperbarui oleh</td>
                       <td>:</td>
                       <td>
-                        {{ page.props.data.updated_by.name }} ({{
-                          page.props.data.updated_by.username
-                        }}) -
-                        {{
-                          $dayjs(
-                            new Date(page.props.data.updated_datetime)
-                          ).format("dddd, D MMMM YYYY pukul HH:mm:ss")
-                        }}
+                        <i-link :href="route('admin.user.detail', {id: page.props.auth.user.id})">
+                          {{ page.props.data.updated_by.name }} ({{ page.props.data.updated_by.username }})
+                        </i-link> -
+                        {{ $dayjs(new Date(page.props.data.updated_datetime)).format("dddd, D MMMM YYYY pukul HH:mm:ss") }}
                       </td>
                     </tr>
                     <tr v-if="!!page.props.data.closed_datetime">
                       <td>Diselesaikan oleh</td>
                       <td>:</td>
                       <td>
-                        {{ page.props.data.closed_by.name }} ({{
-                          page.props.data.closed_by.username
-                        }}) -
-                        {{
-                          $dayjs(
-                            new Date(page.props.data.closed_datetime)
-                          ).format("dddd, D MMMM YYYY pukul HH:mm:ss")
-                        }}
+                        <i-link :href="route('admin.user.detail', {id: page.props.data.closed_by.id})">
+                          {{ page.props.data.closed_by.name }} ({{ page.props.data.closed_by.username }})
+                        </i-link> -
+                        {{ $dayjs(new Date(page.props.data.closed_datetime)).format("dddd, D MMMM YYYY pukul HH:mm:ss") }}
                       </td>
                     </tr>
                   </tbody>

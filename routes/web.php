@@ -85,6 +85,7 @@ Route::middleware([Auth::class])->group(function () {
                 Route::get('edit/{id}', [UserController::class, 'editor'])->name('admin.user.edit');
                 Route::post('save', [UserController::class, 'save'])->name('admin.user.save');
                 Route::post('delete/{id}', [UserController::class, 'delete'])->name('admin.user.delete');
+                Route::get('detail/{id}', [UserController::class, 'detail'])->name('admin.user.detail');
             });
         });
     });
