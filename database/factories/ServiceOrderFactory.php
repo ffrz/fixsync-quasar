@@ -12,25 +12,69 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class ServiceOrderFactory extends Factory
 {
+    public static $problems = [
+        'Printer' => [
+            'Hasil cetak tidak jelas' => ['cleaning', 'ganti cartridge / head', 'pengecekan'],
+            'Mati Total' => ['ganti motherboard', 'ganti PSU', 'pengecekan'],
+            'Tidak menarik kertas' => ['servis', 'pengecekan', 'ganti sernsor kertas', 'perbaikan ASF roller'],
+            'Indikator Blink' => ['reset', 'servis', 'cek', 'servis motherboard'],
+        ],
+        'Laptop' => [
+            'Engsel Patah' => ['servis engsel', 'ganti casing'],
+            'Mati total' => ['servis motherboard', 'servis tombol'],
+            'Keyboard error' => ['ganti keyboard', 'servis', 'cek'],
+            'LCD Bergaris' => ['cek', 'ganti LCD'],
+            'LCD Pecah' => ['cek', 'ganti LCD'],
+            'LCD Blank' => ['cek', 'ganti LCD', 'ganti fleksi'],
+            'Wifi tidak jalan' => ['cek', 'reinstall driver', 'ganti adapter'],
+            'Lemot' => ['cek', 'reinstall OS', 'optimasi OS', 'upgrade SSD / NVME', 'upgrade RAM'],
+            'Tidak bisa boot' => ['cek', 'flash BIOS', 'reinstall OS', 'ganti HDD / SSD'],
+            'Tidak bisa internet' => ['cek', 'servis software', 'reinstall driver', 'reinstall OS', 'ganti network adapter'],
+            'Kursor bergerak sendiri' => ['cek', 'servis touchpad', 'servis keyboard', 'ganti keyboard']
+        ],
+        'Komputer' => [
+            'Mati total' => ['ganti PSU', 'Ganti motherboard', 'servis tombol power'],
+            'Lemot' => ['reinstall OS', 'upgrade RAM', 'upgrade Processor', 'upgrade SSD/NVME'],
+            'Tidak bisa boot' => ['ganti kabel', 'ganti PSU', 'ganti Harddisk / SSD', 'reinstall OS', 'fix BIOS'],
+            'Tidak bisa internet' => ['cek', 'servis software', 'reinstall driver', 'reinstall OS', 'ganti network adapter'],
+        ]
+    ];
+
     public static $devices = [
-        'Asus X441S',
-        'Asus X441M',
-        'Asus X453',
-        'Asus A407J',
-        'Lenovo T440S',
-        'Lenovo T450S',
-        'Lenovo T460S',
-        'Lenovo T470S',
-        'Epson L120',
-        'Epson L121',
-        'Epson L3110',
-        'Epson L3210',
-        'Canon IP2770',
-        'Canon MP287',
-        'Canon G2020',
-        'Canon G1010',
-        'HP LaserJet 1020',
-        'HP LaserJet 1022'
+        'Printer' => [
+            'Epson L120',
+            'Epson L121',
+            'Epson L3110',
+            'Epson L3210',
+            'Canon IP2770',
+            'Canon MP287',
+            'Canon G2020',
+            'Canon G1010',
+            'HP LaserJet 1020',
+            'HP LaserJet 1022'
+        ],
+        'Laptop' => [
+            'Asus X441S',
+            'Asus X441M',
+            'Asus X453',
+            'Asus A407J',
+            'Lenovo T440S',
+            'Lenovo T450S',
+            'Lenovo T460S',
+            'Lenovo T470S',
+        ],
+        'Komputer' => [
+            'PC Core I3 Rakitan',
+            'PC Core I5 Rakitan',
+            'PC AMD Rakitan',
+            'PC Celeron Rakitan',
+        ]
+    ];
+
+    public static $equipments = [
+        'Printer' => ['kabel power', 'kabel data', 'dus'],
+        'Laptop' => ['charger', 'tas', 'mouse', 'wifi adapter', 'charger+tas', 'charger+tas+mouse'],
+        'Komputer' => ['kabel power', 'monitor+kabel', 'monitor', 'mouse+keyboard']
     ];
 
     /**
@@ -128,6 +172,9 @@ class ServiceOrderFactory extends Factory
             ]);
         }
 
+        $device_type = $this->faker->randomElement(array_keys(static::$devices));
+        $device = $this->faker->randomElement(static::$devices[$device_type]);
+        $problem = $this->faker->randomElement(array_keys(self::$problems[$device_type]));
         return [
             'company_id' => 1,
             'customer_id' => $customer->id,
@@ -148,11 +195,12 @@ class ServiceOrderFactory extends Factory
             'updated_datetime' => $picked_datetime,
             'updated_by_uid' => 1,
 
-            'device' => $this->faker->randomElement(static::$devices),
-            'equipments' => $this->faker->sentence, // Ganti dengan peralatan yang umum
-            'device_sn' => $this->faker->word, // Ganti dengan nomor
-            'problems' => $this->faker->sentence, // Ganti dengan masalah umum
-            'actions' => $this->faker->sentence, // Ganti dengan aksi yang umum
+            'device_type' => $device_type,
+            'device' => $device,
+            'equipments' => $this->faker->randomElement(self::$equipments[$device_type]),
+            'device_sn' => $this->faker->randomNumber(),
+            'problems' => $problem,
+            'actions' => $this->faker->randomElement(self::$problems[$device_type][$problem]),
 
             'received_datetime' => $received_datetime,
             'checked_datetime' => $checked_datetime,

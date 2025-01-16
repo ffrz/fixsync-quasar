@@ -39,6 +39,7 @@ return new class extends Migration
             $table->string('customer_address', 200);
 
             // device info
+            $table->string('device_type', 100);
             $table->string('device', 100);
             $table->string('equipments', 200);
             $table->string('device_sn', 100);
