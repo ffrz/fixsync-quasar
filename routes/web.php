@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceOrderController;
 use App\Http\Controllers\Admin\TechnicianController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Utils\ArtisanCommandController;
 use App\Http\Middleware\Auth;
 use App\Http\Middleware\NonAuthenticated;
 use Illuminate\Foundation\Application;
@@ -21,6 +22,16 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 })->name('home');
+
+if (env('APP_RUN_COMMAND_ALLOWED')) {
+    Route::prefix('/--cmd')->group(function () {
+        Route::prefix('/artisan')->group(function() {
+            Route::get('migrate', [ArtisanCommandController::class, 'migrate']);
+            Route::get('migrate:rollback', [ArtisanCommandController::class, 'migrateRollback']);
+            Route::get('migrate:fresh--seed', [ArtisanCommandController::class, 'migrateFreshSeed']);
+        });
+    });
+}
 
 Route::middleware(NonAuthenticated::class)->group(function () {
     Route::prefix('/admin/auth')->group(function () {
