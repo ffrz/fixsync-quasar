@@ -2,9 +2,7 @@
 import { handleSubmit } from '@/helpers/client-req-handler';
 import { scrollToFirstErrorField } from '@/helpers/utils';
 import { useForm, usePage } from '@inertiajs/vue3';
-import { ref } from 'vue';
 
-const nameInputRef = ref();
 const page = usePage();
 const user = page.props.auth.user;
 const form = useForm({
@@ -25,10 +23,11 @@ const submit = () =>
         <div class="text-h6 q-my-xs text-subtitle1">Profil Saya</div>
         <p class="text-caption text-grey-9">Perbarui profil anda.</p>
         <q-input readonly v-model="form.username" label="ID Pengguna" :disable="form.processing" />
-        <q-input ref="nameInputRef" v-model.trim="form.name" label="Nama" :disable="form.processing" lazy-rules
+        <q-input v-model.trim="form.name" label="Nama" :disable="form.processing" lazy-rules
           :error="!!form.errors.name" :error-message="form.errors.name"
           :rules="[(val) => (val && val.length > 0) || 'Name harus diisi.']" />
-        <q-input v-model.trim="form.email" label="Email" :disable="form.processing" />
+        <q-input v-model.trim="form.email" label="Email" :disable="form.processing" lazy-rules
+          :error="!!form.errors.email" :error-message="form.errors.email" />
         <q-input readonly v-model="form.role" label="Hak Akses" :disable="form.processing" />
       </q-card-section>
       <q-card-section>

@@ -3,6 +3,7 @@ import { useForm } from "@inertiajs/vue3";
 import { validateEmail } from "@/helpers/validations";
 import { scrollToFirstErrorField } from "@/helpers/utils";
 import { handleSubmit } from "@/helpers/client-req-handler";
+import { ref } from "vue";
 
 // TODO:
 // 1. Lakukan validasi lanjutan untuk company_code, username dan password di local
@@ -14,7 +15,6 @@ import { handleSubmit } from "@/helpers/client-req-handler";
 let form = useForm({
   company_code: '',
   company_name: '',
-  company_email: '',
   username: 'admin',
   name: 'Administrator',
   email: '',
@@ -22,9 +22,8 @@ let form = useForm({
   password_confirmation: '',
 });
 
-const submit = () =>
-  handleSubmit({form, url: route('admin.auth.register')});
-
+const submit = () => handleSubmit({form, url: route('admin.auth.register')});
+const showPassword = ref(false);
 </script>
 
 <template>
@@ -36,16 +35,16 @@ const submit = () =>
           <q-form class="q-gutter-md" @submit.prevent="submit" @validation-error="scrollToFirstErrorField">
             <q-card id="register-card" square bordered class="q-pa-md shadow-1">
               <q-card-section>
-                <h6 class="q-my-none text-center">Daftar</h6>
+                <h6 class="q-my-none text-center">Buat akun {{ $config.APP_NAME }}</h6>
               </q-card-section>
               <q-card-section>
                 <h6 class="q-my-none text-body1">Informasi Perusahaan</h6>
-                <q-input v-model.trim="form.company_code" label="Kode Perusahaan" lazy-rules autocomplete="off"
+                <q-input v-model.trim="form.company_code" label="Kode Perusahaan *" lazy-rules autocomplete="off"
                   :error="!!form.errors.company_code" :error-message="form.errors.company_code" :disable="form.processing"
                   :rules="[(val) => (val && val.length > 0) || 'Kode perusahaan harus diisi']"
                   placeholder="Setelah terdaftar kode tidak dapat diganti.">
                 </q-input>
-                <q-input v-model.trim="form.company_name" label="Nama Perusahaan" lazy-rules autocomplete="off"
+                <q-input v-model.trim="form.company_name" label="Nama Perusahaan *" lazy-rules autocomplete="off"
                   :error="!!form.errors.company_name" :error-message="form.errors.company_name" :disable="form.processing"
                   :rules="[(val) => (val && val.length > 0) || 'Nama perusahaan harus diisi']"
                   placeholder="Anda dapat mengubahnya nanti.">
@@ -53,52 +52,54 @@ const submit = () =>
                     <q-icon name="apartment" />
                   </template>
                 </q-input>
-                <q-input v-model.trim="form.company_email" label="Email Perusahaan" lazy-rules :error="!!form.errors.company_email" autocomplete="email"
-                  :error-message="form.errors.email" :disable="form.processing"
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Email perusahaan harus diisi',
-                    (val) => validateEmail(val) || 'Format email tidak valid.'
-                  ]">
-                  <template v-slot:append>
-                    <q-icon name="email" />
-                  </template>
-                </q-input>
               </q-card-section>
               <q-card-section>
                 <h6 class="q-my-none text-body1">Informasi Akun Utama (Administrator)</h6>
-                <q-input v-model.trim="form.username" label="Username / ID Pengguna" lazy-rules autocomplete="username"
+                <q-input v-model.trim="form.username" label="Username / ID Pengguna *" lazy-rules autocomplete="username" readonly
                   :error="!!form.errors.username" :error-message="form.errors.username" :disable="form.processing"
                   :rules="[(val) => (val && val.length > 0) || 'Username / ID Pengguna harus diisi']">
                 </q-input>
-                <q-input v-model.trim="form.name" label="Nama" lazy-rules :error="!!form.errors.name" autocomplete="name"
+                <q-input v-model.trim="form.name" label="Nama *" lazy-rules :error="!!form.errors.name" autocomplete="name"
                   :error-message="form.errors.name" :disable="form.processing"
                   :rules="[(val) => (val && val.length > 0) || 'Nama harus diisi']">
                   <template v-slot:append>
                     <q-icon name="person" />
                   </template>
                 </q-input>
-                <q-input v-model.trim="form.email" label="Email Pribadi" lazy-rules :error="!!form.errors.email" autocomplete="email"
+                <q-input v-model.trim="form.email" label="Email Pribadi *" lazy-rules :error="!!form.errors.email" autocomplete="email"
                   :error-message="form.errors.email" :disable="form.processing"
-                  :rules="[(val) => validateEmail(val) || 'Must be a valid email']">
+                  :rules="[(val) => validateEmail(val) || 'Alamat email tidak valid']">
                   <template v-slot:append>
                     <q-icon name="email" />
                   </template>
                 </q-input>
-                <q-input v-model="form.password" type="password" label="Kata Sandi" :error="!!form.errors.password" autocomplete="off"
+                <q-input v-model="form.password" :type="showPassword ? 'text' : 'password'" label="Kata Sandi *" :error="!!form.errors.password" autocomplete="off"
                   :error-message="form.errors.password" lazy-rules :disable="form.processing"
                   :rules="[(val) => (val && val.length > 0) || 'Silahkan masukkan kata sandi.']">
                   <template v-slot:append>
-                    <q-icon name="key" />
+                    <q-btn
+                      dense
+                      flat
+                      round
+                      @click="showPassword = !showPassword"
+                      ><q-icon :name="showPassword ? 'key_off' : 'key'"
+                    /></q-btn>
                   </template>
                 </q-input>
-                <q-input square v-model="form.password_confirmation" type="password" label="Konfirmasi Kata Sandi" autocomplete="off"
+                <q-input square v-model="form.password_confirmation" :type="showPassword ? 'text' : 'password'" label="Konfirmasi Kata Sandi *" autocomplete="off"
                   :disable="form.processing" :error="!!form.errors.password_confirmation"
                   :error-message="form.errors.password_confirmation" lazy-rules :rules="[
                     (val) => (val && val.length > 0) || 'Silahkan konfirmasi kata sandi anda.',
                     () => (form.password == form.password_confirmation) || 'Konfirmasi kata sandi tidak cocok.'
                   ]">
                   <template v-slot:append>
-                    <q-icon name="key" />
+                    <q-btn
+                      dense
+                      flat
+                      round
+                      @click="showPassword = !showPassword"
+                      ><q-icon :name="showPassword ? 'key_off' : 'key'"
+                    /></q-btn>
                   </template>
                 </q-input>
               </q-card-section>
@@ -120,8 +121,8 @@ const submit = () =>
   </guest-layout>
 </template>
 
-<style>
+<style scoped>
 .q-card {
-  width: 400pxpx;
+  min-width: 300px;
 }
 </style>

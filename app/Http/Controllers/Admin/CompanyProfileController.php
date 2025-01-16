@@ -33,14 +33,18 @@ class CompanyProfileController extends Controller
 
         $rules = [
             'name' => 'required|min:2|max:100',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|regex:/^(\+?\d{1,4})?[\s.-]?\(?\d{1,4}\)?[\s.-]?\d{1,4}[\s.-]?\d{1,9}$/|max:40',
-            'address' => 'required|max:1000',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|regex:/^(\+?\d{1,4})?[\s.-]?\(?\d{1,4}\)?[\s.-]?\d{1,4}[\s.-]?\d{1,9}$/|max:40',
+            'address' => 'max:1000',
         ];
 
+        $fields = $request->only(['name', 'email', 'phone', 'address']);
+        $fields['email'] = $fields['email'] ?? '';
+        $fields['phone'] = $fields['phone'] ?? '';
+        $fields['address'] = $fields['address'] ?? '';
         $request->validate($rules);
         $company = Company::find(Auth::user()->company_id);
-        $company->fill($request->only(['name', 'email', 'phone', 'address']));
+        $company->fill($fields);
         $company->save();
 
         $request->session()->flash('success', __('messages.update-company-profile-success'));

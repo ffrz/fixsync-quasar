@@ -31,18 +31,10 @@ class ProfileController extends Controller
     {
         $rules = [
             'name' => 'required|min:2|max:100',
-            'email' => 'email|min:3|max:255',
-        ];
-        $messages = [
-            'name.required' => 'Nama harus diisi',
-            'name.min' => 'Nama minimal 2 karakter',
-            'name.max' => 'Nama maksimal 100 karakter',
-            'email.required' => 'Email harus diisi',
-            'email.email' => 'Format email tidak valid',
-            'email.max' => 'Email terlalu panjang, maksimal 255 karakter',
+            'email' => 'required|email|min:3|max:255',
         ];
 
-        $request->validate($rules, $messages);
+        $request->validate($rules);
         $user = User::find(Auth::user()->id);
         $user->fill($request->only(['name', 'email']));
 

@@ -2,6 +2,7 @@
 
 import { handleSubmit } from '@/helpers/client-req-handler';
 import { scrollToFirstErrorField } from '@/helpers/utils';
+import { validateEmail } from '@/helpers/validations';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
@@ -31,14 +32,11 @@ const submit = () =>
           lazy-rules :error="!!form.errors.name" :error-message="form.errors.name"
           :rules="[(val) => (val && val.length > 0) || 'Nama Perusahaan harus diisi.']" />
         <q-input v-model.trim="form.email" label="Email Perusahaan" :disable="form.processing" lazy-rules
-          :error="!!form.errors.email" :error-message="form.errors.email"
-          :rules="[(val) => (val && val.length > 0) || 'Email harus diisi.']" />
+          :error="!!form.errors.email" :error-message="form.errors.email" />
         <q-input v-model.trim="form.phone" label="No Telepon" :disable="form.processing" lazy-rules
-          :error="!!form.errors.phone" :error-message="form.errors.phone"
-          :rules="[(val) => (val && val.length > 0) || 'Nomor telepon harus diisi.']" />
+          :error="!!form.errors.phone" :error-message="form.errors.phone" />
         <q-input type="textarea" counter autogrow maxlength="1000" v-model.trim="form.address" label="Alamat Perusahaan"
-          :disable="form.processing" lazy-rules :error="!!form.errors.address" :error-message="form.errors.address"
-          :rules="[(val) => (val && val.length > 0) || 'Alamat harus diisi.']" />
+          :disable="form.processing" lazy-rules :error="!!form.errors.address" :error-message="form.errors.address" />
       </q-card-section>
       <q-card-section>
         <q-btn icon="save" type="submit" color="primary" label="Simpan" :disable="form.processing" />

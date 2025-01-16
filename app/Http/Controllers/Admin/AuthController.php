@@ -87,7 +87,6 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'company_code' => 'required|alpha_num|unique:companies,code|min:3|max:40',
             'company_name' => 'required|min:2|max:100',
-            'company_email' => 'required|email|unique:companies,email|min:2|max:100',
             'username' => 'required|alpha_num|min:3|max:40',
             'name' => 'required|min:2|max:100',
             'email' => 'required|email|min:2|max:255',
@@ -99,10 +98,6 @@ class AuthController extends Controller
 
             'company_name.min' => 'Nama terlalu pendek, minimal 2 karakter.',
             'company_name.max' => 'Nama terlalu panjang, maksimal 100 karakter.',
-
-            'company_email.required' => 'Email sudah digunakan.',
-            'company_email.email' => 'Email tidak valid.',
-            'company_email.unique' => 'Email sudah pernah digunakan.',
 
             'name.min' => 'Nama terlalu pendek, minimal 2 karakter.',
             'name.max' => 'Nama terlalu panjang, maksimal 100 karakter.',
@@ -131,7 +126,7 @@ class AuthController extends Controller
             $company = new Company();
             $company->code = $request->post('company_code');
             $company->name = $request->post('company_name');
-            $company->email = $request->post('company_email');
+            $company->email = '';
             $company->phone = '';
             $company->address = '';
             $company->active = true;

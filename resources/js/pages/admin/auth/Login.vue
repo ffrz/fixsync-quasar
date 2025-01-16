@@ -12,6 +12,7 @@ let form = useForm({
 });
 
 const submit = () => handleSubmit({ form, url: route('admin.auth.login') });
+const showPassword = ref(false);
 
 </script>
 
@@ -42,12 +43,18 @@ const submit = () => handleSubmit({ form, url: route('admin.auth.login') });
                     <q-icon name="person" />
                   </template>
                 </q-input>
-                <q-input v-model="form.password" type="password" label="Kata Sandi"
+                <q-input v-model="form.password" :type="showPassword ? 'text' : 'password'" label="Kata Sandi"
                   :error="!!form.errors.password" autocomplete="current-password" :error-message="form.errors.password"
                   lazy-rules :disable="form.processing"
                   :rules="[(val) => (val && val.length > 0) || 'Masukkan kata sandi',]">
                   <template v-slot:append>
-                    <q-icon name="key" />
+                    <q-btn
+                      dense
+                      flat
+                      round
+                      @click="showPassword = !showPassword"
+                      ><q-icon :name="showPassword ? 'key_off' : 'key'"
+                    /></q-btn>
                   </template>
                 </q-input>
                 <q-checkbox class="q-mt-sm q-pl-none" style="margin-left: -10px;" v-model="form.remember"

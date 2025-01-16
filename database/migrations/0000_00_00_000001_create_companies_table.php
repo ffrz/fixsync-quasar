@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code', 40)->unique();
             $table->string('email')->unique();
-            $table->string('name')->unique();;
+            $table->string('name');
             $table->string('phone');
             $table->text('address');
             $table->boolean('active')->default(false);
