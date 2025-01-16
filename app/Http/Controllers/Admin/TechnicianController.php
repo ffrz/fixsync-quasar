@@ -51,14 +51,23 @@ class TechnicianController extends Controller
         return response()->json($items);
     }
 
+    public function duplicate($id)
+    {
+        $item = Technician::findOrFail($id);
+        $item->id = null;
+        $item->created_at = null;
+        $users = User::where('company_id', Auth::user()->company_id)->get(['id', 'username', 'name']);
+        return inertia('admin/technician/Editor', [
+            'data' => $item,
+            'users' => $users,
+        ]);
+    }
+
     public function editor($id = 0)
     {
         allowed_roles([User::Role_Admin]);
-
         $item = $id ? Technician::findOrFail($id) : new Technician(['active' => true]);
-
         $users = User::where('company_id', Auth::user()->company_id)->get(['id', 'username', 'name']);
-
         return inertia('admin/technician/Editor', [
             'data' => $item,
             'users' => $users,

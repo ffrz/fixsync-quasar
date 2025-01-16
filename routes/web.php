@@ -57,6 +57,7 @@ Route::middleware([Auth::class])->group(function () {
             Route::get('', [CustomerController::class, 'index'])->name('admin.customer.index');
             Route::get('data', [CustomerController::class, 'data'])->name('admin.customer.data');
             Route::get('add', [CustomerController::class, 'editor'])->name('admin.customer.add');
+            Route::get('duplicate/{id}', [CustomerController::class, 'duplicate'])->name('admin.customer.duplicate');
             Route::get('edit/{id}', [CustomerController::class, 'editor'])->name('admin.customer.edit');
             Route::get('detail/{id}', [CustomerController::class, 'detail'])->name('admin.customer.detail');
             Route::post('save', [CustomerController::class, 'save'])->name('admin.customer.save');
@@ -68,6 +69,7 @@ Route::middleware([Auth::class])->group(function () {
             Route::get('data', [ServiceOrderController::class, 'data'])->name('admin.service-order.data');
             Route::get('add', [ServiceOrderController::class, 'editor'])->name('admin.service-order.add');
             Route::get('edit/{id}', [ServiceOrderController::class, 'editor'])->name('admin.service-order.edit');
+            Route::get('duplicate/{id}', [ServiceOrderController::class, 'duplicate'])->name('admin.service-order.duplicate');
             Route::get('detail/{id}', [ServiceOrderController::class, 'detail'])->name('admin.service-order.detail');
             Route::post('save', [ServiceOrderController::class, 'save'])->name('admin.service-order.save');
             Route::post('delete/{id}', [ServiceOrderController::class, 'delete'])->name('admin.service-order.delete');
@@ -78,6 +80,7 @@ Route::middleware([Auth::class])->group(function () {
             Route::get('data', [TechnicianController::class, 'data'])->name('admin.technician.data');
             Route::get('add', [TechnicianController::class, 'editor'])->name('admin.technician.add');
             Route::get('edit/{id}', [TechnicianController::class, 'editor'])->name('admin.technician.edit');
+            Route::get('duplicate/{id}', [TechnicianController::class, 'duplicate'])->name('admin.technician.duplicate');
             Route::get('detail/{id}', [TechnicianController::class, 'detail'])->name('admin.technician.detail');
             Route::post('save', [TechnicianController::class, 'save'])->name('admin.technician.save');
             Route::post('delete/{id}', [TechnicianController::class, 'delete'])->name('admin.technician.delete');
@@ -96,6 +99,7 @@ Route::middleware([Auth::class])->group(function () {
                 Route::get('data', [UserController::class, 'data'])->name('admin.user.data');
                 Route::get('add', [UserController::class, 'editor'])->name('admin.user.add');
                 Route::get('edit/{id}', [UserController::class, 'editor'])->name('admin.user.edit');
+                Route::get('duplicate/{id}', [UserController::class, 'duplicate'])->name('admin.user.duplicate');
                 Route::post('save', [UserController::class, 'save'])->name('admin.user.save');
                 Route::post('delete/{id}', [UserController::class, 'delete'])->name('admin.user.delete');
                 Route::get('detail/{id}', [UserController::class, 'detail'])->name('admin.user.detail');

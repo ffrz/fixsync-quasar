@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\ServiceOrder;
 use App\Models\Technician;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -74,9 +75,38 @@ class ServiceOrderController extends Controller
         ]);
     }
 
+    public function duplicate($id)
+    {
+        $item = $this->_findOder($id);
+        $item->id = null;
+        $item->created_datetime = null;
+        $item->created_by_uid = null;
+        $item->updated_datetime = null;
+        $item->updated_by_uid = null;
+        $item->closed_datetime = null;
+        $item->closed_by_uid = null;
+        $item->order_status = ServiceOrder::OrderStatus_Open;
+        $item->service_status = ServiceOrder::ServiceStatus_Received;
+        $item->repair_status = ServiceOrder::RepairStatus_NotFinished;
+        $item->payment_status = ServiceOrder::PaymentStatus_Unpaid;
+        $item->received_datetime = date('Y-m-d H:i:s');
+        $item->checked_datetime = null;
+        $item->worked_datetime = null;
+        $item->completed_datetime = null;
+        $item->picked_datetime = null;
+
+        return $this->_renderEditor($item);
+    }
+
     public function editor($id = 0)
     {
-        $item = $id ? ServiceOrder::with([
+        $item = $this->_findOder($id);
+        return $this->_renderEditor($item);
+    }
+
+    private function _findOder($id)
+    {
+        return $id ? ServiceOrder::with([
             'createdBy:id,username,name',
             'updatedBy:id,username,name',
             'closedBy:id,username,name',
@@ -87,10 +117,13 @@ class ServiceOrderController extends Controller
             'payment_status' => ServiceOrder::PaymentStatus_Unpaid,
             'repair_status' => ServiceOrder::RepairStatus_NotFinished,
         ]);
+    }
 
+    private function _renderEditor($item)
+    {
         $companyId = Auth::user()->company_id;
 
-        if ($id && $item->company_id != $companyId) {
+        if ($item->id && $item->company_id != $companyId) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -124,6 +157,7 @@ class ServiceOrderController extends Controller
             'customer_name',
             'customer_phone',
             'customer_address',
+            'device_type',
             'device',
             'equipments',
             'device_sn',

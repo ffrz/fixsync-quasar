@@ -217,36 +217,61 @@ const onRowClicked = (row) => router.get(route("admin.user.detail", row.id));
             </q-td>
             <q-td
               key="action"
-              class="q-gutter-x-sm"
               :props="props"
-              align="center"
             >
-              <q-btn
-                :disable="
-                  props.row.id == currentUser.id ||
-                  props.row.email == 'admin@example.com'
-                "
-                rounded
-                dense
-                flat
-                icon="edit"
-                @click.stop="router.get(route('admin.user.edit', props.row.id))"
-              >
-                <q-tooltip>{{ $t("edit_user") }}</q-tooltip>
-              </q-btn>
-              <q-btn
-                :disable="
-                  props.row.id == currentUser.id ||
-                  props.row.email == 'admin@example.com'
-                "
-                rounded
-                dense
-                flat
-                icon="delete"
-                @click.stop="deleteItem(props.row)"
-              >
-                <q-tooltip>{{ $t("delete_user") }}</q-tooltip>
-              </q-btn>
+              <div class="full-width">
+                <q-btn
+                  :disable="props.row.id == currentUser.id || props.row.username == 'admin'"
+                  icon="more_vert"
+                  dense
+                  flat
+                  style="height: 40px; width: 30px"
+                  @click.stop
+                >
+                  <q-menu
+                    anchor="bottom right"
+                    self="top right"
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-list style="width: 200px">
+                      <q-item
+                        clickable
+                        v-ripple
+                        v-close-popup
+                        @click.stop="router.get(route('admin.user.duplicate', props.row.id))"
+                      >
+                        <q-item-section avatar>
+                          <q-icon name="file_copy" />
+                        </q-item-section>
+                        <q-item-section icon="copy"> Duplikat </q-item-section>
+                      </q-item>
+                      <q-item
+                        clickable
+                        v-ripple
+                        v-close-popup
+                        @click.stop="router.get(route('admin.user.edit', props.row.id))"
+                      >
+                        <q-item-section avatar>
+                          <q-icon name="edit" />
+                        </q-item-section>
+                        <q-item-section icon="edit">{{ $t("edit_user") }}</q-item-section>
+                      </q-item>
+                      <q-item
+                        @click.stop="deleteItem(props.row)"
+                        clickable
+                        v-ripple
+                        v-close-popup
+                      >
+                        <q-item-section avatar>
+                          <q-icon name="delete_forever" />
+                        </q-item-section>
+                        <q-item-section>{{ $t("delete_user") }}</q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
+              </div>
             </q-td>
           </q-tr>
         </template>

@@ -27,6 +27,7 @@ const form = useForm({
   customer_phone: page.props.data.customer_phone,
   customer_address: page.props.data.customer_address,
 
+  device_type: page.props.data.device_type,
   device: page.props.data.device,
   equipments: page.props.data.equipments,
   device_sn: page.props.data.device_sn,
@@ -172,6 +173,10 @@ const tab = ref('main');
                       (val) => (val && val.length > 0) || 'Alamat harus diisi.',
                     ]" />
                   <div class="text-subtitle1 q-pt-md">Info Perangkat</div>
+                  <q-input v-model.trim="form.device_type" label="Jenis Perangkat" lazy-rules :error="!!form.errors.device_type"
+                    :disable="form.processing" :error-message="form.errors.device_type" :rules="[
+                      (val) => (val && val.length > 0) || 'Jenis perangkat harus diisi.',
+                    ]" />
                   <q-input v-model.trim="form.device" label="Perangkat" lazy-rules :error="!!form.errors.device"
                     :disable="form.processing" :error-message="form.errors.device" :rules="[
                       (val) => (val && val.length > 0) || 'Perangkat harus diisi.',

@@ -58,6 +58,16 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    public function duplicate($id)
+    {
+        $user = User::findOrFail($id);
+        $user->id = null;
+        $user->created_at = null;
+        return inertia('admin/user/Editor', [
+            'data' => $user,
+        ]);
+    }
+
     public function editor($id = 0)
     {
         $user = $id ? User::findOrFail($id) : new User();

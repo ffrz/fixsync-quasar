@@ -1,5 +1,4 @@
 <script setup>
-
 import { onMounted, reactive, ref } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 import { useQuasar } from "quasar";
@@ -99,7 +98,7 @@ onMounted(() => {
 
 const deleteItem = (row) =>
   handleDelete({
-    message: `Hapus order ${row.id}?`,
+    message: `Hapus order #${row.id}?`,
     url: route("admin.service-order.delete", row.id),
     fetchItemsCallback: fetchItems,
     loading,
@@ -121,7 +120,7 @@ const onFilterChange = () => {
 
 const onRowClicked = (row) => {
   router.get(route("admin.service-order.detail", row.id));
-}
+};
 </script>
 
 <template>
@@ -213,7 +212,7 @@ const onRowClicked = (row) => {
         bordered
         square
         color="primary"
-        class="full-height-table va-top"
+        class="full-height-table va-top service-order-list"
         row-key="id"
         virtual-scroll
         v-model:pagination="pagination"
@@ -241,59 +240,128 @@ const onRowClicked = (row) => {
         </template>
 
         <template v-slot:body="props">
-          <q-tr :props="props" @click="onRowClicked(props.row)" class="cursor-pointer">
+          <q-tr
+            :props="props"
+            @click="onRowClicked(props.row)"
+            class="cursor-pointer"
+          >
             <q-td key="order" :props="props">
-              <b>#{{ props.row.id }}</b><br>
-              {{ $dayjs(new Date(props.row.received_datetime)).format('DD/MM/YYYY HH:mm') }}<br>
+              <b>#{{ props.row.id }}</b
+              ><br />
+              {{
+                $dayjs(new Date(props.row.received_datetime)).format(
+                  "DD/MM/YYYY HH:mm"
+                )
+              }}<br />
               <q-chip
                 dense
-                :color="props.row.order_status === 'open' ? 'green' : (props.row.order_status === 'closed' ? 'grey' : 'red')"
-                :icon="props.row.order_status === 'open' ? 'question_mark' : (props.row.order_status === 'closed' ? 'check' : 'asterisk')">
-                {{ $CONSTANTS.SERVICEORDER_ORDERSTATUSES[props.row.order_status] }}
+                :color="
+                  props.row.order_status === 'open'
+                    ? 'green'
+                    : props.row.order_status === 'closed'
+                    ? 'grey'
+                    : 'red'
+                "
+                :icon="
+                  props.row.order_status === 'open'
+                    ? 'question_mark'
+                    : props.row.order_status === 'closed'
+                    ? 'check'
+                    : 'asterisk'
+                "
+              >
+                {{
+                  $CONSTANTS.SERVICEORDER_ORDERSTATUSES[props.row.order_status]
+                }}
               </q-chip>
             </q-td>
             <q-td key="device" :props="props">
-              <b>{{ props.row.device }}</b><br>
-              {{ props.row.problems }}<br>
-              {{ props.row.actions }}<br>
-              <q-chip dense icon="handyman">{{ $CONSTANTS.SERVICEORDER_SERVICESTATUSES[props.row.service_status] }}</q-chip>
-              <q-chip dense icon="task_alt">{{ $CONSTANTS.SERVICEORDER_REPAIRSTATUSES[props.row.repair_status] }}</q-chip>
-              <q-chip dense icon="payments">{{ $CONSTANTS.SERVICEORDER_PAYMENTSTATUSES[props.row.payment_status] }}</q-chip>
+              <div>
+                <q-icon name="devices" /> <b>{{ props.row.device }}</b>
+              </div>
+              <div><q-icon name="report" /> {{ props.row.problems }}</div>
+              <div><q-icon name="task" /> {{ props.row.actions }}</div>
+              <q-chip dense icon="handyman">{{
+                $CONSTANTS.SERVICEORDER_SERVICESTATUSES[
+                  props.row.service_status
+                ]
+              }}</q-chip>
+              <q-chip dense icon="task_alt">{{
+                $CONSTANTS.SERVICEORDER_REPAIRSTATUSES[props.row.repair_status]
+              }}</q-chip>
+              <q-chip dense icon="payments">{{
+                $CONSTANTS.SERVICEORDER_PAYMENTSTATUSES[
+                  props.row.payment_status
+                ]
+              }}</q-chip>
             </q-td>
             <q-td key="customer" :props="props">
-              <b>{{ props.row.customer_name }}</b><br>
-              {{ props.row.customer_phone }}<br>
-              {{ props.row.customer_address }}
+              <div>
+                <q-icon name="person" /> <b>{{ props.row.customer_name }}</b>
+              </div>
+              <div><q-icon name="phone" /> {{ props.row.customer_phone }}</div>
+              <div>
+                <q-icon name="location_home" /> {{ props.row.customer_address }}
+              </div>
             </q-td>
-            <q-td key="status" :props="props">
-            </q-td>
+            <q-td key="status" :props="props"> </q-td>
             <q-td
               key="action"
-              class="q-gutter-x-sm"
               :props="props"
-              align="center"
             >
-              <q-btn
-                flat
-                dense
-                rounded
-                icon="edit"
-                @click.stop="
-                  router.get(route('admin.service-order.edit', props.row.id))
-                "
-              >
-                <q-tooltip>Edit Pesanan</q-tooltip>
-              </q-btn>
-              <q-btn
-                flat
-                dense
-                rounded
-                icon="delete"
-                @click.stop="deleteItem(props.row)"
-                :disable="!check_role($CONSTANTS.USER_ROLE_ADMIN)"
-              >
-                <q-tooltip>Hapus Pesanan</q-tooltip>
-              </q-btn>
+            <div class="full-width">
+                <q-btn
+                  icon="more_vert"
+                  dense
+                  flat
+                  style="height: 40px; width: 30px"
+                  @click.stop
+                >
+                  <q-menu
+                    anchor="bottom right"
+                    self="top right"
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-list style="width: 200px">
+                      <q-item
+                        clickable
+                        v-ripple
+                        v-close-popup
+                        @click.stop="router.get(route('admin.service-order.duplicate', props.row.id))"
+                      >
+                        <q-item-section avatar>
+                          <q-icon name="file_copy" />
+                        </q-item-section>
+                        <q-item-section icon="copy"> Duplikat </q-item-section>
+                      </q-item>
+                      <q-item
+                        clickable
+                        v-ripple
+                        v-close-popup
+                        @click.stop="router.get(route('admin.service-order.edit', props.row.id))"
+                      >
+                        <q-item-section avatar>
+                          <q-icon name="edit" />
+                        </q-item-section>
+                        <q-item-section icon="edit">Edit</q-item-section>
+                      </q-item>
+                      <q-item
+                        @click.stop="deleteItem(props.row)"
+                        clickable
+                        :disabled="!check_role($CONSTANTS.USER_ROLE_ADMIN)"
+                        v-ripple
+                        v-close-popup
+                      >
+                        <q-item-section avatar>
+                          <q-icon name="delete_forever" />
+                        </q-item-section>
+                        <q-item-section>Hapus</q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
+              </div>
             </q-td>
           </q-tr>
         </template>
@@ -301,8 +369,3 @@ const onRowClicked = (row) => {
     </q-page>
   </authenticated-layout>
 </template>
-<style scoped>
-.custom-select {
-  min-width: 150px;
-}
-</style>

@@ -108,7 +108,12 @@ const tab = ref("main");
                 <table class="detail">
                   <tbody>
                     <tr>
-                      <td style="min-width: 120px">Perangkat</td>
+                      <td style="min-width: 120px">Jenis</td>
+                      <td>:</td>
+                      <td>{{ page.props.data.device_type }}</td>
+                    </tr>
+                    <tr>
+                      <td>Perangkat</td>
                       <td>:</td>
                       <td>{{ page.props.data.device }}</td>
                     </tr>

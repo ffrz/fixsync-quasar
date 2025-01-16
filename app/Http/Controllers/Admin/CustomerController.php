@@ -50,12 +50,21 @@ class CustomerController extends Controller
         return response()->json($items);
     }
 
+    public function duplicate($id)
+    {
+        allowed_roles([User::Role_Admin, User::Role_Cashier]);
+        $item = Customer::findOrFail($id);
+        $item->id = null;
+        $item->created_at = null;
+        return inertia('admin/customer/Editor', [
+            'data' => $item,
+        ]);
+    }
+
     public function editor($id = 0)
     {
         allowed_roles([User::Role_Admin, User::Role_Cashier]);
-
         $item = $id ? Customer::findOrFail($id) : new Customer(['active' => true]);
-
         return inertia('admin/customer/Editor', [
             'data' => $item,
         ]);

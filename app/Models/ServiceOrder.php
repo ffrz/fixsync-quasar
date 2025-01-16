@@ -85,6 +85,7 @@ class ServiceOrder extends Model
         'customer_name',
         'customer_phone',
         'customer_address',
+        'device_type',
         'device',
         'equipments',
         'device_sn',
