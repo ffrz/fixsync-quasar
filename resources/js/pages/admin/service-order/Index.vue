@@ -11,13 +11,18 @@ const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
 const showFilter = ref(false);
-const filter = reactive({
-  search: "",
-  order_status: page.props.filter ? page.props.filter.order_status : "all",
-  service_status: "all",
-  payment_status: "all",
-  repair_status: "all",
-});
+const queryParams = (...args) => {
+  let queryString = page.url;
+  if (queryString.indexOf("?") === -1) {
+    return {};
+  }
+  queryString = queryString.substring(queryString.indexOf("?") + 1);
+  return Object.assign(Object.fromEntries(new URLSearchParams(queryString)), ...args);
+}
+const filter = reactive(queryParams());
+
+console.log(queryParams());
+
 
 const order_statuses = [
   { value: "all", label: "Semua" },

@@ -56,7 +56,7 @@ class ServiceOrder extends Model
         self::RepairStatus_Failed => 'Gagal',
     ];
 
-        /**
+    /**
      * RepairStatus
      */
     const PaymentStatus_Unpaid = 'unpaid';
@@ -154,16 +154,223 @@ class ServiceOrder extends Model
     public static function receivedOrderCount()
     {
         return DB::select(
-            "select count(0) as count from service_orders where service_status=? and company_id=?",
-            [self::ServiceStatus_Received, Auth::user()->company_id]
+            "select count(0) as count from service_orders where service_status=? and order_status=? and company_id=?",
+            [
+                self::ServiceStatus_Received,
+                self::OrderStatus_Open,
+                Auth::user()->company_id
+            ]
         )[0]->count;
     }
 
     public static function inProgressCount()
     {
         return DB::select(
-            "select count(0) as count from service_orders where service_status=? and company_id=?",
-            [self::ServiceStatus_InProgress, Auth::user()->company_id]
+            "select count(0) as count from service_orders where service_status=? and order_status=? and company_id=?",
+            [self::ServiceStatus_InProgress, self::OrderStatus_Open, Auth::user()->company_id]
         )[0]->count;
+    }
+
+    public static function pickableOrderCount()
+    {
+        return DB::select(
+            "select count(0) as count
+                from service_orders
+                where service_status=?
+                    and order_status=?
+                    and company_id=?",
+            [
+                self::ServiceStatus_Completed,
+                self::OrderStatus_Open,
+                Auth::user()->company_id
+            ]
+        )[0]->count;
+    }
+
+    public static function totalBillable()
+    {
+        return DB::select(
+            "select sum(total_cost-down_payment) as sum
+                from service_orders
+                where (service_status=? or service_status=?)
+                    and payment_status<>?
+                    and order_status=?
+                    and company_id=?",
+            [
+                self::ServiceStatus_Completed,
+                self::ServiceStatus_Picked,
+                self::PaymentStatus_FullyPaid,
+                self::OrderStatus_Open,
+                Auth::user()->company_id
+            ]
+        )[0]->sum;
+    }
+
+    public static function totalActiveBill()
+    {
+        return DB::select(
+            "select sum(total_cost) as sum
+                from service_orders
+                where (service_status=? or service_status=?)
+                    and payment_status<>?
+                    and order_status=?
+                    and company_id=?",
+            [
+                self::ServiceStatus_Completed,
+                self::ServiceStatus_Picked,
+                self::PaymentStatus_FullyPaid,
+                self::OrderStatus_Open,
+                Auth::user()->company_id
+            ]
+        )[0]->sum;
+    }
+
+    public static function totalActiveDownPayment()
+    {
+        return DB::select(
+            "select sum(down_payment) as sum
+                from service_orders
+                where (service_status=? or service_status=?)
+                    and payment_status<>?
+                    and order_status=?
+                    and company_id=?",
+            [
+                self::ServiceStatus_Completed,
+                self::ServiceStatus_Picked,
+                self::PaymentStatus_FullyPaid,
+                self::OrderStatus_Open,
+                Auth::user()->company_id
+            ]
+        )[0]->sum;
+    }
+
+    public static function topCustomers($start_date, $end_date, $limit = 5)
+    {
+        return DB::select(
+            "SELECT c.id AS id,
+                c.name AS name,
+                SUM(so.total_cost) AS total
+            FROM service_orders so
+            JOIN customers c ON so.customer_id = c.id
+            WHERE so.order_status = ?
+                AND DATE(so.closed_datetime) BETWEEN ? AND ?
+                AND so.company_id = ?
+            GROUP BY c.id
+            ORDER BY total DESC
+            LIMIT ?;",
+            [
+                self::OrderStatus_Closed,
+                $start_date,
+                $end_date,
+                Auth::user()->company_id,
+                $limit,
+            ]
+        );
+    }
+
+    public static function topTechnicians($start_date, $end_date, $limit = 5)
+    {
+        return DB::select(
+            "SELECT t.id AS id,
+              t.name AS name,
+              SUM(so.total_cost) AS total
+            FROM service_orders so
+            JOIN technicians t ON so.technician_id = t.id
+            WHERE so.order_status = ?
+              AND DATE(so.closed_datetime) BETWEEN ? AND ?
+              AND so.company_id = ?
+            GROUP BY t.id
+            ORDER BY total DESC
+            LIMIT ?;",
+            [
+                self::OrderStatus_Closed,
+                $start_date,
+                $end_date,
+                Auth::user()->company_id,
+                $limit,
+            ]
+        );
+    }
+
+    public static function openedOrderByPeriod($start_date, $end_date)
+    {
+        return DB::select(
+            "SELECT
+                DATE(created_datetime) AS order_date,
+                COUNT(*) AS total_order
+            FROM service_orders
+            WHERE DATE(created_datetime) BETWEEN ? AND ?
+                AND company_id = ?
+            GROUP BY DATE(created_datetime)
+            ORDER BY order_date;",
+            [
+                $start_date,
+                $end_date,
+                Auth::user()->company_id
+            ]
+        );
+    }
+
+    public static function closedOrderByPeriod($start_date, $end_date)
+    {
+        return DB::select(
+            "SELECT
+                DATE(created_datetime) AS order_date,
+                COUNT(*) AS total_order
+            FROM service_orders
+            WHERE DATE(closed_datetime) BETWEEN ? AND ?
+                AND company_id = ?
+                AND order_status = ?
+            GROUP BY DATE(created_datetime)
+            ORDER BY order_date;",
+            [
+                $start_date,
+                $end_date,
+                Auth::user()->company_id,
+                self::OrderStatus_Closed,
+            ]
+        );
+    }
+
+    public static function successOrderByPeriod($start_date, $end_date)
+    {
+        return DB::select(
+            "SELECT
+                DATE(completed_datetime) AS order_date,
+                COUNT(*) AS total_order
+            FROM service_orders
+            WHERE DATE(completed_datetime) BETWEEN ? AND ?
+                AND company_id = ?
+                AND repair_status = ?
+            GROUP BY DATE(created_datetime)
+            ORDER BY order_date;",
+            [
+                $start_date,
+                $end_date,
+                Auth::user()->company_id,
+                self::RepairStatus_Success
+            ]
+        );
+    }
+
+    public static function failedOrderByPeriod($start_date, $end_date)
+    {
+        return DB::select(
+            "SELECT
+                DATE(completed_datetime) AS order_date,
+                COUNT(*) AS total_order
+            FROM service_orders
+            WHERE DATE(completed_datetime) BETWEEN ? AND ?
+                AND company_id = ?
+                AND repair_status = ?
+            GROUP BY DATE(created_datetime)
+            ORDER BY order_date;",
+            [
+                $start_date,
+                $end_date,
+                Auth::user()->company_id,
+                self::RepairStatus_Failed
+            ]
+        );
     }
 }

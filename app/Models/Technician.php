@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Technician extends Model
 {
@@ -23,5 +25,13 @@ class Technician extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public static function activeTechnicianCount()
+    {
+        return DB::select(
+            'select count(0) as count from technicians where active=1 and company_id=?',
+            [Auth::user()->company_id]
+        )[0]->count;
     }
 }
