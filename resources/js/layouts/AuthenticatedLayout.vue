@@ -154,7 +154,8 @@ onMounted(() => {
                 clickable
                 v-close-popup
                 v-ripple
-                @click="router.post(route('admin.auth.logout'))"
+                style="color:inherit;"
+                :href="route('admin.auth.logout')"
               >
                 <q-item-section>
                   <q-item-label

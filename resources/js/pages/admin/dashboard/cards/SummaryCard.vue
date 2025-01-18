@@ -21,7 +21,7 @@ const goToUrl = (url, newFilter) => {
     <q-card class="bg-transparent no-shadow no-border col" bordered>
       <q-card-section class="q-pa-none">
         <div class="row q-col-gutter-sm ">
-          <div class="col-md-3 col-sm-12 col-xs-12">
+          <div class="col-md-3 col-sm-6 col-xs-12">
             <q-item :style="`background-color: #fd8e24`" class="q-pa-none" clickable
               @click="goToUrl(route('admin.service-order.index'), { order_status: 'open' })">
               <q-item-section side :style="`background-color: #fd7e14`" class="q-pa-lg q-mr-none text-white">
@@ -35,7 +35,7 @@ const goToUrl = (url, newFilter) => {
               </q-item-section>
             </q-item>
           </div>
-          <div class="col-md-3 col-sm-12 col-xs-12">
+          <div class="col-md-3 col-sm-6 col-xs-12">
             <q-item :style="`background-color: #dc3545`" class="q-pa-none" clickable
               @click="goToUrl(route('admin.service-order.index'), { order_status: 'open', service_status: 'received' })">
               <q-item-section side :style="`background-color: #cc2535`" class="q-pa-lg q-mr-none text-white">
@@ -49,7 +49,7 @@ const goToUrl = (url, newFilter) => {
               </q-item-section>
             </q-item>
           </div>
-          <div class="col-md-3 col-sm-12 col-xs-12">
+          <div class="col-md-3 col-sm-6 col-xs-12">
             <q-item :style="`background-color: #20c997`" class="q-pa-none" clickable
               @click="goToUrl(route('admin.service-order.index'), { order_status: 'open', service_status: 'in_progress' })">
               <q-item-section side :style="`background-color: #10b987`" class="q-pa-lg q-mr-none text-white">
@@ -63,7 +63,7 @@ const goToUrl = (url, newFilter) => {
               </q-item-section>
             </q-item>
           </div>
-          <div class="col-md-3 col-sm-12 col-xs-12">
+          <div class="col-md-3 col-sm-6 col-xs-12">
             <q-item :style="`background-color: #28a745`" class="q-pa-none" clickable
             @click="goToUrl(route('admin.service-order.index'), { order_status: 'open', service_status: 'completed' })">
               <q-item-section side :style="`background-color: #189735`" class="q-pa-lg q-mr-none text-white">
@@ -77,7 +77,7 @@ const goToUrl = (url, newFilter) => {
               </q-item-section>
             </q-item>
           </div>
-          <div class="col-md-4 col-sm-12 col-xs-12">
+          <div class="col-md-4 col-xs-12">
             <q-item :style="`background-color: #e83e8c`" class="q-pa-none" clickable
             @click="goToUrl(route('admin.service-order.index'), { order_status: 'open', service_status: 'completed' })">
               <q-item-section side :style="`background-color: #d82e7c`" class="q-pa-lg q-mr-none text-white">
@@ -91,7 +91,7 @@ const goToUrl = (url, newFilter) => {
               </q-item-section>
             </q-item>
           </div>
-          <div class="col-md-4 col-sm-12 col-xs-12">
+          <div class="col-md-4 col-xs-12">
             <q-item :style="`background-color: #e83e8c`" class="q-pa-none" clickable
             @click="goToUrl(route('admin.service-order.index'), { order_status: 'open', service_status: 'completed' })">
               <q-item-section side :style="`background-color: #d82e7c`" class="q-pa-lg q-mr-none text-white">
@@ -105,7 +105,7 @@ const goToUrl = (url, newFilter) => {
               </q-item-section>
             </q-item>
           </div>
-          <div class="col-md-4 col-sm-12 col-xs-12">
+          <div class="col-md-4 col-xs-12">
             <q-item :style="`background-color: #e83e8c`" class="q-pa-none" clickable
             @click="goToUrl(route('admin.service-order.index'), { order_status: 'open', service_status: 'completed' })">
               <q-item-section side :style="`background-color: #d82e7c`" class="q-pa-lg q-mr-none text-white">
@@ -119,7 +119,7 @@ const goToUrl = (url, newFilter) => {
               </q-item-section>
             </q-item>
           </div>
-          <div class="col-md-6 col-sm-12 col-xs-12">
+          <div class="col-sm-6 col-xs-12">
             <q-item :style="`background-color: #008cff`" class="q-pa-none" clickable
               @click="$inertia.visit(route('admin.technician.index', { status: 'active' }))">
               <q-item-section side :style="`background-color: #007bff`" class="q-pa-lg q-mr-none text-white">
@@ -133,7 +133,7 @@ const goToUrl = (url, newFilter) => {
               </q-item-section>
             </q-item>
           </div>
-          <div class="col-md-6 col-sm-12 col-xs-12">
+          <div class="col-sm-6 col-xs-12">
             <q-item :style="`background-color: #008cff`" class="q-pa-none" clickable
               @click="$inertia.visit(route('admin.customer.index', { status: 'active' }))">
               <q-item-section side :style="`background-color: #007bff`" class="q-pa-lg q-mr-none text-white">
