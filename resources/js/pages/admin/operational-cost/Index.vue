@@ -39,9 +39,9 @@ const columns = [
   },
   {
     name: "amount",
-    label: "Jumlah",
+    label: "Jumlah (Rp.)",
     field: "amount",
-    align: "left",
+    align: "right",
     sortable: true,
   },
   {
@@ -73,14 +73,8 @@ const fetchItems = (props = null) => {
   });
 };
 
-const onFilterChange = () => fetchItems();
-const onRowClicked = (row) =>
-  router.get(route("admin.operational-cost.detail", { id: row.id }));
 const computedColumns = computed(() => {
-  if ($q.screen.gt.sm) {
-    return columns;
-  }
-
+  if ($q.screen.gt.sm) return columns;
   return columns.filter((col) => col.name === "date" || col.name === "action");
 });
 </script>
@@ -157,16 +151,16 @@ const computedColumns = computed(() => {
         <template v-slot:body="props">
           <q-tr :props="props">
             <q-td key="date" :props="props">
-              <div>{{ props.row.date }}</div>
+              <div><q-icon name="calendar_today"/> {{ props.row.date }}</div>
               <template v-if="!$q.screen.gt.sm">
-                <div>{{ props.row.description }}</div>
-                <div>Rp. {{ formatNumber(props.row.amount) }}</div>
+                <div><q-icon name="notes"/> {{ props.row.description }}</div>
+                <div><q-icon name="paid"/> Rp. {{ formatNumber(props.row.amount) }}</div>
               </template>
             </q-td>
-            <q-td key="description" :props="props" v-if="$q.screen.gt.sm">
+            <q-td key="description" :props="props">
               {{ props.row.description }}
             </q-td>
-            <q-td key="amount" :props="props" v-if="$q.screen.gt.sm">
+            <q-td key="amount" :props="props">
               {{ formatNumber(props.row.amount) }}
             </q-td>
             <q-td key="action" :props="props">

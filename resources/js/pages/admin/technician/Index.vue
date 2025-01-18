@@ -1,11 +1,13 @@
 <script setup>
-import { onMounted, reactive, ref, watch } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import { router } from "@inertiajs/vue3";
 import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
 import { check_role, getQueryParams } from "@/helpers/utils";
+import { useQuasar } from "quasar";
 
 const title = "Teknisi";
 const showFilter = ref(false);
+const $q = useQuasar();
 const rows = ref([]);
 const loading = ref(true);
 const filter = reactive({
@@ -37,9 +39,9 @@ const columns = [
     sortable: true,
   },
   {
-    name: "address",
-    label: "Alamat",
-    field: "address",
+    name: "email",
+    label: "Email",
+    field: "email",
     align: "left",
     sortable: true,
   },
@@ -80,6 +82,10 @@ const fetchItems = (props = null) => {
 
 const onFilterChange = () => fetchItems();
 const onRowClicked = (row) => router.get(route('admin.technician.detail', {id: row.id}));
+const computedColumns = computed(() => {
+  if ($q.screen.gt.sm) return columns;
+  return columns.filter((col) => col.name === "name" || col.name === "action");
+});
 
 </script>
 
@@ -145,7 +151,7 @@ const onRowClicked = (row) => router.get(route('admin.technician.detail', {id: r
         v-model:pagination="pagination"
         :filter="filter.search"
         :loading="loading"
-        :columns="columns"
+        :columns="computedColumns"
         :rows="rows"
         :rows-per-page-options="[10, 25, 50]"
         @request="fetchItems"
@@ -167,13 +173,17 @@ const onRowClicked = (row) => router.get(route('admin.technician.detail', {id: r
         <template v-slot:body="props">
           <q-tr :props="props" :class="!props.row.active ? 'bg-red-1' : ''" class="cursor-pointer" @click="onRowClicked(props.row)">
             <q-td key="name" :props="props">
-              {{ props.row.name }}
+              <div><q-icon name="person"/> {{ props.row.name }}</div>
+              <template v-if="!$q.screen.gt.sm">
+                <div><q-icon name="phone"/> {{ props.row.phone }}</div>
+                <div><q-icon name="email"/> {{ props.row.email }}</div>
+              </template>
             </q-td>
             <q-td key="phone" :props="props">
               {{ props.row.phone }}
             </q-td>
-            <q-td key="address" :props="props">
-              {{ props.row.address }}
+            <q-td key="email" :props="props">
+              {{ props.row.email }}
             </q-td>
             <q-td
               key="action"

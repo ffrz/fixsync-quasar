@@ -1,10 +1,12 @@
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { router } from "@inertiajs/vue3";
 import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
 import { check_role, getQueryParams } from "@/helpers/utils";
+import { useQuasar } from "quasar";
 
 const title = "Pelanggan";
+const $q = useQuasar();
 const showFilter = ref(false);
 const rows = ref([]);
 const loading = ref(true);
@@ -81,7 +83,10 @@ const fetchItems = (props = null) => {
 
 const onFilterChange = () => fetchItems();
 const onRowClicked = (row) =>  router.get(route('admin.customer.detail', {id: row.id}));
-
+const computedColumns = computed(() => {
+  if ($q.screen.gt.sm) return columns;
+  return columns.filter((col) => col.name === "name" || col.name === "action");
+});
 </script>
 
 <template>
@@ -147,7 +152,7 @@ const onRowClicked = (row) =>  router.get(route('admin.customer.detail', {id: ro
         v-model:pagination="pagination"
         :filter="filter.search"
         :loading="loading"
-        :columns="columns"
+        :columns="computedColumns"
         :rows="rows"
         :rows-per-page-options="[10, 25, 50]"
         @request="fetchItems"
@@ -171,7 +176,11 @@ const onRowClicked = (row) =>  router.get(route('admin.customer.detail', {id: ro
         <template v-slot:body="props">
           <q-tr :props="props" :class="!props.row.active ? 'bg-red-1' : ''" class="cursor-pointer" @click="onRowClicked(props.row)">
             <q-td key="name" :props="props">
-              {{ props.row.name }}
+              <div><q-icon name="person" /> {{ props.row.name }}</div>
+              <template v-if="$q.screen.lt.md">
+                <div><q-icon name="phone" /> {{ props.row.phone }}</div>
+                <div><q-icon name="home_pin" /> {{ props.row.address }}</div>
+              </template>
             </q-td>
             <q-td key="phone" :props="props">
               {{ props.row.phone }}

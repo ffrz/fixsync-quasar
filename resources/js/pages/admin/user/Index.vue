@@ -1,14 +1,16 @@
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 import { handleFetchItems, handleDelete } from "@/helpers/client-req-handler";
 import { create_options } from "@/helpers/utils";
 import i18n from "@/i18n";
+import { useQuasar } from "quasar";
 
 const roles = [
   { value: "all", label: "Semua" },
   ...create_options(window.CONSTANTS.USER_ROLES),
 ];
+
 const statuses = [
   { value: "all", label: "Semua" },
   { value: "active", label: "Aktif" },
@@ -16,10 +18,12 @@ const statuses = [
 ];
 
 const page = usePage();
+const $q = useQuasar();
 const currentUser = page.props.auth.user;
 const title = i18n.global.t("users");
 const rows = ref([]);
 const loading = ref(true);
+const showFilter = ref(false);
 const filter = reactive({
   role: "all",
   status: "active",
@@ -70,20 +74,8 @@ const columns = [
 ];
 
 onMounted(() => {
-  // const savedFilter = localStorage.getItem("fixsync.users.filter");
-  // if (savedFilter) {
-  //   Object.assign(filter, JSON.parse(savedFilter));
-  // }
   fetchItems();
 });
-
-// watch(
-//   filter,
-//   (newValue) => {
-//     localStorage.setItem("fixsync.users.filter", JSON.stringify(newValue));
-//   },
-//   { deep: true }
-// );
 
 const onFilterChange = () => fetchItems();
 
@@ -105,7 +97,10 @@ const deleteItem = (row) =>
     loading,
   });
 
-const showFilter = ref(false);
+const computedColumns = computed(() => {
+  if ($q.screen.gt.sm) return columns;
+  return columns.filter((col) => col.name === "username" || col.name === "action");
+});
 
 const onRowClicked = (row) => router.get(route("admin.user.detail", row.id));
 
@@ -185,7 +180,7 @@ const onRowClicked = (row) => router.get(route("admin.user.detail", row.id));
         v-model:pagination="pagination"
         :filter="filter.search"
         :loading="loading"
-        :columns="columns"
+        :columns="computedColumns"
         :rows="rows"
         :rows-per-page-options="[10, 25, 50]"
         @request="fetchItems"
@@ -204,7 +199,12 @@ const onRowClicked = (row) => router.get(route("admin.user.detail", row.id));
         <template v-slot:body="props">
           <q-tr :props="props" :class="!props.row.active ? 'bg-red-1' : ''" @click="onRowClicked(props.row)" class="cursor-pointer">
             <q-td key="username" :props="props">
-              {{ props.row.username }}
+              <div>{{ props.row.username }}</div>
+              <template v-if="!$q.screen.gt.sm">
+                <div><q-icon name="person"/> {{ props.row.name }}</div>
+                <div><q-icon name="email"/> {{ props.row.email }}</div>
+                <div><q-icon name="group"/> <span>{{ $CONSTANTS.USER_ROLES[props.row.role] }}</span></div>
+              </template>
             </q-td>
             <q-td key="name" :props="props">
               {{ props.row.name }}
