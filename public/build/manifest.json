@@ -56,17 +56,17 @@
     "src": "node_modules/@quasar/extras/material-symbols-outlined/web-font/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1p-p_4MrImHCIJIZrDCvHeel.woff"
   },
   "resources/css/app.css": {
-    "file": "assets/app-qwg-HwQi.css",
+    "file": "assets/app-B_72-dwa.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-CcV4O7Db.js",
+    "file": "assets/app-BD6_ewxd.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-DNuq_5Hs.css"
+      "assets/app-CygYBcqV.css"
     ],
     "assets": [
       "assets/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ-D-x-0Q06.woff2",
