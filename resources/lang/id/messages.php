@@ -15,6 +15,10 @@ return [
     'service-order-saved' => 'Order Servis #:id telah disimpan.',
     'service-order-deleted' => 'Order Servis #:id telah dihapus.',
 
+    'operational-cost-created' => 'Biaya operasional :description telah dibuat.',
+    'operational-cost-updated' => 'Biaya operasional :description telah diperbarui.',
+    'operational-cost-deleted' => 'Biaya operasional :description telah dihapus.',
+
     'update-company-profile-success' => 'Profil perusahaan berhasil diperbarui.',
 
     'cant-delete-item-with-different-company' => 'Akses ditolak, tidak bisa menghapus item berbeda perusahaan.',

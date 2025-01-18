@@ -72,7 +72,7 @@
       <div class="container">
 
         <h3 class="text-center">Solusi Terbaik untuk Manajemen Servis Online Anda</h3>
-        <p class="text-center mb-5">
+        <p class="mb-5 text-center">
           FixSync adalah platform manajemen servis modern yang dirancang untuk membantu bisnis servis Anda lebih
           terorganisir, transparan, dan efisien. Dengan fitur pelacakan yang intuitif, pelanggan Anda dapat dengan
           mudah memantau progres servis mereka kapan saja, di mana saja.
@@ -180,10 +180,12 @@
 
       <!-- Section Title -->
       <div class="container" data-aos="fade-up">
-        <h2>Bagaimana FixSync Membantu Bisnis Anda?</h2>
-        <p>1. Peningkatan Produktivitas: Fokus pada servis, bukan administrasi.</p>
-        <p>2. Pengalaman Pelanggan yang Lebih Baik: Berikan kemudahan dan transparansi kepada pelanggan Anda.</p>
-        <p>3. Integrasi Mudah: Kompatibel dengan perangkat mobile untuk akses kapan saja.</p>
+        <h2 class="text-center">Bagaimana FixSync Membantu Bisnis Anda?</h2>
+        <div class="text-center">
+          <p><strong>1. Peningkatan Produktivitas:</strong> Fokus pada servis, bukan administrasi.</p>
+          <p><strong>2. Pengalaman Pelanggan yang Lebih Baik:</strong> Berikan kemudahan dan transparansi kepada pelanggan Anda.</p>
+          <p><strong>3. Integrasi Mudah:</strong> Kompatibel dengan perangkat mobile untuk akses kapan saja.</p>
+        </div>
       </div><!-- End Section Title -->
 
     </section><!-- /Contact Section -->
@@ -206,9 +208,10 @@
 
     <div class="container">
       <div class="row text-center">
-        <div class="col-lg-12 text-center mt-5">
+        <div class="col-lg-12 mt-5 text-center">
           <h4>Hubungi Kami</h4>
-          <p class="mt-3"><strong>Telepon / WA:</strong> <a href="https://wa.me/6285317404760">+6285-3174-04760</a></p>
+          <p class="mt-3"><strong>Telepon / WA:</strong> <a href="https://wa.me/6285317404760">+6285-3174-04760</a>
+          </p>
           <p><strong>Email:</strong> <span>fixsync@shiftech.my.id</span></p>
         </div>
       </div>
@@ -238,7 +241,8 @@
     </div>
 
     <div class="copyright container mt-4 text-center">
-      <p>© {{ date('Y') }} <strong class="sitename px-1"><a href="https://shiftech.my.id">Shiftech Indonesia</a></strong> <span>All Rights Reserved</span></p>
+      <p>© {{ date('Y') }} <strong class="sitename px-1"><a href="https://shiftech.my.id">Shiftech
+            Indonesia</a></strong> <span>All Rights Reserved</span></p>
       <div class="credits">
         <!-- All the links in the footer should remain intact. -->
         <!-- You can delete the links only if you've purchased the pro version. -->

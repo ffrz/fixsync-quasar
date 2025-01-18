@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CompanyProfileController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OperationalCostController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceOrderController;
 use App\Http\Controllers\Admin\TechnicianController;
@@ -79,6 +80,16 @@ Route::middleware([Auth::class])->group(function () {
             Route::get('detail/{id}', [TechnicianController::class, 'detail'])->name('admin.technician.detail');
             Route::post('save', [TechnicianController::class, 'save'])->name('admin.technician.save');
             Route::post('delete/{id}', [TechnicianController::class, 'delete'])->name('admin.technician.delete');
+        });
+
+        Route::prefix('operational-costs')->group(function () {
+            Route::get('', [OperationalCostController::class, 'index'])->name('admin.operational-cost.index');
+            Route::get('data', [OperationalCostController::class, 'data'])->name('admin.operational-cost.data');
+            Route::get('add', [OperationalCostController::class, 'editor'])->name('admin.operational-cost.add');
+            Route::get('duplicate/{id}', [OperationalCostController::class, 'duplicate'])->name('admin.operational-cost.duplicate');
+            Route::get('edit/{id}', [OperationalCostController::class, 'editor'])->name('admin.operational-cost.edit');
+            Route::post('save', [OperationalCostController::class, 'save'])->name('admin.operational-cost.save');
+            Route::post('delete/{id}', [OperationalCostController::class, 'delete'])->name('admin.operational-cost.delete');
         });
 
         Route::prefix('settings')->group(function () {

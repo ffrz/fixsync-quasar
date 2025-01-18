@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
                 TechnicianSeeder::class,
                 CustomerSeeder::class,
                 ServiceOrderSeeder::class,
+                OperationalCostSeeder::class,
             ]);
         });
     }

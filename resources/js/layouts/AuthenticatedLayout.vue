@@ -231,6 +231,19 @@ onMounted(() => {
               <q-item-label>{{ $t("technicians") }}</q-item-label>
             </q-item-section>
           </q-item>
+          <q-item
+            clickable
+            v-ripple
+            :active="$page.url.startsWith('/admin/operational-costs')"
+            @click="router.get(route('admin.operational-cost.index'))"
+          >
+            <q-item-section avatar>
+              <q-icon name="paid" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Operasional</q-item-label>
+            </q-item-section>
+          </q-item>
           <q-expansion-item
             expand-separator
             icon="settings"

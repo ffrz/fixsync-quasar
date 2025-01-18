@@ -134,10 +134,15 @@ class ServiceOrderFactory extends Factory
             $picked_datetime = $completed_datetime->copy()->addDays(1);
         }
 
-        $estimated_cost = $this->faker->randomFloat(2, 1, 50) * 25000;
+        $estimated_cost = fake()->numberBetween(1, 200) * 5000;
+        if ($estimated_cost < 30000)
+            $estimated_cost = 30000;
+        else if ($estimated_cost > 2000000)
+            $estimated_cost = 2000000;
+
         $down_payment = 0;
         if ($paymentStatus == ServiceOrder::PaymentStatus_PartiallyPaid) {
-            $down_payment = (0.25 * $estimated_cost);
+            $down_payment = ceil((0.25 * $estimated_cost) / 5000) * 5000;
         }
         else if ($paymentStatus == ServiceOrder::PaymentStatus_FullyPaid) {
             $down_payment = $estimated_cost;

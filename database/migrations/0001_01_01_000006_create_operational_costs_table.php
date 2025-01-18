@@ -11,19 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('technicians', function (Blueprint $table) {
+        Schema::create('operational_costs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('company_id');
-            $table->unsignedBigInteger('user_id')->nullable(true)->default(null);
-            $table->string('name');
-            $table->string('phone', 100);
-            $table->string('address', 200);
-            $table->string('email', 100)->nullable();
-            $table->boolean('active')->default(false);
+            $table->date('date');
+            $table->string('description', 100);
+            $table->decimal('amount', 8, 0)->default(0.);
+            $table->text('notes');
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('technicians');
+        Schema::dropIfExists('operational_costs');
     }
 };
