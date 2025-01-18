@@ -89,7 +89,7 @@ onMounted(() => {
             v-model="isDropdownOpen"
             class="profile-btn text-bold"
             flat
-            :label="page.props.auth.user.name"
+            :label="page.props.auth.user.company_name"
             style="
               justify-content: space-between;
               flex-grow: 1;
@@ -181,7 +181,7 @@ onMounted(() => {
           <q-item
             clickable
             v-ripple
-            :active="$page.url == '/admin/dashboard'"
+            :active="$page.url.startsWith('/admin/dashboard')"
             @click="router.get(route('admin.dashboard'))"
           >
             <q-item-section avatar>

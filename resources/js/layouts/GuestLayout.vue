@@ -24,7 +24,7 @@ defineComponent({
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
           </q-avatar>
-          <my-link class="q-pl-md text-white" :href="route('home')" :label="$config.APP_NAME" />
+          <a class="q-pl-md text-white" :href="route('home')">{{ $config.APP_NAME }}</a>
         </q-toolbar-title>
         <div class="q-gutter-md q-ma-none">
           <my-link label="Login" :href="route('admin.auth.login')" />

@@ -1,28 +1,23 @@
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
-import { useQuasar } from "quasar";
 import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
-import { create_options, check_role } from "@/helpers/utils";
+import { create_options, check_role, getQueryParams } from "@/helpers/utils";
 
 const title = "Order Servis";
-const page = usePage();
 const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
 const showFilter = ref(false);
-const queryParams = (...args) => {
-  let queryString = page.url;
-  if (queryString.indexOf("?") === -1) {
-    return {};
-  }
-  queryString = queryString.substring(queryString.indexOf("?") + 1);
-  return Object.assign(Object.fromEntries(new URLSearchParams(queryString)), ...args);
-}
-const filter = reactive(queryParams());
 
-console.log(queryParams());
-
+const filter = reactive({
+  search: "",
+  order_status: "open",
+  payment_status: "all",
+  repair_status: "all",
+  service_status: "all",
+  ...getQueryParams()
+});
 
 const order_statuses = [
   { value: "all", label: "Semua" },
@@ -78,28 +73,8 @@ const columns = [
 ];
 
 onMounted(() => {
-  // const savedFilter = localStorage.getItem("fixsync.service-orders.filter");
-  // if (savedFilter) {
-  //   Object.assign(filter, JSON.parse(savedFilter));
-  // }
-
-  // /**
-  //  * ini harus dinonaktifkan karena mengakibatkan double fetch, siapa yg mentrigger fetch pertama kali selain baris ini?
-  //  * anehnya, kode ini hampir sama dengan modul user, tapi di modul user tidak terjadi double fetch
-  //  */
   fetchItems();
 });
-
-// watch(
-//   filter,
-//   (newValue) => {
-//     localStorage.setItem(
-//       "fixsync.service-orders.filter",
-//       JSON.stringify(newValue)
-//     );
-//   },
-//   { deep: true }
-// );
 
 const deleteItem = (row) =>
   handleDelete({

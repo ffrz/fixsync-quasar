@@ -2,7 +2,7 @@
 import { onMounted, reactive, ref, watch } from "vue";
 import { router } from "@inertiajs/vue3";
 import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
-import { check_role } from "@/helpers/utils";
+import { check_role, getQueryParams } from "@/helpers/utils";
 
 const title = "Teknisi";
 const showFilter = ref(false);
@@ -10,7 +10,8 @@ const rows = ref([]);
 const loading = ref(true);
 const filter = reactive({
   search: "",
-  status: "all",
+  status: "active",
+  ...getQueryParams(),
 });
 const pagination = ref({
   page: 1,

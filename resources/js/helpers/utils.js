@@ -1,5 +1,15 @@
 import { usePage } from "@inertiajs/vue3";
 
+export const getQueryParams = (...args) => {
+  const page = usePage();
+  let queryString = page.url;
+  if (queryString.indexOf("?") === -1) {
+    return {};
+  }
+  queryString = queryString.substring(queryString.indexOf("?") + 1);
+  return Object.assign(Object.fromEntries(new URLSearchParams(queryString)), ...args);
+}
+
 /**
  * Memeriksa apakah current user role ada di roles
  * @param {string | Array} roles

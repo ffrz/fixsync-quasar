@@ -6,13 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\ServiceOrder;
 use App\Models\Technician;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $start_date = date('Y-m-01');
-        $end_date = date('Y-m-t');
+        $month = $request->get('month', 'this_month');
+        $start_date = new Carbon(date('Y-m-01'));
+        if ($month === 'prev_month') {
+            $start_date = $start_date->copy()->subMonth()->startOfMonth();
+        }
+        else if ($month === 'prev_2month') {
+            $start_date = $start_date->copy()->subMonth(2)->startOfMonth();
+        }
+        else if ($month === 'prev_3month') {
+            $start_date = $start_date->copy()->subMonth(3)->startOfMonth();
+        }
+        $end_date = $start_date->copy()->endOfMonth();
 
         $days = [];
         for ($i = 1; $i <= substr($end_date, 8, 2); $i++) {
@@ -25,12 +37,6 @@ class DashboardController extends Controller
             $monthly_opened_orders[(int)substr($order->order_date, 8, 2)] = $order->total_order;
         }
 
-        $closedOrders = ServiceOrder::closedOrderByPeriod($start_date, $end_date);
-        $monthly_closed_orders = $days;
-        foreach ($closedOrders as $order) {
-            $monthly_closed_orders[(int)substr($order->order_date, 8, 2)] = $order->total_order;
-        }
-
         $successfullServices = ServiceOrder::successOrderByPeriod($start_date, $end_date);
         $monthly_successfull_services = $days;
         foreach ($successfullServices as $order) {
@@ -41,6 +47,12 @@ class DashboardController extends Controller
         $monthly_failed_services = $days;
         foreach ($failedServices as $order) {
             $monthly_failed_services[(int)substr($order->order_date, 8, 2)] = $order->total_order;
+        }
+
+        $closedOrders = ServiceOrder::closedOrderByPeriod($start_date, $end_date);
+        $monthly_closed_orders = $days;
+        foreach ($closedOrders as $order) {
+            $monthly_closed_orders[(int)substr($order->order_date, 8, 2)] = $order->total_order;
         }
 
         return inertia('admin/dashboard/Index', [
@@ -64,10 +76,6 @@ class DashboardController extends Controller
                             'data' => array_values($monthly_opened_orders),
                         ],
                         [
-                            'label' => 'Closing',
-                            'data' => array_values($monthly_closed_orders),
-                        ],
-                        [
                             'label' => 'Sukses',
                             'data' => array_values($monthly_successfull_services),
                         ],
@@ -75,6 +83,15 @@ class DashboardController extends Controller
                             'label' => 'Gagal',
                             'data' => array_values($monthly_failed_services),
                         ]
+                    ]
+                ],
+                'chart2_data' => [
+                    'x_axis_label_data' => array_keys($monthly_opened_orders),
+                    'data' => [
+                        [
+                            'label' => 'Closing',
+                            'data' => array_values($monthly_closed_orders),
+                        ],
                     ]
                 ],
             ]

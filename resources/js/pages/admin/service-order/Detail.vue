@@ -29,8 +29,8 @@ const tab = ref("main");
                 <table class="detail">
                   <tbody>
                     <tr>
-                      <td style="min-width: 120px">No Order</td>
-                      <td>:</td>
+                      <td style="width:100px">No Order</td>
+                      <td style="width:1px">:</td>
                       <td># {{ page.props.data.id }}</td>
                     </tr>
                     <tr>
@@ -82,8 +82,8 @@ const tab = ref("main");
                 <table class="detail">
                   <tbody>
                     <tr>
-                      <td style="min-width: 120px">Nama</td>
-                      <td>:</td>
+                      <td style="width:100px">Nama</td>
+                      <td style="width:1px">:</td>
                       <td>
                         <i-link :href="route('admin.customer.detail', {id: page.props.data.customer_id})">
                           {{ page.props.data.customer_name }}
@@ -108,8 +108,8 @@ const tab = ref("main");
                 <table class="detail">
                   <tbody>
                     <tr>
-                      <td style="min-width: 120px">Jenis</td>
-                      <td>:</td>
+                      <td style="width:100px">Jenis</td>
+                      <td style="width:1px">:</td>
                       <td>{{ page.props.data.device_type }}</td>
                     </tr>
                     <tr>
@@ -135,8 +135,8 @@ const tab = ref("main");
                 <table class="detail">
                   <tbody>
                     <tr>
-                      <td style="min-width: 120px">Kendala</td>
-                      <td>:</td>
+                      <td style="width:100px">Kendala</td>
+                      <td style="width:1px">:</td>
                       <td>{{ page.props.data.problems }}</td>
                     </tr>
                     <tr>
@@ -151,8 +151,8 @@ const tab = ref("main");
                 <table class="detail">
                   <tbody>
                     <tr>
-                      <td style="min-width: 120px">Status Servis</td>
-                      <td>:</td>
+                      <td style="width:120px">Status Servis</td>
+                      <td style="width:1px">:</td>
                       <td>
                         {{
                           $CONSTANTS.SERVICEORDER_SERVICESTATUSES[
@@ -269,8 +269,8 @@ const tab = ref("main");
                 <table class="detail">
                   <tbody>
                     <tr>
-                      <td>Status Pembayaran</td>
-                      <td>:</td>
+                      <td style="width:100px;">Status Pembayaran</td>
+                      <td style="width:1px;">:</td>
                       <td>
                         {{
                           $CONSTANTS.SERVICEORDER_PAYMENTSTATUSES[

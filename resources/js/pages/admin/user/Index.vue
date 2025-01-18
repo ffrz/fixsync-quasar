@@ -22,7 +22,7 @@ const rows = ref([]);
 const loading = ref(true);
 const filter = reactive({
   role: "all",
-  status: "all",
+  status: "active",
   search: "",
 });
 

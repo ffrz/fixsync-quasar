@@ -1,6 +1,6 @@
 <script setup>
-import { defineProps } from "vue";
 import { formatNumber } from '@/helpers/utils';
+
 const props = defineProps({
   items: Array,
   title: String,
@@ -9,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <q-card class="col" square>
+  <q-card class="col no-shadow" square bordered>
     <q-card-section>
       <div class="text-subtitle1 text-bold text-grey-9">{{ props.title }}</div>
       <div>

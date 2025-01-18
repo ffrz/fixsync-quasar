@@ -30,19 +30,19 @@ class ServiceOrderController extends Controller
         $q->orderBy($orderBy, $orderType);
         $q->where('company_id', Auth::user()->company_id);
 
-        if (!empty($filter['order_status'] && $filter['order_status'] != 'all')) {
+        if (!empty($filter['order_status']) && $filter['order_status'] != 'all') {
             $q->where('order_status', '=', $filter['order_status']);
         }
 
-        if (!empty($filter['service_status'] && $filter['service_status'] != 'all')) {
+        if (!empty($filter['service_status']) && $filter['service_status'] != 'all') {
             $q->where('service_status', '=', $filter['service_status']);
         }
 
-        if (!empty($filter['payment_status'] && $filter['payment_status'] != 'all')) {
+        if (!empty($filter['payment_status']) && $filter['payment_status'] != 'all') {
             $q->where('payment_status', '=', $filter['payment_status']);
         }
 
-        if (!empty($filter['repair_status'] && $filter['repair_status'] != 'all')) {
+        if (!empty($filter['repair_status']) && $filter['repair_status'] != 'all') {
             $q->where('repair_status', '=', $filter['repair_status']);
         }
 

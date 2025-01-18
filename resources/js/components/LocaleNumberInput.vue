@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, computed, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 // Props
 const props = defineProps({

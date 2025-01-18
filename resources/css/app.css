@@ -134,6 +134,7 @@ a:hover {
 /** table detail view */
 table.detail {
   border-collapse: collapse;
+  width: 100%;
 }
 table.detail td {
   vertical-align: top;

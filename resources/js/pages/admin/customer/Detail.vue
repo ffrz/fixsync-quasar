@@ -19,8 +19,8 @@ const title = "Rincian Pelanggan";
               <table class="detail">
                   <tbody>
                     <tr>
-                      <td style="min-width: 120px">Nama</td>
-                      <td>:</td>
+                      <td style="width:70px">Nama</td>
+                      <td style="width:1px">:</td>
                       <td>{{ page.props.data.name }}</td>
                     </tr>
                     <tr>

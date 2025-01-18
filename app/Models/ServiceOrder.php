@@ -255,7 +255,7 @@ class ServiceOrder extends Model
             WHERE so.order_status = ?
                 AND DATE(so.closed_datetime) BETWEEN ? AND ?
                 AND so.company_id = ?
-            GROUP BY c.id
+            GROUP BY c.id, c.name
             ORDER BY total DESC
             LIMIT ?;",
             [
@@ -279,7 +279,7 @@ class ServiceOrder extends Model
             WHERE so.order_status = ?
               AND DATE(so.closed_datetime) BETWEEN ? AND ?
               AND so.company_id = ?
-            GROUP BY t.id
+            GROUP BY t.id, t.name
             ORDER BY total DESC
             LIMIT ?;",
             [
@@ -315,13 +315,13 @@ class ServiceOrder extends Model
     {
         return DB::select(
             "SELECT
-                DATE(created_datetime) AS order_date,
-                COUNT(*) AS total_order
+                DATE(closed_datetime) AS order_date,
+                SUM(total_cost) AS total_order
             FROM service_orders
             WHERE DATE(closed_datetime) BETWEEN ? AND ?
                 AND company_id = ?
                 AND order_status = ?
-            GROUP BY DATE(created_datetime)
+            GROUP BY DATE(closed_datetime)
             ORDER BY order_date;",
             [
                 $start_date,
@@ -342,7 +342,7 @@ class ServiceOrder extends Model
             WHERE DATE(completed_datetime) BETWEEN ? AND ?
                 AND company_id = ?
                 AND repair_status = ?
-            GROUP BY DATE(created_datetime)
+            GROUP BY DATE(completed_datetime)
             ORDER BY order_date;",
             [
                 $start_date,
@@ -363,7 +363,7 @@ class ServiceOrder extends Model
             WHERE DATE(completed_datetime) BETWEEN ? AND ?
                 AND company_id = ?
                 AND repair_status = ?
-            GROUP BY DATE(created_datetime)
+            GROUP BY DATE(completed_datetime)
             ORDER BY order_date;",
             [
                 $start_date,
