@@ -9,7 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <q-card class="col no-shadow" square bordered>
+  <q-card class="no-shadow" square bordered>
     <q-card-section>
       <div class="text-subtitle1 text-bold text-grey-9">{{ props.title }}</div>
       <div>
