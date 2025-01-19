@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\OperationalCost;
+use App\Models\OperationalCostCategory;
 use App\Models\Technician;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,9 @@ class OperationalCostController extends Controller
 {
     public function index()
     {
-        return inertia('admin/operational-cost/Index');
+        return inertia('admin/operational-cost/Index', [
+            'categories' => OperationalCostCategory::all(),
+        ]);
     }
 
     public function detail($id)
@@ -29,7 +32,7 @@ class OperationalCostController extends Controller
         $orderType = $request->get('order_type', 'desc');
         $filter = $request->get('filter', []);
 
-        $q = OperationalCost::query();
+        $q = OperationalCost::with('category');
         $q->where('company_id', Auth::user()->company_id);
 
         if (!empty($filter['search'])) {
@@ -37,6 +40,15 @@ class OperationalCostController extends Controller
                 $q->where('description', 'like', '%' . $filter['search'] . '%');
                 $q->orWhere('notes', 'like', '%' . $filter['search'] . '%');
             });
+        }
+
+        if (!empty($filter['category_id'])) {
+            if ($filter['category_id'] === 'null') {
+                $q->whereNull('category_id');
+            }
+            else if ($filter['category_id'] !== 'all') {
+                $q->where('category_id', '=', $filter['category_id']);
+            }
         }
 
         $q->orderBy($orderBy, $orderType);
@@ -53,6 +65,7 @@ class OperationalCostController extends Controller
         $item->id = null;
         return inertia('admin/operational-cost/Editor', [
             'data' => $item,
+            'categories' => OperationalCostCategory::all(),
         ]);
     }
 
@@ -62,6 +75,7 @@ class OperationalCostController extends Controller
         $item = $id ? OperationalCost::findOrFail($id) : new OperationalCost(['date' => date('Y-m-d')]);
         return inertia('admin/operational-cost/Editor', [
             'data' => $item,
+            'categories' => OperationalCostCategory::all(),
         ]);
     }
 
@@ -69,6 +83,7 @@ class OperationalCostController extends Controller
     {
         $rules = [
             'date' => 'required|date',
+            'category_id' => 'nullable',
             'description' => 'required|max:255',
             'amount' => 'required|numeric|gt:0',
             'notes' => 'nullable|max:1000',
@@ -76,7 +91,7 @@ class OperationalCostController extends Controller
 
         $item = null;
         $message = '';
-        $fields = ['date', 'description', 'amount', 'notes'];
+        $fields = ['date', 'description', 'amount', 'notes', 'category_id'];
 
         $request->validate($rules);
 

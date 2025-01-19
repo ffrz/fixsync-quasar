@@ -1,17 +1,19 @@
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from "vue";
-import { router } from "@inertiajs/vue3";
+import { router, usePage } from "@inertiajs/vue3";
 import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
-import { check_role, formatNumber, getQueryParams } from "@/helpers/utils";
+import { check_role, create_options_from_operational_cost_categories, formatNumber, getQueryParams } from "@/helpers/utils";
 import { useQuasar } from "quasar";
 
 const title = "Biaya Operasional";
+const page = usePage();
 const $q = useQuasar();
 const showFilter = ref(false);
 const rows = ref([]);
 const loading = ref(true);
 const filter = reactive({
   search: "",
+  category_id: "all",
   ...getQueryParams(),
 });
 const pagination = ref({
@@ -21,7 +23,6 @@ const pagination = ref({
   sortBy: "date",
   descending: true,
 });
-
 const columns = [
   {
     name: "date",
@@ -50,6 +51,12 @@ const columns = [
   },
 ];
 
+const categories = [
+  { value: "all", label: "Semua" },
+  { value: 'null', label: "Tanpa Kategori" },
+  ...create_options_from_operational_cost_categories(page.props.categories),
+];
+
 onMounted(() => {
   fetchItems();
 });
@@ -71,6 +78,10 @@ const fetchItems = (props = null) => {
     url: route("admin.operational-cost.data"),
     loading,
   });
+};
+
+const onFilterChange = () => {
+  fetchItems();
 };
 
 const computedColumns = computed(() => {
@@ -101,6 +112,17 @@ const computedColumns = computed(() => {
     <template #header v-if="showFilter">
       <q-toolbar class="filter-bar">
         <div class="row q-col-gutter-xs items-center q-pa-sm full-width">
+          <q-select
+            v-model="filter.category_id"
+            :options="categories"
+            label="Kategori"
+            dense
+            class="custom-select col-xs-12 col-sm-3"
+            map-options
+            emit-value
+            outlined
+            @update:model-value="onFilterChange"
+          />
           <q-input
             class="col"
             outlined
@@ -151,14 +173,16 @@ const computedColumns = computed(() => {
         <template v-slot:body="props">
           <q-tr :props="props">
             <q-td key="date" :props="props" class="wrap-column">
-              <div><q-icon name="calendar_today"/> {{ props.row.date }}</div>
+              <div class="flex items-center q-gutter-xs"><q-icon name="calendar_today" /> <div>{{ props.row.date }}</div></div>
               <template v-if="!$q.screen.gt.sm">
                 <div><q-icon name="notes"/> {{ props.row.description }}</div>
+                <div v-if="props.row.category"><q-icon name="category"/> {{ props.row.category.name }}</div>
                 <div><q-icon name="paid"/> Rp. {{ formatNumber(props.row.amount) }}</div>
               </template>
             </q-td>
             <q-td key="description" :props="props">
               {{ props.row.description }}
+              <div v-if="props.row.category"><q-icon name="category"/> {{ props.row.category.name }}</div>
             </q-td>
             <q-td key="amount" :props="props">
               {{ formatNumber(props.row.amount) }}

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('operational_costs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('category_id')->nullable()->default(null);
             $table->date('date');
             $table->string('description', 100);
             $table->decimal('amount', 8, 0)->default(0.);
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('operational_cost_categories')->onDelete('set null');
         });
     }
 

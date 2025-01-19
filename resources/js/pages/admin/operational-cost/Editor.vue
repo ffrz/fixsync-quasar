@@ -1,22 +1,30 @@
 <script setup>
 import { router, useForm, usePage } from "@inertiajs/vue3";
 import { handleSubmit } from "@/helpers/client-req-handler";
-import { scrollToFirstErrorField } from "@/helpers/utils";
+import { create_options_from_operational_cost_categories, scrollToFirstErrorField } from "@/helpers/utils";
 import LocaleNumberInput from "@/components/LocaleNumberInput.vue";
 import DatePicker from "@/components/DatePicker.vue";
+import { ref } from "vue";
 
 const page = usePage();
 const title = (!!page.props.data.id ? "Edit" : "Tambah") + " Biaya Operasional";
+const categories = ref(create_options_from_operational_cost_categories(page.props.categories));
+const filteredCategories = ref([...categories.value]);
 const form = useForm({
   id: page.props.data.id,
+  category_id: page.props.data.category_id,
   date: page.props.data.date,
   description: page.props.data.description,
   notes: page.props.data.notes,
-  amount: page.props.data.amount,
+  amount: parseFloat(page.props.data.amount),
 });
 
 const submit = () => handleSubmit({ form, url: route('admin.operational-cost.save') });
-
+const filterCategories = (val, update) => {
+  update(() => {
+    filteredCategories.value = categories.value.filter(item => item.label.toLowerCase().includes(val.toLowerCase()));
+  });
+};
 </script>
 
 <template>
@@ -29,6 +37,15 @@ const submit = () => handleSubmit({ form, url: route('admin.operational-cost.sav
           <q-card square flat bordered class="col">
             <q-card-section class="q-pt-none">
               <input type="hidden" name="id" v-model="form.id" />
+              <q-select v-model="form.category_id" label="Kategori" use-input input-debounce="300" clearable
+                :options="filteredCategories" map-options emit-value @filter="filterCategories" :error="!!form.errors.category_id"
+                :disable="form.processing">
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section>Kategori tidak ditemukan</q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
               <date-picker v-model="form.date" label="Tanggal"
                     :error="!!form.errors.date" :disable="form.processing" />
               <q-input autofocus v-model.trim="form.description" label="Deskripsi" lazy-rules :error="!!form.errors.description"

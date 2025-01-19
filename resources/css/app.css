@@ -164,15 +164,9 @@ table.detail tr:nth-child(even) td {
 }
 
 /** Tabel full height */
-/* .q-table.full-height-table {
-  flex: 1 !important;
-  min-height: 0 !important;
-} */
-
 .full-height-table {
-  height: calc(100vh - 70px);
+  height: calc(100vh - 67px);
 }
-/* height or max-height is important */
 
 .full-height-table .q-table__top,
 .full-height-table .q-table__bottom,

@@ -27,6 +27,12 @@ export function create_options(data) {
     .map(([key, value]) => ({ 'value': key, 'label': value }));
 }
 
+export function create_options_from_operational_cost_categories(items) {
+  return items.map((item) => {
+    return { 'value': item.id, 'label': `${item.name}` };
+  });
+}
+
 export function create_options_from_users(items) {
   return items.map((user) => {
     return { 'value': user.id, 'label': `${user.username} - ${user.name}` };
