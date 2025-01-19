@@ -168,7 +168,7 @@ const onRowClicked = (row) => router.get(route("admin.user.detail", row.id));
         </div>
       </q-toolbar>
     </template>
-    <q-page class="flex flex-col q-pa-sm">
+    <div class="q-pa-sm">
       <q-table
         class="full-height-table"
         flat
@@ -203,14 +203,14 @@ const onRowClicked = (row) => router.get(route("admin.user.detail", row.id));
               <template v-if="!$q.screen.gt.sm">
                 <div><q-icon name="person"/> {{ props.row.name }}</div>
                 <div><q-icon name="email"/> {{ props.row.email }}</div>
-                <div><q-icon name="group"/> <span>{{ $CONSTANTS.USER_ROLES[props.row.role] }}</span></div>
+                <div class="elipsis" style="max-width: 200px;"><q-icon name="group"/> <span>{{ $CONSTANTS.USER_ROLES[props.row.role] }}</span></div>
               </template>
             </q-td>
             <q-td key="name" :props="props">
               {{ props.row.name }}
             </q-td>
             <q-td key="email" :props="props">
-              {{ props.row.email }}
+              <div class="elipsis" style="max-width: 200px;">{{ props.row.email }}</div>
             </q-td>
             <q-td key="role" :props="props" align="center">
               <span>{{ $CONSTANTS.USER_ROLES[props.row.role] }}</span>
@@ -219,7 +219,7 @@ const onRowClicked = (row) => router.get(route("admin.user.detail", row.id));
               key="action"
               :props="props"
             >
-              <div class="full-width">
+              <div class="flex justify-end">
                 <q-btn
                   :disable="props.row.id == currentUser.id || props.row.username == 'admin'"
                   icon="more_vert"
@@ -276,6 +276,6 @@ const onRowClicked = (row) => router.get(route("admin.user.detail", row.id));
           </q-tr>
         </template>
       </q-table>
-    </q-page>
+    </div>
   </authenticated-layout>
 </template>

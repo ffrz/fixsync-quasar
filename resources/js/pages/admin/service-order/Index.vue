@@ -1,11 +1,11 @@
 <script setup>
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 import { handleDelete, handleFetchItems } from "@/helpers/client-req-handler";
 import { create_options, check_role, getQueryParams } from "@/helpers/utils";
+import { useQuasar } from "quasar";
 
 const title = "Order Servis";
-const tableRef = ref(null);
 const rows = ref([]);
 const loading = ref(true);
 const showFilter = ref(false);
@@ -101,6 +101,12 @@ const onFilterChange = () => {
 const onRowClicked = (row) => {
   router.get(route("admin.service-order.detail", row.id));
 };
+
+const $q = useQuasar();
+const computedColumns = computed(() => {
+  if ($q.screen.gt.sm) return columns;
+  return columns.filter((col) => col.name === "order" || col.name === "action");
+});
 </script>
 
 <template>
@@ -185,9 +191,8 @@ const onRowClicked = (row) => {
         </div>
       </q-toolbar>
     </template>
-    <q-page class="flex flex-col q-pa-sm">
+    <div class="q-pa-sm">
       <q-table
-        ref="tableRef"
         flat
         bordered
         square
@@ -198,7 +203,7 @@ const onRowClicked = (row) => {
         v-model:pagination="pagination"
         :filter="filter.search"
         :loading="loading"
-        :columns="columns"
+        :columns="computedColumns"
         :rows="rows"
         :rows-per-page-options="[10, 25, 50]"
         @request="fetchItems"
@@ -226,70 +231,52 @@ const onRowClicked = (row) => {
             class="cursor-pointer"
           >
             <q-td key="order" :props="props">
-              <b>#{{ props.row.id }}</b
-              ><br />
-              {{
-                $dayjs(new Date(props.row.received_datetime)).format(
-                  "DD/MM/YYYY HH:mm"
-                )
-              }}<br />
-              <q-chip
-                dense
-                :color="
-                  props.row.order_status === 'open'
-                    ? 'green'
-                    : props.row.order_status === 'closed'
-                    ? 'grey'
-                    : 'red'
-                "
-                :icon="
-                  props.row.order_status === 'open'
-                    ? 'question_mark'
-                    : props.row.order_status === 'closed'
-                    ? 'check'
-                    : 'asterisk'
-                "
-              >
-                {{
-                  $CONSTANTS.SERVICEORDER_ORDERSTATUSES[props.row.order_status]
-                }}
-              </q-chip>
+              <div class="flex q-gutter-xs">
+                <div><b>#{{ props.row.id }}</b></div>
+                <div>{{
+                  $dayjs(new Date(props.row.received_datetime)).format(
+                    "DD/MM/YYYY HH:mm"
+                  )
+                }}</div>
+                <q-chip
+                  dense
+                  :color="props.row.order_status === 'open' ? 'green' : props.row.order_status === 'closed' ? 'grey' : 'red'"
+                  :icon="props.row.order_status === 'open' ? 'question_mark' : props.row.order_status === 'closed' ? 'check' : 'asterisk'"
+                >{{ $CONSTANTS.SERVICEORDER_ORDERSTATUSES[props.row.order_status] }}</q-chip>
+              </div>
+              <template v-if="$q.screen.lt.md">
+                <div class="flex q-gutter-sm">
+                  <div><q-icon name="devices" /> <b>{{ props.row.device }}</b></div>
+                  <div><q-icon name="report" /> {{ props.row.problems }}</div>
+                </div>
+                <div class="flex q-gutter-sm">
+                  <div><q-icon name="person" /> <b>{{ props.row.customer_name }}</b></div>
+                  <div><q-icon name="phone" /> {{ props.row.customer_phone }}</div>
+                </div>
+                <div class="flex q-gutter-sm q-pt-xs">
+                  <q-chip dense icon="task_alt">{{ $CONSTANTS.SERVICEORDER_REPAIRSTATUSES[props.row.repair_status] }}</q-chip>
+                </div>
+              </template>
             </q-td>
             <q-td key="device" :props="props">
-              <div>
-                <q-icon name="devices" /> <b>{{ props.row.device }}</b>
-              </div>
+              <div><q-icon name="devices" /> <b>{{ props.row.device }}</b></div>
               <div><q-icon name="report" /> {{ props.row.problems }}</div>
               <div><q-icon name="task" /> {{ props.row.actions }}</div>
-              <q-chip dense icon="handyman">{{
-                $CONSTANTS.SERVICEORDER_SERVICESTATUSES[
-                  props.row.service_status
-                ]
-              }}</q-chip>
-              <q-chip dense icon="task_alt">{{
-                $CONSTANTS.SERVICEORDER_REPAIRSTATUSES[props.row.repair_status]
-              }}</q-chip>
-              <q-chip dense icon="payments">{{
-                $CONSTANTS.SERVICEORDER_PAYMENTSTATUSES[
-                  props.row.payment_status
-                ]
-              }}</q-chip>
+              <q-chip dense icon="handyman">{{ $CONSTANTS.SERVICEORDER_SERVICESTATUSES[props.row.service_status] }}</q-chip>
+              <q-chip dense icon="task_alt">{{ $CONSTANTS.SERVICEORDER_REPAIRSTATUSES[props.row.repair_status] }}</q-chip>
+              <q-chip dense icon="payments">{{ $CONSTANTS.SERVICEORDER_PAYMENTSTATUSES[props.row.payment_status] }}</q-chip>
             </q-td>
             <q-td key="customer" :props="props">
-              <div>
-                <q-icon name="person" /> <b>{{ props.row.customer_name }}</b>
-              </div>
+              <div><q-icon name="person" /> <b>{{ props.row.customer_name }}</b></div>
               <div><q-icon name="phone" /> {{ props.row.customer_phone }}</div>
-              <div>
-                <q-icon name="location_home" /> {{ props.row.customer_address }}
-              </div>
+              <div><q-icon name="location_home" /> {{ props.row.customer_address }}</div>
             </q-td>
             <q-td key="status" :props="props"> </q-td>
             <q-td
               key="action"
               :props="props"
             >
-            <div class="full-width">
+              <div class="flex justify-end">
                 <q-btn
                   icon="more_vert"
                   dense
@@ -346,6 +333,6 @@ const onRowClicked = (row) => {
           </q-tr>
         </template>
       </q-table>
-    </q-page>
+    </div>
   </authenticated-layout>
 </template>

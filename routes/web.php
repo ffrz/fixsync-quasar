@@ -19,6 +19,10 @@ Route::get('/', function () {
     return view('homepage');
 })->name('home');
 
+Route::get('/test', function () {
+    return inertia('Test');
+})->name('test');
+
 if (env('APP_RUN_COMMAND_ALLOWED')) {
     Route::prefix('/--cmd')->group(function () {
         Route::prefix('/artisan')->group(function() {

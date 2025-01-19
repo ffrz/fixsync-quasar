@@ -139,7 +139,7 @@ const computedColumns = computed(() => {
         </div>
       </q-toolbar>
     </template>
-    <q-page class="flex flex-col q-pa-sm">
+    <div class="q-pa-sm">
       <q-table
         class="full-height-table"
         ref="tableRef"
@@ -175,7 +175,7 @@ const computedColumns = computed(() => {
 
         <template v-slot:body="props">
           <q-tr :props="props" :class="!props.row.active ? 'bg-red-1' : ''" class="cursor-pointer" @click="onRowClicked(props.row)">
-            <q-td key="name" :props="props">
+            <q-td key="name" :props="props" class="wrap-column">
               <div><q-icon name="person" /> {{ props.row.name }}</div>
               <template v-if="$q.screen.lt.md">
                 <div><q-icon name="phone" /> {{ props.row.phone }}</div>
@@ -192,7 +192,7 @@ const computedColumns = computed(() => {
               key="action"
               :props="props"
             >
-              <div class="full-width">
+              <div class="flex justify-end">
                 <q-btn
                   :disabled="!check_role($CONSTANTS.USER_ROLE_ADMIN)"
                   icon="more_vert"
@@ -249,6 +249,6 @@ const computedColumns = computed(() => {
           </q-tr>
         </template>
       </q-table>
-    </q-page>
+    </div>
   </authenticated-layout>
 </template>

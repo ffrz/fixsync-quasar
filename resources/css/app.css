@@ -70,12 +70,6 @@ a:hover {
 .cursor-pointer {
   cursor: pointer;
 }
-/** Tabel full height */
-.q-table.full-height-table {
-  flex: 1 !important; /* Fill available space */
-  min-height: 0 !important; /* Prevent overflow issues */
-}
-
 .va-top td {
   vertical-align: top !important;
 }
@@ -163,9 +157,68 @@ table.detail tr:nth-child(even) td {
 }
 .q-timeline__entry {
   margin: 0 !important;
-
 }
 
 .q-chip--dense {
   padding: 0 8px !important;
+}
+
+/** Tabel full height */
+/* .q-table.full-height-table {
+  flex: 1 !important;
+  min-height: 0 !important;
+} */
+
+.full-height-table {
+  height: calc(100vh - 70px);
+}
+/* height or max-height is important */
+
+.full-height-table .q-table__top,
+.full-height-table .q-table__bottom,
+.full-height-table thead tr:first-child th {
+  background-color: #fff;
+}
+.full-height-table thead tr th {
+  position: sticky;
+  z-index: 1;
+}
+
+.full-height-table thead tr:first-child th {
+  top: 0;
+}
+
+.full-height-table tbody {
+  scroll-margin-top: 48px;
+}
+
+.full-height-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.full-height-table th,
+.full-height-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.full-height-table .wrap-column {
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.elipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.full-height-table tbody tr:last-child td {
+  border-bottom: 1px solid #eee;
 }

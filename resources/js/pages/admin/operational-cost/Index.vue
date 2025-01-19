@@ -117,7 +117,7 @@ const computedColumns = computed(() => {
         </div>
       </q-toolbar>
     </template>
-    <q-page class="flex flex-col q-pa-sm">
+    <div class="q-pa-sm">
       <q-table
         class="full-height-table"
         flat
@@ -150,7 +150,7 @@ const computedColumns = computed(() => {
         </template>
         <template v-slot:body="props">
           <q-tr :props="props">
-            <q-td key="date" :props="props">
+            <q-td key="date" :props="props" class="wrap-column">
               <div><q-icon name="calendar_today"/> {{ props.row.date }}</div>
               <template v-if="!$q.screen.gt.sm">
                 <div><q-icon name="notes"/> {{ props.row.description }}</div>
@@ -164,7 +164,7 @@ const computedColumns = computed(() => {
               {{ formatNumber(props.row.amount) }}
             </q-td>
             <q-td key="action" :props="props">
-              <div class="full-width">
+              <div class="flex justify-end">
                 <q-btn
                   :disabled="!check_role($CONSTANTS.USER_ROLE_ADMIN)"
                   icon="more_vert"
@@ -232,6 +232,6 @@ const computedColumns = computed(() => {
           </q-tr>
         </template>
       </q-table>
-    </q-page>
+    </div>
   </authenticated-layout>
 </template>

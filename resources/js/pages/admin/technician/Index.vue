@@ -139,7 +139,7 @@ const computedColumns = computed(() => {
         </div>
       </q-toolbar>
     </template>
-    <q-page class="flex flex-col q-pa-sm">
+    <div class="q-pa-sm">
       <q-table
         class="full-height-table"
         flat
@@ -176,20 +176,20 @@ const computedColumns = computed(() => {
               <div><q-icon name="person"/> {{ props.row.name }}</div>
               <template v-if="!$q.screen.gt.sm">
                 <div><q-icon name="phone"/> {{ props.row.phone }}</div>
-                <div><q-icon name="email"/> {{ props.row.email }}</div>
+                <div class="elipsis" style="max-width: 200px;"><q-icon name="email"/> {{ props.row.email }}</div>
               </template>
             </q-td>
             <q-td key="phone" :props="props">
               {{ props.row.phone }}
             </q-td>
             <q-td key="email" :props="props">
-              {{ props.row.email }}
+              <div class="elipsis" style="max-width: 200px;">{{ props.row.email }}</div>
             </q-td>
             <q-td
               key="action"
               :props="props"
             >
-              <div class="full-width">
+              <div class="flex justify-end">
                 <q-btn
                   :disabled="!check_role($CONSTANTS.USER_ROLE_ADMIN)"
                   icon="more_vert"
@@ -246,6 +246,6 @@ const computedColumns = computed(() => {
           </q-tr>
         </template>
       </q-table>
-    </q-page>
+    </div>
   </authenticated-layout>
 </template>
