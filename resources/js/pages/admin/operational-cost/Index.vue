@@ -184,7 +184,7 @@ const computedColumns = computed(() => {
               {{ props.row.description }}
               <div v-if="props.row.category"><q-icon name="category"/> {{ props.row.category.name }}</div>
             </q-td>
-            <q-td key="amount" :props="props">
+            <q-td key="amount" :props="props" style="text-align: right">
               {{ formatNumber(props.row.amount) }}
             </q-td>
             <q-td key="action" :props="props">
