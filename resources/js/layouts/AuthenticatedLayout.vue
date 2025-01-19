@@ -114,7 +114,6 @@ onMounted(() => {
               </q-item>
               <q-separator />
               <q-item
-                dense
                 v-close-popup
                 class="subnav"
                 clickable
@@ -130,7 +129,6 @@ onMounted(() => {
                 </q-item-section>
               </q-item>
               <q-item
-                dense
                 v-close-popup
                 v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN"
                 class="subnav"
@@ -150,7 +148,6 @@ onMounted(() => {
               </q-item>
               <q-separator />
               <q-item
-                dense
                 clickable
                 v-close-popup
                 v-ripple

@@ -221,3 +221,12 @@ table.detail tr:nth-child(even) td {
 .full-height-table tbody tr:last-child td {
   border-bottom: 1px solid #eee;
 }
+
+.q-table th {
+  font-weight: bold !important;
+  color: #666;
+}
+.q-table td .q-btn,
+.q-table__bottom * {
+  color: #555;
+}
