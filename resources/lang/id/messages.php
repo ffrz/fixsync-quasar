@@ -19,6 +19,10 @@ return [
     'operational-cost-updated' => 'Biaya operasional :description telah diperbarui.',
     'operational-cost-deleted' => 'Biaya operasional :description telah dihapus.',
 
+    'operational-cost-category-created' => 'Kategori biaya operasional :name telah dibuat.',
+    'operational-cost-category-updated' => 'Kategori biaya operasional :name telah diperbarui.',
+    'operational-cost-category-deleted' => 'Kategori biaya operasional :name telah dihapus.',
+
     'update-company-profile-success' => 'Profil perusahaan berhasil diperbarui.',
 
     'cant-delete-item-with-different-company' => 'Akses ditolak, tidak bisa menghapus item berbeda perusahaan.',

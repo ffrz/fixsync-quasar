@@ -9,7 +9,7 @@ class OperationalCostCategory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'company_id', 'name'
+        'company_id', 'name', 'notes'
     ];
 
     public function company()

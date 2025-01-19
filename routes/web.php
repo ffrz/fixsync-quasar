@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CompanyProfileController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OperationalCostCategoryController;
 use App\Http\Controllers\Admin\OperationalCostController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceOrderController;
@@ -86,6 +87,16 @@ Route::middleware([Auth::class])->group(function () {
             Route::post('delete/{id}', [TechnicianController::class, 'delete'])->name('admin.technician.delete');
         });
 
+        Route::prefix('operational-cost-categories')->group(function () {
+            Route::get('', [OperationalCostCategoryController::class, 'index'])->name('admin.operational-cost-category.index');
+            Route::get('data', [OperationalCostCategoryController::class, 'data'])->name('admin.operational-cost-category.data');
+            Route::get('add', [OperationalCostCategoryController::class, 'editor'])->name('admin.operational-cost-category.add');
+            Route::get('duplicate/{id}', [OperationalCostCategoryController::class, 'duplicate'])->name('admin.operational-cost-category.duplicate');
+            Route::get('edit/{id}', [OperationalCostCategoryController::class, 'editor'])->name('admin.operational-cost-category.edit');
+            Route::post('save', [OperationalCostCategoryController::class, 'save'])->name('admin.operational-cost-category.save');
+            Route::post('delete/{id}', [OperationalCostCategoryController::class, 'delete'])->name('admin.operational-cost-category.delete');
+        });
+
         Route::prefix('operational-costs')->group(function () {
             Route::get('', [OperationalCostController::class, 'index'])->name('admin.operational-cost.index');
             Route::get('data', [OperationalCostController::class, 'data'])->name('admin.operational-cost.data');
@@ -95,6 +106,7 @@ Route::middleware([Auth::class])->group(function () {
             Route::post('save', [OperationalCostController::class, 'save'])->name('admin.operational-cost.save');
             Route::post('delete/{id}', [OperationalCostController::class, 'delete'])->name('admin.operational-cost.delete');
         });
+
 
         Route::prefix('settings')->group(function () {
             Route::get('profile/edit', [ProfileController::class, 'edit'])->name('admin.profile.edit');

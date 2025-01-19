@@ -1,11 +1,5 @@
 <script setup>
-import {
-  computed,
-  defineComponent,
-  onMounted,
-  ref,
-  watch,
-} from "vue";
+import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 import { useQuasar } from "quasar";
 
@@ -151,7 +145,7 @@ onMounted(() => {
                 clickable
                 v-close-popup
                 v-ripple
-                style="color:inherit;"
+                style="color: inherit"
                 :href="route('admin.auth.logout')"
               >
                 <q-item-section>
@@ -228,19 +222,43 @@ onMounted(() => {
               <q-item-label>{{ $t("technicians") }}</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item
-            clickable
-            v-ripple
-            :active="$page.url.startsWith('/admin/operational-costs')"
-            @click="router.get(route('admin.operational-cost.index'))"
+          <q-expansion-item
+            v-if="$page.props.auth.user.role == $CONSTANTS.USER_ROLE_ADMIN"
+            expand-separator
+            icon="paid"
+            label="Operasional"
+            :default-opened="$page.url.startsWith('/admin/operational-costs') || $page.url.startsWith('/admin/operational-cost-categories')"
           >
-            <q-item-section avatar>
-              <q-icon name="paid" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Operasional</q-item-label>
-            </q-item-section>
-          </q-item>
+            <q-item
+              class="subnav"
+              clickable
+              v-ripple
+              :active="$page.url.startsWith('/admin/operational-costs')"
+              @click="router.get(route('admin.operational-cost.index'))"
+            >
+              <q-item-section avatar>
+                <q-icon name="request_quote" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Biaya Operasional</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item
+              class="subnav"
+              clickable
+              v-ripple
+              :active="$page.url.startsWith('/admin/operational-cost-categories')"
+              @click="router.get(route('admin.operational-cost-category.index'))"
+            >
+              <q-item-section avatar>
+                <q-icon name="category" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Kategori</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-expansion-item>
+
           <q-expansion-item
             expand-separator
             icon="settings"

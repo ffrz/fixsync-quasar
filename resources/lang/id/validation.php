@@ -31,6 +31,7 @@ return [
         'address' => 'Alamat',
         'date' => 'Tanggal',
         'description' => 'Deskripsi',
+        'category_id' => 'Kategori',
         'notes' => 'Catatan',
         'amount' => 'Jumlah',
         'customer_name' => 'Nama Pelanggan',

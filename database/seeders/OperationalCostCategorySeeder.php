@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\OperationalCostCategory;
 use Illuminate\Database\Seeder;
 
 class OperationalCostCategorySeeder extends Seeder
@@ -11,6 +12,39 @@ class OperationalCostCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\OperationalCostCategory::factory(10)->create();
+        OperationalCostCategory::factory()->create([
+            'name' => 'Listrik',
+            'notes' => 'Biaya Tagihan Listrik',
+        ]);
+
+        OperationalCostCategory::factory()->create([
+            'name' => 'PDAM',
+            'notes' => 'Biaya Tagihan PDAM',
+        ]);
+
+        OperationalCostCategory::factory()->create([
+            'name' => 'Internet',
+            'notes' => 'Biaya Tagihan Internet',
+        ]);
+
+        OperationalCostCategory::factory()->create([
+            'name' => 'Pulsa dan Quota',
+            'notes' => 'Biaya pulsa dan Quota',
+        ]);
+
+        OperationalCostCategory::factory()->create([
+            'name' => 'ATK',
+            'notes' => 'Biaya ATK',
+        ]);
+
+        OperationalCostCategory::factory()->create([
+            'name' => 'Bahan Servis',
+            'notes' => 'Biaya bahan-bahan servis habis pakai',
+        ]);
+
+        OperationalCostCategory::factory()->create([
+            'name' => 'Alat Servis',
+            'notes' => 'Biaya alat-alat servis non bahan',
+        ]);
     }
 }
