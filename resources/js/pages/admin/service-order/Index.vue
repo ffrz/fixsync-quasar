@@ -233,28 +233,25 @@ const computedColumns = computed(() => {
             <q-td key="order" :props="props">
               <div class="flex q-gutter-xs">
                 <div><b>#{{ props.row.id }}</b></div>
-                <div>{{
-                  $dayjs(new Date(props.row.received_datetime)).format(
-                    "DD/MM/YYYY HH:mm"
-                  )
-                }}</div>
-                <q-chip
-                  dense
+                <div>{{ $dayjs(new Date(props.row.received_datetime)).format("DD/MM/YYYY HH:mm") }}</div>
+                <q-chip dense size="sm"
                   :color="props.row.order_status === 'open' ? 'green' : props.row.order_status === 'closed' ? 'grey' : 'red'"
                   :icon="props.row.order_status === 'open' ? 'question_mark' : props.row.order_status === 'closed' ? 'check' : 'asterisk'"
                 >{{ $CONSTANTS.SERVICEORDER_ORDERSTATUSES[props.row.order_status] }}</q-chip>
               </div>
               <template v-if="$q.screen.lt.md">
-                <div class="flex q-gutter-sm">
+                <div class="flex q-col-gutter-xs">
                   <div><q-icon name="devices" /> <b>{{ props.row.device }}</b></div>
                   <div><q-icon name="report" /> {{ props.row.problems }}</div>
                 </div>
-                <div class="flex q-gutter-sm">
+                <div class="flex q-col-gutter-xs q-py-xs">
                   <div><q-icon name="person" /> <b>{{ props.row.customer_name }}</b></div>
                   <div><q-icon name="phone" /> {{ props.row.customer_phone }}</div>
                 </div>
-                <div class="flex q-gutter-sm q-pt-xs">
-                  <q-chip dense icon="task_alt">{{ $CONSTANTS.SERVICEORDER_REPAIRSTATUSES[props.row.repair_status] }}</q-chip>
+                <div class="flex q-col-gutter-xs">
+                  <q-chip size="sm" dense icon="handyman">{{ $CONSTANTS.SERVICEORDER_SERVICESTATUSES[props.row.service_status] }}</q-chip>
+                  <q-chip size="sm" dense icon="task_alt">{{ $CONSTANTS.SERVICEORDER_REPAIRSTATUSES[props.row.repair_status] }}</q-chip>
+                  <q-chip size="sm" dense icon="payments">{{ $CONSTANTS.SERVICEORDER_PAYMENTSTATUSES[props.row.payment_status] }}</q-chip>
                 </div>
               </template>
             </q-td>
